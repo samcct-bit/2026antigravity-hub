@@ -1,0 +1,47 @@
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# API keys and environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*
+*.local
+secrets.json
+service-account*.json
+
+# Firebase configuration & tokens
+.firebase/
+firebase-debug.log
+ui-debug.log
+firestore-debug.log
+pubsub-debug.log
+database-debug.log
+hosting-debug.log
+storage-debug.log
+firebase-tools.log
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# NotebookLM local exports & private IDs
+notebooks.json
+*.notebooklm
+private_notebooks/
+
+# Temp images & logs
+.gemini/
+scratch/
+browser_recordings/
+html_artifacts/
+*temp*
+*.tmp
+*.log
