@@ -45,3 +45,4 @@ html_artifacts/
 *temp*
 *.tmp
 *.log
+.netlify/
