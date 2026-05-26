@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>甜味藥劑學：代糖與糖類大對決 | The Apothecary of Sweetness</title>
+  <meta name="description" content="探索不同種類甜味劑的甜度強度與物理體積對比，內含互動式甜度計算器與高解析度資訊圖表，適合學生與教育推廣。">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <span class="badge" id="app-badge">NotebookLM Exhibit Study</span>
+      <h1 id="app-main-title">甜味藥劑學：糖類大對決</h1>
+      <p class="subtitle" id="app-subtitle">讓學生一眼看懂：不同種類的糖，甜度（甜的力量）差別有多大？</p>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Left Column: Infographics Display -->
+    <section class="card col-8" id="infographic-section">
+      <div class="tabs-header">
+        <h2 class="tabs-title" id="tab-section-title">📊 甜度強度對比圖表</h2>
+        <div class="tabs-buttons" role="tablist" aria-label="圖表方向切換">
+          <button class="tab-btn active" id="btn-landscape" role="tab" aria-selected="true" onclick="switchTab('landscape')">橫式大圖表</button>
+          <button class="tab-btn" id="btn-portrait" role="tab" aria-selected="false" onclick="switchTab('portrait')">直式學習單</button>
+        </div>
+      </div>
+      
+      <!-- Landscape Tab Content -->
+      <div class="tab-content active" id="content-landscape" role="tabpanel" aria-labelledby="btn-landscape">
+        <div class="infographic-container">
+          <img src="assets/sugar_infographic_landscape.png" alt="甜度強度對比橫式資訊圖表" id="img-landscape">
+        </div>
+      </div>
+      
+      <!-- Portrait Tab Content -->
+      <div class="tab-content" id="content-portrait" role="tabpanel" aria-labelledby="btn-portrait">
+        <div class="infographic-container">
+          <img src="assets/sugar_infographic_completed.png" alt="甜度強度對比直式資訊圖表" id="img-portrait">
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Column: Interactive Sweetness Calculator -->
+    <section class="card col-4" id="calculator-section">
+      <h2 class="section-title" id="calc-title">⚖️ 互動式甜度換算器</h2>
+      <p class="section-desc" id="calc-desc">調整砂糖的重量，即時換算達到「相同甜度」時其他甜味劑所需的物理重量！</p>
+      
+      <div class="input-group">
+        <label for="sugar-input" id="lbl-sugar-input">基準砂糖重量</label>
+        <div class="sugar-input-wrapper">
+          <input type="number" id="sugar-input" class="sugar-input" value="10" min="0.1" step="0.1" oninput="calculateSweetness()">
+          <span class="input-unit">公斤 (kg)</span>
+        </div>
+      </div>
+
+      <div class="sweetness-display">
+        <!-- Glucose -->
+        <div class="sweetener-row glucose" id="row-glucose">
+          <div class="sweetener-icon" aria-hidden="true">🌾</div>
+          <div class="sweetener-details">
+            <div class="sweetener-name">葡萄糖</div>
+            <div class="sweetener-type">淡淡甜味哥 (Processed)</div>
+          </div>
+          <div class="sweetener-math">
+            <div class="sweetener-val" id="val-glucose">15 kg</div>
+            <div class="sweetener-ratio">1.5x 砂糖體積</div>
+          </div>
+        </div>
+
+        <!-- Sugar (Reference) -->
+        <div class="sweetener-row sugar" id="row-sugar">
+          <div class="sweetener-icon" aria-hidden="true">🍬</div>
+          <div class="sweetener-details">
+            <div class="sweetener-name">砂糖</div>
+            <div class="sweetener-type">甜度基準對照組 (Standard)</div>
+          </div>
+          <div class="sweetener-math">
+            <div class="sweetener-val" id="val-sugar">10 kg</div>
+            <div class="sweetener-ratio">1.0x 基準</div>
+          </div>
+        </div>
+
+        <!-- Stevia -->
+        <div class="sweetener-row stevia" id="row-stevia">
+          <div class="sweetener-icon" aria-hidden="true">🌿</div>
+          <div class="sweetener-details">
+            <div class="sweetener-name">甜葉菊</div>
+            <div class="sweetener-type">天然萃取代糖 (Natural)</div>
+          </div>
+          <div class="sweetener-math">
+            <div class="sweetener-val" id="val-stevia">286 g</div>
+            <div class="sweetener-ratio">0.0286x 重量</div>
+          </div>
+        </div>
+
+        <!-- Aspartame -->
+        <div class="sweetener-row aspartame" id="row-aspartame">
+          <div class="sweetener-icon" aria-hidden="true">🧪</div>
+          <div class="sweetener-details">
+            <div class="sweetener-name">阿斯巴甜</div>
+            <div class="sweetener-type">加工合成代糖 (Processed)</div>
+          </div>
+          <div class="sweetener-math">
+            <div class="sweetener-val" id="val-aspartame">55 g</div>
+            <div class="sweetener-ratio">0.0055x 重量</div>
+          </div>
+        </div>
+
+        <!-- Glycyrrhizin -->
+        <div class="sweetener-row glycyrrhizin" id="row-glycyrrhizin">
+          <div class="sweetener-icon" aria-hidden="true">🪵</div>
+          <div class="sweetener-details">
+            <div class="sweetener-name">甘草素</div>
+            <div class="sweetener-type">甘草天然提取 (Natural)</div>
+          </div>
+          <div class="sweetener-math">
+            <div class="sweetener-val" id="val-glycyrrhizin">40 g</div>
+            <div class="sweetener-ratio">0.0040x 重量</div>
+          </div>
+        </div>
+
+        <!-- Saccharin -->
+        <div class="sweetener-row saccharin" id="row-saccharin">
+          <div class="sweetener-icon" aria-hidden="true">⚡</div>
+          <div class="sweetener-details">
+            <div class="sweetener-name">糖精</div>
+            <div class="sweetener-type">甜味超級大力士 (Processed)</div>
+          </div>
+          <div class="sweetener-math">
+            <div class="sweetener-val" id="val-saccharin">20 g</div>
+            <div class="sweetener-ratio">0.0020x 重量</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Section: Scientific Facts Board -->
+    <section class="card col-12" id="facts-section">
+      <h2 class="section-title" id="facts-title" style="text-align: center; margin-bottom: 2rem;">💡 甜味藥劑學知識小講堂</h2>
+      <div class="facts-grid">
+        <div class="fact-card" id="fact-1">
+          <div class="fact-icon">⚖️</div>
+          <h3 class="fact-title">體積的奧秘</h3>
+          <p class="fact-text">同樣達到 100 分的甜度，高強度的代糖（如糖精、甘草素）只需要克級甚至毫克級的物理份量，而一般糖類需要公斤級！</p>
+        </div>
+        <div class="fact-card" id="fact-2">
+          <div class="fact-icon">🌿</div>
+          <h3 class="fact-title">天然 vs 人工</h3>
+          <p class="fact-text">甜葉菊與甘草素屬於天然提取的濃縮代糖，而阿斯巴甜和糖精則是經過精細化學加工合成的高強度甜味劑。</p>
+        </div>
+        <div class="fact-card" id="fact-3">
+          <div class="fact-icon">🎓</div>
+          <h3 class="fact-title">甜度基準「小老師」</h3>
+          <p class="fact-text">在科學研究中，我們把「砂糖」的甜度定義為 100 分。葡萄糖的甜度較淡，因此需要 1.5 倍的重量才能與砂糖一樣甜！</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 2026antigravity-hub. Built with Google NotebookLM & AntiGravity Web Development Flow.</p>
+  </footer>
+
+  <script>
+    function switchTab(orientation) {
+      // Deactivate all
+      document.getElementById('btn-landscape').classList.remove('active');
+      document.getElementById('btn-portrait').classList.remove('active');
+      document.getElementById('content-landscape').classList.remove('active');
+      document.getElementById('content-portrait').classList.remove('active');
+      
+      document.getElementById('btn-landscape').setAttribute('aria-selected', 'false');
+      document.getElementById('btn-portrait').setAttribute('aria-selected', 'false');
+
+      // Activate selected
+      if (orientation === 'landscape') {
+        document.getElementById('btn-landscape').classList.add('active');
+        document.getElementById('content-landscape').classList.add('active');
+        document.getElementById('btn-landscape').setAttribute('aria-selected', 'true');
+      } else {
+        document.getElementById('btn-portrait').classList.add('active');
+        document.getElementById('content-portrait').classList.add('active');
+        document.getElementById('btn-portrait').setAttribute('aria-selected', 'true');
+      }
+    }
+
+    function calculateSweetness() {
+      const sugarInput = document.getElementById('sugar-input').value;
+      const sugar = parseFloat(sugarInput);
+
+      if (isNaN(sugar) || sugar <= 0) {
+        return;
+      }
+
+      // Calculations:
+      const glucose = sugar * 1.5;
+      const stevia = sugar * 28.6;
+      const aspartame = sugar * 5.5;
+      const glycyrrhizin = sugar * 4.0;
+      const saccharin = sugar * 2.0;
+
+      // Update UI helper function to format weights
+      document.getElementById('val-sugar').innerText = formatWeight(sugar, 'kg');
+      document.getElementById('val-glucose').innerText = formatWeight(glucose, 'kg');
+      document.getElementById('val-stevia').innerText = formatWeight(stevia, 'g');
+      document.getElementById('val-aspartame').innerText = formatWeight(aspartame, 'g');
+      document.getElementById('val-glycyrrhizin').innerText = formatWeight(glycyrrhizin, 'g');
+      document.getElementById('val-saccharin').innerText = formatWeight(saccharin, 'g');
+    }
+
+    function formatWeight(value, defaultUnit) {
+      if (defaultUnit === 'kg') {
+        if (value >= 1) {
+          return value.toFixed(1).replace(/\.0$/, '') + ' kg';
+        } else {
+          return (value * 1000).toFixed(0) + ' g';
+        }
+      } else {
+        if (value >= 1) {
+          return value.toFixed(1).replace(/\.0$/, '') + ' g';
+        } else if (value >= 0.001) {
+          return (value * 1000).toFixed(0) + ' mg';
+        } else {
+          return (value * 1000000).toFixed(0) + ' μg';
+        }
+      }
+    }
+
+    // Initialize calculations on load
+    calculateSweetness();
+  </script>
+</body>
+</html>

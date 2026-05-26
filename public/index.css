@@ -1,0 +1,445 @@
+/* public/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --bg-primary: #0b0f19;
+  --bg-secondary: #161f30;
+  --card-bg: rgba(22, 31, 48, 0.65);
+  --border-color: rgba(255, 255, 255, 0.08);
+  
+  --accent-gold: #f59e0b;
+  --accent-gold-glow: rgba(245, 158, 11, 0.15);
+  --accent-emerald: #10b981;
+  --accent-emerald-glow: rgba(16, 185, 129, 0.15);
+  --accent-purple: #8b5cf6;
+  --accent-purple-glow: rgba(139, 92, 246, 0.15);
+  
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  
+  --font-title: 'Outfit', 'Noto Sans TC', sans-serif;
+  --font-body: 'Noto Sans TC', sans-serif;
+  
+  --shadow-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  padding: 0;
+  min-height: 100vh;
+}
+
+header {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.header-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.badge {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-emerald));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: var(--font-title);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+  display: inline-block;
+}
+
+h1 {
+  font-family: var(--font-title);
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  background: linear-gradient(to right, #ffffff, #e2e8f0, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 1.15rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Bento Grid Layout */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: var(--shadow-glow);
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Component Size Control */
+.col-8 {
+  grid-column: span 8;
+}
+
+.col-4 {
+  grid-column: span 4;
+}
+
+.col-12 {
+  grid-column: span 12;
+}
+
+/* Tabs for Infographics */
+.tabs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.tabs-title {
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.tabs-buttons {
+  display: flex;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.35rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.tab-btn:hover {
+  color: #fff;
+}
+
+.tab-btn.active {
+  background: var(--bg-secondary);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.tab-content {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.tab-content.active {
+  display: flex;
+  animation: fadeIn 0.4s ease-in-out forwards;
+}
+
+.infographic-container {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.infographic-container img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: var(--transition-smooth);
+}
+
+/* Interactive Calculator Styling */
+.section-title {
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.section-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.input-group {
+  margin-bottom: 2rem;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.sugar-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sugar-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem 3.5rem 1rem 1.25rem;
+  font-size: 1.25rem;
+  color: #fff;
+  font-family: var(--font-title);
+  font-weight: 600;
+  transition: var(--transition-smooth);
+}
+
+.sugar-input:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px var(--accent-gold-glow);
+}
+
+.input-unit {
+  position: absolute;
+  right: 1.25rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  font-family: var(--font-title);
+}
+
+.sweetness-display {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sweetener-row {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  transition: var(--transition-smooth);
+}
+
+.sweetener-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.sweetener-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-right: 1.25rem;
+  flex-shrink: 0;
+}
+
+.sweetener-details {
+  flex-grow: 1;
+}
+
+.sweetener-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.sweetener-type {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.sweetener-math {
+  text-align: right;
+}
+
+.sweetener-val {
+  font-family: var(--font-title);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.sweetener-ratio {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* Custom Accents for Calculator */
+.sweetener-row.glucose { border-left: 4px solid var(--accent-gold); }
+.sweetener-row.glucose .sweetener-icon { background: rgba(245, 158, 11, 0.1); color: var(--accent-gold); }
+.sweetener-row.glucose .sweetener-val { color: var(--accent-gold); }
+
+.sweetener-row.sugar { border-left: 4px solid #fff; }
+.sweetener-row.sugar .sweetener-icon { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+.sweetener-row.stevia { border-left: 4px solid var(--accent-emerald); }
+.sweetener-row.stevia .sweetener-icon { background: rgba(16, 185, 129, 0.1); color: var(--accent-emerald); }
+.sweetener-row.stevia .sweetener-val { color: var(--accent-emerald); }
+
+.sweetener-row.aspartame { border-left: 4px solid #3b82f6; }
+.sweetener-row.aspartame .sweetener-icon { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+.sweetener-row.aspartame .sweetener-val { color: #3b82f6; }
+
+.sweetener-row.glycyrrhizin { border-left: 4px solid #14b8a6; }
+.sweetener-row.glycyrrhizin .sweetener-icon { background: rgba(20, 184, 166, 0.1); color: #14b8a6; }
+.sweetener-row.glycyrrhizin .sweetener-val { color: #14b8a6; }
+
+.sweetener-row.saccharin { border-left: 4px solid var(--accent-purple); }
+.sweetener-row.saccharin .sweetener-icon { background: rgba(139, 92, 246, 0.1); color: var(--accent-purple); }
+.sweetener-row.saccharin .sweetener-val { color: var(--accent-purple); }
+
+/* Scientific Facts Board */
+.facts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.fact-card {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.fact-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.fact-title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.fact-text {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+footer {
+  text-align: center;
+  padding: 3rem 0;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+footer a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Rules */
+@media (max-width: 1024px) {
+  .col-8, .col-4 {
+    grid-column: span 12;
+  }
+  
+  .facts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.25rem;
+  }
+  
+  header {
+    padding: 2rem 1rem;
+  }
+}

@@ -9,27 +9,29 @@
 ## 🎯 專案目標與目前狀態
 
 * **核心目標**：建構安全、高效的 AntiGravity 自動化與個人開發工作流。
-* **目前狀態**：🟢 專案初始化完成。
+* **目前狀態**：🟢 專案初始化與 Firebase 部署均已綠燈完成。
   * [x] NotebookLM 整合與註冊 
   * [x] GitHub 認證連線驗證
   * [x] Firebase 專案對接與註冊
   * [x] Obsidian 筆記安全工作流註冊
   * [x] 生圖工具免金鑰配置與測試
+  * [x] 甜味對決互動網頁設計與 Firebase Hosting 部署
 
 ---
 
 ## 🏆 最近完成事項
 
-- 成功從最新的 NotebookLM 筆記本「The Apothecary of Sweetness: A Comparative Sugar Study」中下載並生成了高畫質的 **橫式與直式甜度強度對比資訊圖表**（已安全存放至 `assets/` 目錄中）。
+- 成功設計「甜味藥劑學：代糖與糖類大對決」互動網頁，整合 HSL 擬物玻璃態設計與**互動式甜度換算器**，並成功部署至 Firebase Hosting (https://my-teaching-tools-01.web.app)。
+- 成功從最新的 NotebookLM 筆記本「The Apothecary of Sweetness: A Comparative Sugar Study」中下載並生成了高畫質的 **橫式與直式甜度強度對比資訊圖表**（已安全存放至 `assets/` 與 `public/assets/` 目錄中）。
 - 成功為 AntiGravity 新增了多個自訂技能，全面優化了日常開發生命週期。
 
 ---
 
 ## 🚀 下一步 (TODO)
 
-- [ ] 設定本地的 Firebase Hosting / 部署測試環境。
-- [ ] 將本初始化結構進行首次 Git Commit。
-- [ ] 使用 GitHub CLI 建立遠端的 Private 儲存庫並上傳（`2026antigravity-hub`）。
+- [ ] 規劃將其他科學主題筆記本的實驗圖表也整合入多頁面展示中。
+- [ ] 優化手機瀏覽器上的點擊觸控靈敏度與算式動畫。
+- [ ] 僅在規則改變時更新本機的 ANTIGRAVITY.md。
 
 ---
 
