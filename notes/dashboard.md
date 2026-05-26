@@ -2,7 +2,7 @@
 
 > 專案：2026antigravity-hub
 > 位置：`d:\2026antigravity\notes\dashboard.md`
-> 本日記錄：2026-05-25
+> 本日記錄：2026-05-26
 
 ---
 
@@ -41,6 +41,22 @@
    * **解法**：在 PowerShell 工作階段開頭手動注入 `$env:PYTHONIOENCODING = "utf-8"` 即可順利執行所有命令。
 2. **Bug/問題**：`gh auth status` 會因環境中失效的 `GITHUB_TOKEN` 變數而導致報錯。
    * **解法**：在命令前使用 `$env:GITHUB_TOKEN=""` 清除暫時變數，即可順利讀取系統 Keyring 中的認證。
+
+---
+
+## 📅 每日日誌
+
+- **2026-05-26**：🟢 **開工狀態驗證通過 & NotebookLM 筆記整理 & Netlify 專案部署完成**。
+  - Git 工作目錄乾淨，遠端分支與 origin/master 同步。
+  - GitHub CLI 登入正常（帳號：`samcct-bit`）。
+  - NotebookLM 連線成功，已完成安全瀏覽器 OAuth 登入並成功讀取筆記本。
+  - Firebase CLI 專案列表獲取正常（作用專案：`my-teaching-tools-01`）。
+  - 所有連線均正常綠燈，已全面啟動今日工作流！
+  - **完成筆記分類整理與清理**：成功分類整理原本的 62 個筆記本為 6 大核心類別，安全刪除 2 個無標題空白草稿，將總量精簡為 60 個，並更新本機的 [catalog.md](file:///d:/2026antigravity/private_notebooks/catalog.md)。
+  - **成功串聯 Netlify 服務**：已完成本地 Netlify CLI 的安全授權登入（`samcct@gmail.com`），並成功讀取 13 個現存網站。
+  - **部署 2 個新咖啡標籤網頁**：成功將新拷貝之本地專案 `Colombia Margarita Honeydew Melon` 與 `Ethiopia Worka Berry Queen` 建立並部署至 Netlify 生產環境，自訂子網域網址分別為：
+    - 🇨🇴 Colombia Margarita：[colombia-margarita-honeydew-melon.netlify.app](https://colombia-margarita-honeydew-melon.netlify.app)
+    - 🇪🇹 Ethiopia Worka：[ethiopia-worka-berry-queen.netlify.app](https://ethiopia-worka-berry-queen.netlify.app)
 
 ---
 
