@@ -88,6 +88,9 @@
   - **部署全新數學時間遊戲 `timegame3-2-8`**：
     - 將新生成的 `timegame3-2-8` 時間遊戲網頁整合至 `public/math game/timegame3-2-8/index.html`。
     - 已同步上傳至 GitHub，順利部署於 GitHub Pages (`https://samcct-bit.github.io/2026antigravity-hub/public/math%20game/timegame3-2-8/index.html`)。
+  - **建立多裝置技能同步資料夾（`skills/`）**：
+    - 成功將本地端所有的技能設定檔（含新咖啡自動化技能 `07-coffee.md`）複製並備份至專案根目錄的 `skills/` 資料夾中。
+    - 已順利上傳至 GitHub 公開儲存庫，方便於家用筆電等其他裝置快速拉取並一鍵安裝。
 
 - **2026-05-26**：🟢 **開工狀態驗證通過 & 咖啡標籤與數學遊戲部署優化圓滿收工**。
   - Git 工作目錄乾淨，遠端分支與 origin/master 同步。
