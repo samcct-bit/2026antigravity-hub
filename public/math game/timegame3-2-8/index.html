@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三年級數學 - 時光魔法使的試煉</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #1a202c; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .glass-panel { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.2); }
+        .magic-btn { transition: all 0.2s; }
+        .magic-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(167, 139, 250, 0.5); }
+        .magic-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- 題庫定義 (每關 12 題) ---
+        const ALL_QUESTIONS = {
+            level1: [
+                { id: '1-1', q: "下午 3 時是 24 時制的幾時？", options: ["15時", "3時", "13時", "17時"], ans: "15時", hint: "下午的時間換成24時制，要加上12喔！" },
+                { id: '1-2', q: "24 時制的 18:00 是下午幾時？", options: ["下午 6 時", "下午 8 時", "下午 4 時", "晚上 10 時"], ans: "下午 6 時", hint: "超過12的數字，減去12就是下午的時間了。" },
+                { id: '1-3', q: "上午 8 時，用 24 時制怎麼表示？", options: ["08:00", "20:00", "18:00", "00:08"], ans: "08:00", hint: "上午的時間在24時制裡數字不用改變喔！" },
+                { id: '1-4', q: "24 時制的 21:00 是晚上幾時？", options: ["晚上 9 時", "晚上 11 時", "晚上 7 時", "晚上 8 時"], ans: "晚上 9 時", hint: "21 減去 12 等於多少呢？" },
+                { id: '1-5', q: "晚上 11 時是 24 時制的幾時？", options: ["23:00", "11:00", "21:00", "22:00"], ans: "23:00", hint: "晚上11時是下午，所以 11 + 12 = ?" },
+                { id: '1-6', q: "24 時制的 14:00 是下午幾時？", options: ["下午 2 時", "下午 4 時", "下午 1 時", "下午 3 時"], ans: "下午 2 時", hint: "14 - 12 = ?" },
+                { id: '1-7', q: "上午 10 時是 24 時制的幾時？", options: ["10:00", "22:00", "00:10", "12:00"], ans: "10:00", hint: "上午的時間直接寫數字，不用加12。" },
+                { id: '1-8', q: "24 時制的 16:00 是下午幾時？", options: ["下午 4 時", "下午 6 時", "下午 5 時", "下午 2 時"], ans: "下午 4 時", hint: "16 減去 12 是多少呢？" },
+                { id: '1-9', q: "下午 1 時是 24 時制的幾時？", options: ["13:00", "01:00", "15:00", "11:00"], ans: "13:00", hint: "下午1時，1 + 12 = ?" },
+                { id: '1-10', q: "24 時制的 20:00 是晚上幾時？", options: ["晚上 8 時", "晚上 10 時", "晚上 6 時", "晚上 9 時"], ans: "晚上 8 時", hint: "20 - 12 = ?" },
+                { id: '1-11', q: "清晨 5 時是 24 時制的幾時？", options: ["05:00", "15:00", "17:00", "07:00"], ans: "05:00", hint: "清晨就是上午，數字不用改變喔！" },
+                { id: '1-12', q: "24 時制的 17:00 是下午幾時？", options: ["下午 5 時", "下午 7 時", "下午 4 時", "下午 3 時"], ans: "下午 5 時", hint: "17 - 12 = ?" }
+            ],
+            level2: [
+                { id: '2-1', q: "3 小時 27 分鐘等於幾分鐘？", options: ["207分鐘", "180分鐘", "227分鐘", "327分鐘"], ans: "207分鐘", hint: "1小時=60分。先算 60×3=180，再把 180+27。" },
+                { id: '2-2', q: "2 分鐘 15 秒鐘等於幾秒鐘？", options: ["135秒鐘", "120秒鐘", "215秒鐘", "150秒鐘"], ans: "135秒鐘", hint: "1分鐘=60秒。先算 60×2=120，再把 120+15。" },
+                { id: '2-3', q: "120 分鐘等於幾小時？", options: ["2小時", "1小時", "3小時", "4小時"], ans: "2小時", hint: "60分鐘是1小時，120裡面有幾個60呢？" },
+                { id: '2-4', q: "1 小時 15 分鐘等於幾分鐘？", options: ["75分鐘", "115分鐘", "65分鐘", "85分鐘"], ans: "75分鐘", hint: "1小時是60分鐘，60 + 15 = ?" },
+                { id: '2-5', q: "180 秒鐘等於幾分鐘？", options: ["3分鐘", "2分鐘", "4分鐘", "18分鐘"], ans: "3分鐘", hint: "60秒是1分鐘，180裡面有幾個60？(60×3=180)" },
+                { id: '2-6', q: "90 分鐘可以換成幾小時幾分鐘？", options: ["1小時30分鐘", "1小時10分鐘", "1小時50分鐘", "2小時"], ans: "1小時30分鐘", hint: "90減去60(1小時)，還剩下多少分鐘？" },
+                { id: '2-7', q: "2 小時 5 分鐘等於幾分鐘？", options: ["125分鐘", "205分鐘", "120分鐘", "65分鐘"], ans: "125分鐘", hint: "先算 60×2=120，然後 120+5。" },
+                { id: '2-8', q: "75 秒鐘可以換成幾分鐘幾秒鐘？", options: ["1分鐘15秒鐘", "1分鐘5秒鐘", "1分鐘25秒鐘", "2分鐘"], ans: "1分鐘15秒鐘", hint: "75減去60(1分鐘)，還剩下幾秒鐘？" },
+                { id: '2-9', q: "3 分鐘等於幾秒鐘？", options: ["180秒鐘", "120秒鐘", "90秒鐘", "300秒鐘"], ans: "180秒鐘", hint: "1分鐘=60秒，60 × 3 = ?" },
+                { id: '2-10', q: "4 分鐘 10 秒鐘等於幾秒鐘？", options: ["250秒鐘", "410秒鐘", "240秒鐘", "260秒鐘"], ans: "250秒鐘", hint: "先算 60×4=240，然後 240+10。" },
+                { id: '2-11', q: "100 分鐘可以換成幾小時幾分鐘？", options: ["1小時40分鐘", "1小時20分鐘", "2小時", "1小時50分鐘"], ans: "1小時40分鐘", hint: "100減去60(1小時)，剩下多少分鐘？" },
+                { id: '2-12', q: "240 分鐘等於幾小時？", options: ["4小時", "3小時", "5小時", "2小時"], ans: "4小時", hint: "60 × 4 = 240，所以是幾小時？" }
+            ],
+            level3: [
+                { id: '3-1', q: "3時 25分 + 1時 6分 = ?", options: ["4時 31分", "4時 25分", "3時 31分", "4時 30分"], ans: "4時 31分", hint: "時加時(3+1)，分加分(25+6)。" },
+                { id: '3-2', q: "3時 40分 - 2時 15分 = ?", options: ["1時 25分", "1時 15分", "2時 25分", "5時 55分"], ans: "1時 25分", hint: "時減時(3-2)，分減分(40-15)。" },
+                { id: '3-3', q: "2時 10分 + 1時 40分 = ?", options: ["3時 50分", "3時 40分", "2時 50分", "4時"], ans: "3時 50分", hint: "時加時(2+1)，分加分(10+40)。" },
+                { id: '3-4', q: "4時 50分 - 1時 20分 = ?", options: ["3時 30分", "3時 20分", "2時 30分", "5時 30分"], ans: "3時 30分", hint: "時減時(4-1)，分減分(50-20)。" },
+                { id: '3-5', q: "1時 45分 + 30分 = ?", options: ["2時 15分", "1時 75分", "2時 5分", "2時 25分"], ans: "2時 15分", hint: "45+30=75分，75分要換成1小時又15分喔！" },
+                { id: '3-6', q: "2時 30分 - 40分 = ?", options: ["1時 50分", "2時 10分", "1時 40分", "2時 50分"], ans: "1時 50分", hint: "30分不夠減40分，要跟2時借1小時(60分)來減。 (60+30)-40=?" },
+                { id: '3-7', q: "5時 15分 + 2時 20分 = ?", options: ["7時 35分", "7時 45分", "6時 35分", "8時"], ans: "7時 35分", hint: "時加時(5+2)，分加分(15+20)。" },
+                { id: '3-8', q: "6時 55分 - 3時 15分 = ?", options: ["3時 40分", "3時 30分", "2時 40分", "4時 40分"], ans: "3時 40分", hint: "時減時(6-3)，分減分(55-15)。" },
+                { id: '3-9', q: "2時 50分 + 1時 20分 = ?", options: ["4時 10分", "3時 70分", "4時 20分", "3時 10分"], ans: "4時 10分", hint: "50+20=70分，70分滿60了，要進位成1小時又10分喔！" },
+                { id: '3-10', q: "4時 10分 - 1時 30分 = ?", options: ["2時 40分", "3時 40分", "2時 20分", "3時 20分"], ans: "2時 40分", hint: "10分不夠減30分，跟4時借1小時(60分)。 (60+10)-30=?" },
+                { id: '3-11', q: "1時 20分 + 2時 40分 = ?", options: ["4時 0分", "3時 60分", "4時 10分", "3時 40分"], ans: "4時 0分", hint: "20+40=60分，剛好進位變成1小時，所以是 1+2+1 = 4時。" },
+                { id: '3-12', q: "5時 0分 - 2時 25分 = ?", options: ["2時 35分", "3時 35分", "2時 25分", "3時 25分"], ans: "2時 35分", hint: "0分不夠減25分，跟5時借1小時(60分)。 60 - 25 = ?" }
+            ]
+        };
+
+        // --- SVG Icons ---
+        const Icons = {
+            Wand: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8l1.4 1.4"/><path d="M17.8 6.2l1.4-1.4"/><path d="M12.2 6.2l-1.4-1.4"/><path d="M12.2 11.8l-1.4 1.4"/><path d="M2.5 21.5l14-14"/></svg>,
+            Hourglass: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>,
+            Book: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>,
+            Star: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        };
+
+        const App = () => {
+            const [gameState, setGameState] = useState('start'); // start, playing, end
+            const [currentLevel, setCurrentLevel] = useState(1);
+            const [score, setScore] = useState(0);
+            
+            // 遊戲進度狀態
+            const [questions, setQuestions] = useState([]);
+            const [qIndex, setQIndex] = useState(0);
+            
+            // 防瞎猜機制狀態
+            const [mistakes, setMistakes] = useState(0);
+            const [disabledOptions, setDisabledOptions] = useState([]);
+            const [showHint, setShowHint] = useState(false);
+            
+            // 防連點鎖定
+            const isProcessingRef = useRef(false);
+            
+            // 題庫記憶區 (直到抽完才洗牌)
+            const poolsRef = useRef({
+                level1: [],
+                level2: [],
+                level3: []
+            });
+
+            const shuffleArray = (array) => [...array].sort(() => Math.random() - 0.5);
+
+            const startLevel = (levelNum) => {
+                const levelKey = `level${levelNum}`;
+                
+                // 如果題庫不夠 4 題，重新從總題庫補充並洗牌
+                if (poolsRef.current[levelKey].length < 4) {
+                    poolsRef.current[levelKey] = shuffleArray(ALL_QUESTIONS[levelKey]);
+                }
+                
+                // 抽出 4 題
+                const selectedQs = poolsRef.current[levelKey].splice(0, 4);
+                
+                // 將這 4 題的選項也洗牌
+                const formattedQs = selectedQs.map(q => ({
+                    ...q,
+                    options: shuffleArray(q.options)
+                }));
+
+                setCurrentLevel(levelNum);
+                setQuestions(formattedQs);
+                setQIndex(0);
+                setMistakes(0);
+                setDisabledOptions([]);
+                setShowHint(false);
+                setGameState('playing');
+                isProcessingRef.current = false;
+            };
+
+            const startGame = () => {
+                setScore(0);
+                startLevel(1);
+            };
+
+            const handleAnswer = (opt) => {
+                if (isProcessingRef.current) return;
+                
+                const currentQ = questions[qIndex];
+                
+                if (opt === currentQ.ans) {
+                    // 答對了
+                    isProcessingRef.current = true;
+                    
+                    // 計算分數: 0錯=20分, 1錯=10分, 2錯=5分, 3錯=0分
+                    let pts = 20;
+                    if (mistakes === 1) pts = 10;
+                    if (mistakes === 2) pts = 5;
+                    if (mistakes >= 3) pts = 0;
+                    
+                    setScore(prev => prev + pts);
+                    
+                    // 視覺回饋 (答對按鈕變綠色) - 透過鎖定所有非正確選項並標示正確選項達成
+                    setDisabledOptions(currentQ.options.filter(o => o !== currentQ.ans));
+
+                    setTimeout(() => {
+                        if (qIndex < 3) {
+                            // 下一題
+                            setQIndex(prev => prev + 1);
+                            setMistakes(0);
+                            setDisabledOptions([]);
+                            setShowHint(false);
+                            isProcessingRef.current = false;
+                        } else {
+                            // 關卡結束，判斷是否進入下一關
+                            if (currentLevel < 3) {
+                                startLevel(currentLevel + 1);
+                            } else {
+                                setGameState('end');
+                            }
+                        }
+                    }, 1500);
+
+                } else {
+                    // 答錯了
+                    setMistakes(prev => prev + 1);
+                    setDisabledOptions(prev => [...prev, opt]);
+                    setShowHint(true); // 第一次答錯強制顯示提示
+                    // 不鎖定 processing，讓學生可以繼續選
+                }
+            };
+
+            if (gameState === 'start') {
+                return (
+                    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-indigo-900 via-purple-900 to-black">
+                        <div className="glass-panel p-10 max-w-lg w-full text-center fade-in">
+                            <div className="flex justify-center mb-6 text-yellow-400">
+                                <Icons.Wand />
+                            </div>
+                            <h1 className="text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-600">
+                                時光魔法使的試煉
+                            </h1>
+                            <p className="text-lg mb-8 text-gray-300">
+                                歡迎來到魔法學院！三年級的見習生，<br/>請利用你學到的「時間魔法」破解三道關卡。
+                            </p>
+                            <div className="text-left bg-black/30 p-4 rounded-lg mb-8 text-sm text-gray-300">
+                                <p className="font-bold text-white mb-2">📜 魔法規則：</p>
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>共 3 個關卡，每關 4 題。</li>
+                                    <li>一次答對獲得 <span className="text-green-400 font-bold">20分</span>！</li>
+                                    <li>答錯會開啟提示，分數降為 10分 ➔ 5分 ➔ 0分。</li>
+                                    <li>慢慢算，魔法世界沒有時間限制！</li>
+                                </ul>
+                            </div>
+                            <button onClick={startGame} className="w-full py-4 rounded-xl font-bold text-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 magic-btn shadow-lg">
+                                開始魔法試煉
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'end') {
+                return (
+                    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-indigo-900 via-purple-900 to-black">
+                        <div className="glass-panel p-10 max-w-lg w-full text-center fade-in">
+                            <div className="flex justify-center mb-6 text-yellow-400">
+                                <Icons.Star />
+                            </div>
+                            <h1 className="text-4xl font-bold mb-4 text-white">試煉完成！</h1>
+                            <p className="text-2xl mb-2 text-gray-300">你的魔力積分：</p>
+                            <p className="text-6xl font-black text-yellow-400 mb-8">{score}</p>
+                            {score >= 200 ? (
+                                <p className="text-green-400 font-bold mb-8">太厲害了！你已經是首席大魔法使！</p>
+                            ) : score >= 150 ? (
+                                <p className="text-blue-400 font-bold mb-8">做得很棒！合格的魔法使！</p>
+                            ) : (
+                                <p className="text-purple-400 font-bold mb-8">魔法還不夠熟練，請再挑戰一次吧！</p>
+                            )}
+                            <button onClick={startGame} className="w-full py-4 rounded-xl font-bold text-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 magic-btn">
+                                重新挑戰
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Playing State
+            const currentQ = questions[qIndex];
+            const levelTitles = ["第一關：破譯時光石碑 (12/24時制)", "第二關：鍊金術的等價交換 (時間換算)", "第三關：修復時空裂縫 (時間加減)"];
+
+            return (
+                <div className="min-h-screen p-4 md:p-8 bg-gradient-to-br from-indigo-900 via-purple-900 to-black flex flex-col items-center">
+                    {/* Header */}
+                    <div className="w-full max-w-3xl flex justify-between items-center mb-8 glass-panel p-4">
+                        <div className="flex items-center gap-2 text-purple-300 font-bold">
+                            <Icons.Book /> {levelTitles[currentLevel - 1]}
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="text-gray-300">題目: {qIndex + 1}/4</div>
+                            <div className="text-xl font-black text-yellow-400 flex items-center gap-1">
+                                <Icons.Star /> {score}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Question Area */}
+                    <div className="w-full max-w-3xl glass-panel p-8 mb-8 fade-in relative">
+                        {/* 答對時顯示的遮罩與綠色外框會透過選項顏色呈現 */}
+                        <h2 className="text-3xl md:text-4xl font-bold text-center leading-relaxed mb-8">
+                            {currentQ.q}
+                        </h2>
+
+                        {/* Hint Area (強制開啟機制) */}
+                        {showHint && (
+                            <div className="mb-6 p-4 bg-yellow-900/50 border border-yellow-600 rounded-lg text-yellow-200 fade-in flex items-start gap-3">
+                                <span>💡</span>
+                                <div>
+                                    <span className="font-bold">魔法提示：</span>{currentQ.hint}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Options */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {currentQ.options.map((opt, idx) => {
+                                const isWrongAndDisabled = disabledOptions.includes(opt) && opt !== currentQ.ans;
+                                const isCorrectAndLocked = disabledOptions.length > 0 && opt === currentQ.ans && isProcessingRef.current;
+                                
+                                let btnClass = "py-6 px-4 rounded-xl text-2xl font-bold magic-btn border-2 ";
+                                if (isWrongAndDisabled) {
+                                    btnClass += "bg-red-900/50 border-red-700 text-gray-400";
+                                } else if (isCorrectAndLocked) {
+                                    btnClass += "bg-green-600 border-green-400 text-white shadow-[0_0_20px_rgba(74,222,128,0.5)]";
+                                } else {
+                                    btnClass += "bg-indigo-800/80 border-indigo-500 hover:bg-indigo-700 text-white";
+                                }
+
+                                return (
+                                    <button 
+                                        key={idx}
+                                        onClick={() => handleAnswer(opt)}
+                                        disabled={isWrongAndDisabled || (isProcessingRef.current && !isCorrectAndLocked)}
+                                        className={btnClass}
+                                    >
+                                        {opt}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        
+                        {/* 剩餘分數指示器 */}
+                        <div className="mt-6 text-center text-sm text-gray-400">
+                            本題剩餘可得積分：
+                            <span className={`font-bold ml-2 ${mistakes === 0 ? 'text-green-400' : mistakes === 1 ? 'text-yellow-400' : 'text-red-400'}`}>
+                                {mistakes === 0 ? 20 : mistakes === 1 ? 10 : mistakes === 2 ? 5 : 0} 分
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

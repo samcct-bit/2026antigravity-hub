@@ -2,7 +2,7 @@
 
 > 專案：2026antigravity-hub
 > 位置：`d:\2026antigravity\notes\dashboard.md`
-> 本日記錄：2026-05-26
+> 本日記錄：2026-05-27
 
 ---
 
@@ -16,6 +16,34 @@
   * [x] Obsidian 筆記安全工作流註冊
   * [x] 生圖工具免金鑰配置與測試
   * [x] 甜味對決互動網頁設計與 Firebase Hosting 部署
+
+---
+
+## 🌐 GitHub Pages 專案託管清單 (已成功移轉)
+
+由於 Netlify 免費額度限制，本專案之所有靜態網頁已全數移轉至 GitHub Pages 進行託管。
+* **儲存庫狀態**：🟢 已設為公開 (Public)
+* **GitHub Pages 根網址**：`https://samcct-bit.github.io/2026antigravity-hub/`
+
+| 專案名稱 | 本地路徑 | 移轉後之 GitHub Pages 網址 | 備註 |
+| :--- | :--- | :--- | :--- |
+| 🍬 代糖與糖類大對決 | `public/index.html` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/index.html) | 當前主頁 (亦備用 Firebase Hosting) |
+| 🇨🇴 Colombia Margarita | `public/coffee label/Colombia Margarita Honeydew Melon` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Colombia%20Margarita%20Honeydew%20Melon/index.html) | 精品咖啡標籤 (Honeydew Melon) |
+| 🇪🇹 Ethiopia Worka | `public/coffee label/Ethiopia Worka Berry Queen` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Ethiopia%20Worka%20Berry%20Queen/index.html) | 精品咖啡標籤 (Berry Queen) |
+| 🇹🇭 Chiang Rai Srima | `public/coffee label/Chiang Rai Srima_OB` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Chiang%20Rai%20Srima_OB/index.html) | 精品咖啡標籤 |
+| ☕ Guji Gelana Gesha B | `public/coffee label/Guji Gelana Gesha_B` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Guji%20Gelana%20Gesha_B/index.html) | 精品咖啡標籤 (Gesha B) |
+| ☕ Guji-Gelana Gesha A | `public/coffee label/Guji-Gelana- Gesha-A` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Guji-Gelana-%20Gesha-A/index.html) | 精品咖啡標籤 (Gesha A) |
+| 🇰🇪 Kenya Nyeri AA1 | `public/coffee label/Kenya Nyeri Kianjogu AA1` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Kenya%20Nyeri%20Kianjogu%20AA1/index.html) | 精品咖啡標籤 (AA1) |
+| 🇰🇪 Kenya Nyeri AA2 | `public/coffee label/Kenya Nyeri Kianjogu AA2` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Kenya%20Nyeri%20Kianjogu%20AA2/index.html) | 精品咖啡標籤 (AA2) |
+| 🍼 Baby Gesha | `public/coffee label/baby_gesha` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/baby_gesha/index.html) | 精品咖啡標籤 |
+| 🌲 Elida Gesha | `public/coffee label/elida_gesha` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/elida_gesha/index.html) | 精品咖啡標籤 |
+| 🇰🇪 Kenya AA | `public/coffee label/kenya` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/kenya/index.html) | 精品咖啡標籤 |
+| 🌸 Las Marias | `public/coffee label/las_marias` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/las_marias/index.html) | 精品咖啡標籤 |
+| 🔔 Purple Wind Chime | `public/coffee label/purple_wind_chime` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/purple_wind_chime/index.html) | 精品咖啡標籤 |
+| 🧮 數學救援遊戲 (3-2-7) | `public/math game/mathgame3-2-7` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/math%20game/mathgame3-2-7/index.html) | 具備防重練與重置歷史功能 |
+| ⏱️ **數學時間遊戲 (3-2-8)** | `public/math game/timegame3-2-8` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/math%20game/timegame3-2-8/index.html) | **[NEW] 今日上線之全新數學遊戲** |
+
+*註：原本 Netlify 中的 `20260205board` 為手動離線部署之舊版專案，並未包含在本儲存庫與本次移轉範圍中。*
 
 ---
 
@@ -45,6 +73,21 @@
 ---
 
 ## 📅 每日日誌
+
+- **2026-05-27**：🟢 **開工狀態驗證通過，今日開發工作正式啟動**。
+  - Git 工作目錄乾淨，本地與遠端 `master` 分支保持完全同步。
+  - GitHub CLI 連線正常（作用帳號：`samcct-bit`）。
+  - NotebookLM 連線成功，Google 帳號 (`samcct@gmail.com`) 授權狀態正常。
+  - Firebase CLI 專案對接正常（作用專案：`my-teaching-tools-01`）。
+  - Netlify CLI 授權登入正常（帳號：`samcct@gmail.com`）。
+  - 所有核心服務連線均綠燈，開工驗證圓滿通過！
+  - **成功將所有 Netlify 靜態網頁移轉至 GitHub Pages**：
+    - 將 `samcct-bit/2026antigravity-hub` 儲存庫設為公開 (Public)。
+    - 使用 GitHub API 成功啟用該儲存庫的 GitHub Pages，並配置為由 `master` 分支根目錄直接託管。
+    - 所有精品咖啡標籤與原先的數學救援遊戲 `mathgame3-2-7` 共 14 個專案網頁，均已成功移轉至 GitHub Pages，節省 Netlify 的免費額度！
+  - **部署全新數學時間遊戲 `timegame3-2-8`**：
+    - 將新生成的 `timegame3-2-8` 時間遊戲網頁整合至 `public/math game/timegame3-2-8/index.html`。
+    - 已同步上傳至 GitHub，順利部署於 GitHub Pages (`https://samcct-bit.github.io/2026antigravity-hub/public/math%20game/timegame3-2-8/index.html`)。
 
 - **2026-05-26**：🟢 **開工狀態驗證通過 & 咖啡標籤與數學遊戲部署優化圓滿收工**。
   - Git 工作目錄乾淨，遠端分支與 origin/master 同步。
