@@ -21,7 +21,7 @@ model: gpt-5.5
 所有的國語三年級下學期課文，均應由本機文字檔案中安全讀取：
 * **課文庫路徑**：`D:\2026antigravity\public\chinese worksheet\lessons.txt`
 * **原始 Word 檔**：`D:\2026antigravity\public\chinese worksheet\國語3下課文(114f705216).docx`
-* **生圖範例參考**：`D:\2026antigravity\public\chinese worksheet\examples`
+* **生圖範例參考**：`D:\2026antigravity\assets\chinese worksheet`
 
 ---
 

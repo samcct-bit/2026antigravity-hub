@@ -1,0 +1,90 @@
+# 🗺️ Anti-Gravity 工作流與專案檔案整合索引 (Workflows & Skills Index)
+
+> 專案：2026antigravity-hub  
+> 位置：[notes/workflows_index.md](file:///d:/2026antigravity/notes/workflows_index.md)  
+> 最後更新：2026-05-28
+
+為了方便您快速點選、檢視與管理這幾天建立的所有客製化工作流（Skills）、網頁、素材與工具，已為您整理了這份**點擊即開**的核心索引清單。
+
+---
+
+## 🌅 一、核心開發與工作流程 (Core Lifecycle)
+
+這套工作流規範了您的每日開工、收工以及全新專案的初始化引導。
+
+*   **工作流主要規則檔**：[ANTIGRAVITY.md](file:///d:/2026antigravity/ANTIGRAVITY.md)
+*   **專案駕駛艙 (本日日誌與進度)**：[dashboard.md](file:///d:/2026antigravity/notes/dashboard.md)
+*   **工作流自訂技能檔**：[05-workflow.md](file:///d:/2026antigravity/skills/05-workflow.md)
+*   **Obsidian 筆記流設定**：[06-obsidian.md](file:///d:/2026antigravity/skills/06-obsidian.md)
+*   **懶人包一鍵安裝入口**：[00-install-all.md](file:///d:/2026antigravity/skills/00-install-all.md) 與 [antigravity-lazy-packs.md](file:///d:/2026antigravity/skills/antigravity-lazy-packs.md)
+
+---
+
+## 🦄 二、教育自動化工作流 (Education Automation)
+
+針對國小三年級學生的學習單生成器與成績分析工具，是您行政與教學的超強助手。
+
+### 1. 國小國語心智圖學習單生成器
+*   **自訂技能檔**：[08-chinese-worksheet.md](file:///d:/2026antigravity/skills/08-chinese-worksheet.md)（內置 11 種熱門動畫主題與 Midjourney 著色圖 Prompt 生成器）
+*   **課文文字庫 (純文字)**：[lessons.txt](file:///d:/2026antigravity/public/chinese%20worksheet/lessons.txt)
+*   **課文原始 Word 檔**：[國語3下課文(114f705216).docx](file:///d:/2026antigravity/public/chinese%20worksheet/國語3下課文(114f705216).docx)
+*   **生成的心智圖範例庫**：
+    *   [L10心智圖.png](file:///d:/2026antigravity/assets/chinese%20worksheet/L10心智圖.png)
+    *   [L10心智圖2.png](file:///d:/2026antigravity/assets/chinese%20worksheet/L10心智圖2.png)
+    *   [L11心智圖.png](file:///d:/2026antigravity/assets/chinese%20worksheet/L11心智圖.png)
+
+### 2. 班級成績自動轉換與分析器 (GAS)
+*   **Google Apps Script 原始碼**：[grade_analyzer_script.js](file:///d:/2026antigravity/public/files/grade_analyzer_script.js)（直接複製貼上至試算表）
+*   **範例成績對接表**：[305studentgrade-sample.xlsx](file:///d:/2026antigravity/public/files/305studentgrade-sample.xlsx)
+
+---
+
+## ☕ 三、精品咖啡職人工作流 (Coffee Labels)
+
+自動化精品咖啡標籤生成流，並包含所有精心設計的咖啡標籤靜態網頁（已全部移轉託管於 GitHub Pages）。
+
+*   **咖啡職人自動化技能檔**：[07-coffee.md](file:///d:/2026antigravity/skills/07-coffee.md)
+*   **咖啡技能架構說明書 PDF**：[Antigravity2_Coffee_Skill_Architecture.pdf](file:///d:/2026antigravity/assets/coffee/Antigravity2_Coffee_Skill_Architecture.pdf)
+*   **本地咖啡標籤網頁清單**：
+    *   🇨🇴 Colombia Margarita：[index.html](file:///d:/2026antigravity/public/coffee%20label/Colombia%20Margarita%20Honeydew%20Melon/index.html)
+    *   🇪🇹 Ethiopia Worka：[index.html](file:///d:/2026antigravity/public/coffee%20label/Ethiopia%20Worka%20Berry%20Queen/index.html)
+    *   🇹🇭 Chiang Rai Srima：[index.html](file:///d:/2026antigravity/public/coffee%20label/Chiang%20Rai%20Srima_OB/index.html)
+    *   ☕ Guji Gelana Gesha B：[index.html](file:///d:/2026antigravity/public/coffee%20label/Guji%20Gelana%20Gesha_B/index.html)
+    *   ☕ Guji-Gelana Gesha A：[index.html](file:///d:/2026antigravity/public/coffee%20label/Guji-Gelana-%20Gesha-A/index.html)
+    *   🇰🇪 Kenya Nyeri AA1：[index.html](file:///d:/2026antigravity/public/coffee%20label/Kenya%20Nyeri%20Kianjogu%20AA1/index.html)
+    *   🇰🇪 Kenya Nyeri AA2：[index.html](file:///d:/2026antigravity/public/coffee%20label/Kenya%20Nyeri%20Kianjogu%20AA2/index.html)
+    *   🍼 Baby Gesha：[index.html](file:///d:/2026antigravity/public/coffee%20label/baby_gesha/index.html)
+    *   🌲 Elida Gesha：[index.html](file:///d:/2026antigravity/public/coffee%20label/elida_gesha/index.html)
+    *   🇰🇪 Kenya AA：[index.html](file:///d:/2026antigravity/public/coffee%20label/kenya/index.html)
+    *   🌸 Las Marias：[index.html](file:///d:/2026antigravity/public/coffee%20label/las_marias/index.html)
+    *   🔔 Purple Wind Chime：[index.html](file:///d:/2026antigravity/public/coffee%20label/purple_wind_chime/index.html)
+
+---
+
+## 🎮 四、互動網頁與數學遊戲 (Websites & Games)
+
+這幾天設計的高質感擬物玻璃態展示網頁與支援 localStorage 防重複練習的互動式數學救援遊戲。
+
+### 1. 甜味藥劑學：代糖與糖類大對決
+*   **網頁主頁**：[index.html](file:///d:/2026antigravity/public/index.html)
+*   **樣式表**：[index.css](file:///d:/2026antigravity/public/index.css)
+*   **高畫質對比圖表**：
+    *   橫式圖表：[sugar_infographic_landscape.png](file:///d:/2026antigravity/assets/sugar_infographic_landscape.png)
+    *   直式/完工圖表：[sugar_infographic_completed.png](file:///d:/2026antigravity/assets/sugar_infographic_completed.png)
+
+### 2. 互動式數學小遊戲
+*   🧮 **數學救援遊戲 (3-2-7)**：[index.html](file:///d:/2026antigravity/public/math%20game/mathgame3-2-7/index.html)（含進度重置）
+*   ⏱️ **數學時間遊戲 (3-2-8)**：[index.html](file:///d:/2026antigravity/public/math%20game/timegame3-2-8/index.html)（時間觀念練習）
+
+---
+
+## 🔌 五、外部服務連線技能 (Service Integration)
+
+*   **NotebookLM 連接與登入**：[01-notebooklm.md](file:///d:/2026antigravity/skills/01-notebooklm.md)
+*   **GitHub 連線與設定**：[02-github.md](file:///d:/2026antigravity/skills/02-github.md)
+*   **Firebase 連線與 Hosting 部署**：[03-firebase.md](file:///d:/2026antigravity/skills/03-firebase.md)
+*   **生圖指引規範**：[04-draw.md](file:///d:/2026antigravity/skills/04-draw.md)
+
+---
+
+💡 *提示：本索引已採用標準 `file:///` 格式連結。若您在支援的編輯器（如 Obsidian 或 VS Code）中開啟 [workflows_index.md](file:///d:/2026antigravity/notes/workflows_index.md)，可以直接點擊鏈接，系統會自動在您的本機開啟該檔案或資料夾！*
