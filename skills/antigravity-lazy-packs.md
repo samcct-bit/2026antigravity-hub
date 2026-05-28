@@ -18,6 +18,7 @@ description: AntiGravity 懶人包 — 服務連接與工作流程設定。說�
 | 05 | `05-workflow` | 開工 / 收工 / 新專案初始化 |
 | 06 | `06-obsidian` | Obsidian 筆記工作流（免 MCPVault） |
 | 07 | `07-coffee` | 咖啡職人自動化工作流 |
+| 08 | `08-chinese-worksheet` | 國小國語心智圖學習單生成器 |
 | 00 | `00-install-all` | 一次安裝全部 |
 
 ## 步驟二：讓使用者選擇

@@ -14,3 +14,5 @@ description: 一次安裝所有 AntiGravity 懶人包技能。說「全部安裝
 5. **05-workflow** — 開工 / 收工 / 新專案初始化
 6. **06-obsidian** — Obsidian 筆記工作流（免 MCPVault）
 7. **07-coffee** — 咖啡職人自動化工作流
+8. **08-chinese-worksheet** — 國小國語心智圖學習單生成器
+
