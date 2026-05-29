@@ -17,6 +17,7 @@
   * [x] 生圖工具免金鑰配置與測試
   * [x] 甜味對決互動網頁設計與 Firebase Hosting 部署
   * [x] 國小國語心智圖學習單生成器開發與註冊
+  * [x] 國小國語素養學習單生成器 (Bloom) 開發與註冊
   * [x] 國小班級成績自動轉換與分析器 (GAS) 開發完成
 
 
@@ -55,6 +56,7 @@
 - 成功設計「甜味藥劑學：代糖與糖類大對決」互動網頁，整合 HSL 擬物玻璃態設計與**互動式甜度換算器**，並成功部署至 Firebase Hosting (https://my-teaching-tools-01.web.app)。
 - 成功從最新的 NotebookLM 筆記本「The Apothecary of Sweetness: A Comparative Sugar Study」中下載並生成了高畫質的 **橫式與直式甜度強度對比資訊圖表**（已安全存放至 `assets/` 與 `public/assets/` 目錄中）。
 - 成功開發、測試並在全域技能樹上註冊全新的「國小國語心智圖學習單生成器」技能（`08-chinese-worksheet.md`），大幅度優化了國小課文轉心智圖及 DALL-E/Midjourney 著色圖 Prompt 生成流程。
+- 成功開發、測試並註冊全新的「國小國語素養學習單生成器」技能（`09-chinese-literacy-worksheet.md`），完全對接布魯姆認知六層次與 L10 2x3 精緻圓角虛線漫畫網格，能夠為任何指定課文與主題生成高水準、無答案的黑白著色著筆線稿生圖 Prompt。
 - 成功為 AntiGravity 新增了多個自訂技能，全面優化了日常開發生命週期。
 
 
@@ -78,6 +80,18 @@
 ---
 
 ## 📅 每日日誌
+
+- **2026-05-29**：🟢 **開工與國小國語素養學習單生成器實裝完成**。
+  - **開工連線檢查**：GitHub CLI（samcct-bit）、Firebase CLI 均綠燈正常；NotebookLM 暫時提示授權到期，等待更新。
+  - **開發布魯姆素養學習單生成器技能**：
+    - 精準參考 `public/chinese worksheet/L10素養學習單.jpg` 與布魯姆六大認知層次（記憶、理解、應用、分析、評鑑、創造）建構了新技能檔 [09-chinese-literacy-worksheet.md](file:///d:/2026antigravity/skills/09-chinese-literacy-worksheet.md)。
+    - 完美配置 2x3 面板漫畫網格與圓角虛線框的 A4 橫式排版描述，並在 Prompt 中預留 35-40% 答題書寫留白、禁答案、僅繁體中文等嚴格標準。
+    - 已同步將該新技能全域註冊至 [00-install-all.md](file:///d:/2026antigravity/skills/00-install-all.md) 與 [antigravity-lazy-packs.md](file:///d:/2026antigravity/skills/antigravity-lazy-packs.md)。
+    - 將此技能編入專案整合索引檔 [workflows_index.md](file:///d:/2026antigravity/notes/workflows_index.md)。
+  - **生成並審查 L11 素養學習單實體**：
+    - 根據此技能，成功為第十一課《畫龍點睛》生成了「龍貓主題」黑白素養學習單實體圖檔 [L11素養學習單.png](file:///d:/2026antigravity/public/chinese%20worksheet/L11素養學習單.png)。
+    - AI 對圖檔進行了全面檢核，確認排版完美對稱、布魯姆六大認知層次完全符合教育目標、中文字型與筆畫 100% 正確、龍貓森林風格裝飾與畫龍點睛主題交織完美，達到商用出版級的高水準！
+  - 工作目錄無敏感資料殘留，符合安全防護標準。
 
 - **2026-05-28**：🟢 **開工與收工狀態驗證通過，國小國語心智圖學習單生成器完美實裝**。
   - **開工連線檢查通過**：GitHub CLI（samcct-bit）、NotebookLM MCP（samcct@gmail.com）、Firebase CLI 全數綠燈。

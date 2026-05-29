@@ -33,7 +33,13 @@
     *   [L10心智圖2.png](file:///d:/2026antigravity/assets/chinese%20worksheet/L10心智圖2.png)
     *   [L11心智圖.png](file:///d:/2026antigravity/assets/chinese%20worksheet/L11心智圖.png)
 
-### 2. 班級成績自動轉換與分析器 (GAS)
+### 2. 國小國語素養學習單生成器
+*   **自訂技能檔**：[09-chinese-literacy-worksheet.md](file:///d:/2026antigravity/skills/09-chinese-literacy-worksheet.md)（基於布魯姆認知六層次與 L10 2x3 網格漫畫結構）
+*   **版面格式範本圖像**：[L10素養學習單.jpg](file:///d:/2026antigravity/public/chinese%20worksheet/L10素養學習單.jpg)
+*   **生成的素養學習單範例庫**：
+    *   [L11素養學習單.png](file:///d:/2026antigravity/public/chinese%20worksheet/L11素養學習單.png)（龍貓森林風格實體圖檔）
+
+### 3. 班級成績自動轉換與分析器 (GAS)
 *   **Google Apps Script 原始碼**：[grade_analyzer_script.js](file:///d:/2026antigravity/public/files/grade_analyzer_script.js)（直接複製貼上至試算表）
 *   **範例成績對接表**：[305studentgrade-sample.xlsx](file:///d:/2026antigravity/public/files/305studentgrade-sample.xlsx)
 
