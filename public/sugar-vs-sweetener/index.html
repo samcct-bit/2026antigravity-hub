@@ -542,14 +542,14 @@
     serverTimestamp, query, orderBy, doc, setDoc
   } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
-  // 1. 共用 Firebase 配置（示範專案）
+  // 1. 本地實體 Firebase 配置（使用您專屬的 my-teaching-tools-01 專案，安全、穩定且無期限限制）
   const firebaseConfig = {
-    apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
-    authDomain: "teacherstudy-109ef.firebaseapp.com",
-    projectId: "teacherstudy-109ef",
-    storageBucket: "teacherstudy-109ef.firebasestorage.app",
-    messagingSenderId: "196599230156",
-    appId: "1:196599230156:web:cfe55d364df3ae1b9d5c69"
+    apiKey: "AIzaSyC48oAqalT77SPpYVtCupYfV5hd6_ZrD2I",
+    authDomain: "my-teaching-tools-01.firebaseapp.com",
+    projectId: "my-teaching-tools-01",
+    storageBucket: "my-teaching-tools-01.firebasestorage.app",
+    messagingSenderId: "552535919921",
+    appId: "1:552535919921:web:95b4c1288edbae9572b410"
   };
   const app = initializeApp(firebaseConfig);
   const fdb = getFirestore(app);
