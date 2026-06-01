@@ -723,7 +723,23 @@
   if (fdb) {
     onSnapshot(pollRef, snap => {
       const data = snap.data() || {};
-      const votes = data.votes || {};
+      
+      // 雙格式相容解析（同時支援舊版點狀字串欄位與新版 nested map，確保歷史數據與不同快取版本完全相容）
+      const votes = {};
+      
+      // 1. 讀取新格式 (nested map)
+      if (data.votes && typeof data.votes === 'object') {
+        Object.assign(votes, data.votes);
+      }
+      
+      // 2. 讀取舊格式 (flat "votes.user_xxxx" fields)
+      Object.entries(data).forEach(([key, val]) => {
+        if (key.startsWith('votes.') && typeof val === 'string') {
+          const uId = key.substring(6); // 移除 "votes." 前綴
+          votes[uId] = val;
+        }
+      });
+
       const counts = {};
       OPTIONS.forEach(o => counts[o.id] = 0);
       Object.values(votes).forEach(v => { if (counts[v] !== undefined) counts[v]++; });
