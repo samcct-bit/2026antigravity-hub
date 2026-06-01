@@ -22,6 +22,9 @@
   * [x] Clasp 本地開發引擎安裝與安全排除配置
   * [x] Clasp MCP 與 Netlify MCP 服務全域註冊
   * [x] Clasp & Netlify 雙向閉環部署工作流自訂技能開發與全域註冊
+  * [x] HTML 互動簡報生成器 (Reveal.js) 本地儲存庫克隆與 Python 依賴 Pillow 實裝
+  * [x] HTML 互動簡報生成技能的 AntiGravity 適配（免金鑰內建生圖）與全域技能註冊
+
 
 
 ---
@@ -84,12 +87,16 @@
 
 ## 📅 每日日誌
 
-- **2026-06-01**：🟢 **Clasp 與 Netlify MCP 雙向閉環部署系統全套安裝與配置完成**。
+- **2026-06-01**：🟢 **雙向閉環部署系統 & HTML 互動簡報生成器全套實裝與配置完成**。
   - **開工連線檢查通過**：GitHub CLI（samcct-bit）、NotebookLM MCP（samcct@gmail.com）、Firebase CLI 全數健康綠燈。
   - **讀取並分析 clasp-netlify-mcp-guide**：深入解析 Clasp 和 Netlify MCP 結合的部署原則、檔案準備與踩坑指南，並據此為使用者提供互動式安裝選擇。
   - **實裝 Clasp 本地開發依賴**：在本地初始化 `package.json` 並安全配置 `.gitignore`，完成本地安裝 `@google/clasp` 依賴（驗證版本：`3.3.0`），同時徹底排除認證與快取檔以維護隱私。
   - **註冊 Anti-Gravity MCP 全域配置**：成功於 `mcp_config.json` 中配置並啟用 `clasp` 與 `netlify` 兩大本機 MCP 服務。
   - **開發專屬閉環部署技能**：撰寫全新自訂技能檔 [10-clasp-netlify-workflow.md](file:///d:/2026antigravity/skills/10-clasp-netlify-workflow.md)，並成功於 `00-install-all.md` 及 `antigravity-lazy-packs.md` 中進行全域註冊，同時將其連結編入專案整合索引檔 [workflows_index.md](file:///d:/2026antigravity/notes/workflows_index.md)。
+  - **引進並適配 HTML 互動簡報生成器 (Reveal.js)**：
+    - 成功將 `mathruffian-dot/claude-html-slide-builder` 儲存庫克隆至本機，並透過 `uv` 完成獨立 Python 虛擬環境 (`.venv`) 的 Pillow 圖形處理依賴包安裝，並排除 Git 追蹤。
+    - 適配 AntiGravity 環境特性，將技能核心整合修改為本地免金鑰之 `generate_image` 生圖流程，避免洩漏 API Key。
+    - 成功建立、註冊全新自訂技能 [11-html-slide-builder.md](file:///d:/2026antigravity/skills/11-html-slide-builder.md)，並同步更新於一鍵安裝入口、懶人包設定及專案整合索引。
   - **安全性與敏感資料排除**：檢查確認本機與 Git 目錄均不含任何明文 Token、API 鑰匙或 NotebookLM 個人檔案，符合最高隱私標準。
 
 - **2026-05-29**：🟢 **開工與國小國語素養學習單生成器實裝完成**。

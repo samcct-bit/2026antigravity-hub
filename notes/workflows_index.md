@@ -91,6 +91,11 @@
 *   **Firebase 連線與 Hosting 部署**：[03-firebase.md](file:///d:/2026antigravity/skills/03-firebase.md)
 *   **生圖指引規範**：[04-draw.md](file:///d:/2026antigravity/skills/04-draw.md)
 *   **Clasp + Netlify 閉環系統部署工作流**：[10-clasp-netlify-workflow.md](file:///d:/2026antigravity/skills/10-clasp-netlify-workflow.md)
+*   **HTML 互動簡報生成與自動部署工作流**：[11-html-slide-builder.md](file:///d:/2026antigravity/skills/11-html-slide-builder.md)
+    *   **Reveal.js 簡報 HTML/CSS 模板**：[reveal-template.md](file:///d:/2026antigravity/claude-html-slide-builder/skill/references/reveal-template.md)
+    *   **Firebase 互動代碼參考**：[firebase-config.md](file:///d:/2026antigravity/claude-html-slide-builder/skill/references/firebase-config.md)
+    *   **圖標自動裁切去背腳本**：[remove_bg.py](file:///d:/2026antigravity/claude-html-slide-builder/skill/scripts/remove_bg.py)
+
 
 ---
 

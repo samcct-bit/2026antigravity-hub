@@ -21,7 +21,9 @@ description: AntiGravity 懶人包 — 服務連接與工作流程設定。說�
 | 08 | `08-chinese-worksheet` | 國小國語心智圖學習單生成器 |
 | 09 | `09-chinese-literacy-worksheet` | 國小國語素養學習單生成器 |
 | 10 | `10-clasp-netlify-workflow` | Clasp + Netlify MCP 閉環系統工作流 |
+| 11 | `11-html-slide-builder` | HTML 互動簡報生成器 (Reveal.js) |
 | 00 | `00-install-all` | 一次安裝全部 |
+
 
 ## 步驟二：讓使用者選擇
 

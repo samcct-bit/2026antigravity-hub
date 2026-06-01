@@ -17,3 +17,4 @@ description: 一次安裝所有 AntiGravity 懶人包技能。說「全部安裝
 8. **08-chinese-worksheet** — 國小國語心智圖學習單生成器
 9. **09-chinese-literacy-worksheet** — 國小國語素養學習單生成器
 10. **10-clasp-netlify-workflow** — Clasp + Netlify MCP 閉環系統工作流
+11. **11-html-slide-builder** — HTML 互動簡報生成器 (Reveal.js)

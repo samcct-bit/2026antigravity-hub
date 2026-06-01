@@ -50,3 +50,9 @@ html_artifacts/
 # Clasp files
 .clasprc.json
 .clasp.json
+
+# Python Virtual Environment and caches
+.venv/
+__pycache__/
+*.pyc
+
