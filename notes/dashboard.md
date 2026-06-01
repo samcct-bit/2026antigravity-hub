@@ -2,14 +2,14 @@
 
 > 專案：2026antigravity-hub
 > 位置：`d:\2026antigravity\notes\dashboard.md`
-> 本日記錄：2026-05-28
+> 本日記錄：2026-06-01
 
 ---
 
 ## 🎯 專案目標與目前狀態
 
 * **核心目標**：建構安全、高效的 AntiGravity 自動化與個人開發工作流。
-* **目前狀態**：🟢 專案初始化與 Firebase 部署均已綠燈完成。
+* **目前狀態**：🟢 專案初始化、服務連接與雙向閉環系統部署配置均已綠燈完成。
   * [x] NotebookLM 整合與註冊 
   * [x] GitHub 認證連線驗證
   * [x] Firebase 專案對接與註冊
@@ -19,6 +19,9 @@
   * [x] 國小國語心智圖學習單生成器開發與註冊
   * [x] 國小國語素養學習單生成器 (Bloom) 開發與註冊
   * [x] 國小班級成績自動轉換與分析器 (GAS) 開發完成
+  * [x] Clasp 本地開發引擎安裝與安全排除配置
+  * [x] Clasp MCP 與 Netlify MCP 服務全域註冊
+  * [x] Clasp & Netlify 雙向閉環部署工作流自訂技能開發與全域註冊
 
 
 ---
@@ -80,6 +83,14 @@
 ---
 
 ## 📅 每日日誌
+
+- **2026-06-01**：🟢 **Clasp 與 Netlify MCP 雙向閉環部署系統全套安裝與配置完成**。
+  - **開工連線檢查通過**：GitHub CLI（samcct-bit）、NotebookLM MCP（samcct@gmail.com）、Firebase CLI 全數健康綠燈。
+  - **讀取並分析 clasp-netlify-mcp-guide**：深入解析 Clasp 和 Netlify MCP 結合的部署原則、檔案準備與踩坑指南，並據此為使用者提供互動式安裝選擇。
+  - **實裝 Clasp 本地開發依賴**：在本地初始化 `package.json` 並安全配置 `.gitignore`，完成本地安裝 `@google/clasp` 依賴（驗證版本：`3.3.0`），同時徹底排除認證與快取檔以維護隱私。
+  - **註冊 Anti-Gravity MCP 全域配置**：成功於 `mcp_config.json` 中配置並啟用 `clasp` 與 `netlify` 兩大本機 MCP 服務。
+  - **開發專屬閉環部署技能**：撰寫全新自訂技能檔 [10-clasp-netlify-workflow.md](file:///d:/2026antigravity/skills/10-clasp-netlify-workflow.md)，並成功於 `00-install-all.md` 及 `antigravity-lazy-packs.md` 中進行全域註冊，同時將其連結編入專案整合索引檔 [workflows_index.md](file:///d:/2026antigravity/notes/workflows_index.md)。
+  - **安全性與敏感資料排除**：檢查確認本機與 Git 目錄均不含任何明文 Token、API 鑰匙或 NotebookLM 個人檔案，符合最高隱私標準。
 
 - **2026-05-29**：🟢 **開工與國小國語素養學習單生成器實裝完成**。
   - **開工連線檢查**：GitHub CLI（samcct-bit）、Firebase CLI 均綠燈正常；NotebookLM 暫時提示授權到期，等待更新。

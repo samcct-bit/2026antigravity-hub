@@ -90,6 +90,7 @@
 *   **GitHub 連線與設定**：[02-github.md](file:///d:/2026antigravity/skills/02-github.md)
 *   **Firebase 連線與 Hosting 部署**：[03-firebase.md](file:///d:/2026antigravity/skills/03-firebase.md)
 *   **生圖指引規範**：[04-draw.md](file:///d:/2026antigravity/skills/04-draw.md)
+*   **Clasp + Netlify 閉環系統部署工作流**：[10-clasp-netlify-workflow.md](file:///d:/2026antigravity/skills/10-clasp-netlify-workflow.md)
 
 ---
 

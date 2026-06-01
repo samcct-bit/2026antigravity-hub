@@ -20,6 +20,7 @@ description: AntiGravity 懶人包 — 服務連接與工作流程設定。說�
 | 07 | `07-coffee` | 咖啡職人自動化工作流 |
 | 08 | `08-chinese-worksheet` | 國小國語心智圖學習單生成器 |
 | 09 | `09-chinese-literacy-worksheet` | 國小國語素養學習單生成器 |
+| 10 | `10-clasp-netlify-workflow` | Clasp + Netlify MCP 閉環系統工作流 |
 | 00 | `00-install-all` | 一次安裝全部 |
 
 ## 步驟二：讓使用者選擇

@@ -1,0 +1,15 @@
+{
+  "name": "2026antigravity-hub",
+  "version": "1.0.0",
+  "description": "AntiGravity 懶人包與個人工作流管理專案",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@google/clasp": "^3.3.0"
+  }
+}

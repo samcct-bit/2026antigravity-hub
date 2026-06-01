@@ -46,3 +46,7 @@ html_artifacts/
 *.tmp
 *.log
 .netlify/
+
+# Clasp files
+.clasprc.json
+.clasp.json
