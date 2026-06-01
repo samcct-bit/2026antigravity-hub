@@ -70,6 +70,7 @@
 
 ## 🚀 下一步 (TODO)
 
+- [ ] 與老師對接微調「小王子」16:9 圖片裁切細節（調整 `smart_crop_16_9.py` 掃描邊界或重新繪製 / 最佳化局部畫面）。
 - [ ] 規劃將其他科學主題筆記本的實驗圖表也整合入多頁面展示中。
 - [ ] 優化手機瀏覽器上的點擊觸控靈敏度與算式動畫。
 - [ ] 僅在規則改變時更新本機的 ANTIGRAVITY.md。
@@ -82,12 +83,16 @@
    * **解法**：在 PowerShell 工作階段開頭手動注入 `$env:PYTHONIOENCODING = "utf-8"` 即可順利執行所有命令。
 2. **Bug/問題**：`gh auth status` 會因環境中失效的 `GITHUB_TOKEN` 變數而導致報錯。
    * **解法**：在命令前使用 `$env:GITHUB_TOKEN=""` 清除暫時變數，即可順利讀取系統 Keyring 中的認證。
+3. **Bug/問題**：手繪分鏡圖四周灰色編號標籤、外框灰線殘留，且底部的對話文字區侵入插圖畫面。
+   * **解法**：實施智慧色彩邊界掃描演算法。頂部從高度 `24%` 起掃描避開編號，底部至 `70%` 止掃描避開文字區，左右限制在 `12%-88%` 寬度間，所得邊緣各向內縮進 `2px` 防護。最後在米黃底色 (`#FAF7EE`) 畫布上 contain 貼合並以 `LANCZOS` 高品質放大。
+4. **Bug/問題**：Reveal.js 音訊播放結束 (`onended`) 後，若直接切頁，部分 Edge-TTS 旁白的尾音會被突兀截斷。
+   * **解法**：在 `player.onended` 中設置 `1200ms` 的延遲緩衝 (`setTimeout`) 再進行 `Reveal.next()` 切頁，確保尾音完全釋放，大幅提升觀影流暢度。
 
 ---
 
 ## 📅 每日日誌
 
-- **2026-06-01**：🟢 **雙向閉環部署系統 & HTML 互動簡報生成器全套實裝與配置完成**。
+- **2026-06-01**：🟢 **雙向閉環部署系統 & HTML 互動簡報生成器全套實裝與配置完成，以及小王子影片 16:9 1080p 超高清智慧重製上線**。
   - **開工連線檢查通過**：GitHub CLI（samcct-bit）、NotebookLM MCP（samcct@gmail.com）、Firebase CLI 全數健康綠燈。
   - **讀取並分析 clasp-netlify-mcp-guide**：深入解析 Clasp 和 Netlify MCP 結合的部署原則、檔案準備與踩坑指南，並據此為使用者提供互動式安裝選擇。
   - **實裝 Clasp 本地開發依賴**：在本地初始化 `package.json` 並安全配置 `.gitignore`，完成本地安裝 `@google/clasp` 依賴（驗證版本：`3.3.0`），同時徹底排除認證與快取檔以維護隱私。
@@ -97,6 +102,13 @@
     - 成功將 `mathruffian-dot/claude-html-slide-builder` 儲存庫克隆至本機，並透過 `uv` 完成獨立 Python 虛擬環境 (`.venv`) 的 Pillow 圖形處理依賴包安裝，並排除 Git 追蹤。
     - 適配 AntiGravity 環境特性，將技能核心整合修改為本地免金鑰之 `generate_image` 生圖流程，避免洩漏 API Key。
     - 成功建立、註冊全新自訂技能 [11-html-slide-builder.md](file:///d:/2026antigravity/skills/11-html-slide-builder.md)，並同步更新於一鍵安裝入口、懶人包設定及專案整合索引。
+  - **小王子教學影片 16:9 1080p 超高清重製與部署**：
+    - 開發 Python 智慧色彩邊界掃描裁切腳本 `smart_crop_16_9.py`，完美清除 `storyboard_raw` 原圖中的分鏡標籤、灰線及文字對白，居中 contain 融入 16:9 米黃底色。
+    - 修改播放器 `index.html` 的 Reveal.js 配置為標準 16:9 (1920x1080)；加入 Ken Burns 微縮放效果，優化音訊 `onended` 延遲緩衝 (1200ms)。
+    - 透過 Playwright 進行網頁 1080p 高清錄影 (webm)，並調用 FFmpeg 進行旁白與畫面無損影音封裝，產出極致精美的 `little_prince_v1.mp4`！
+    - 全套專案部署至 GitHub Pages，線上預覽連結：https://samcct-bit.github.io/2026antigravity-hub/public/little-prince/index.html
+    - **更新技能與踩坑紀錄**：將智慧色彩掃描、時序與 FFmpeg 合成 Gotchas 寫入專案內 `skills/12-video-specs.md` 與全域技能庫中，順利完成部署。
+    - **收工狀態**：老師反映部分圖片裁切問題仍存在，已記錄於下一步以利明日開工後進一步對接與精細微調。
   - **安全性與敏感資料排除**：檢查確認本機與 Git 目錄均不含任何明文 Token、API 鑰匙或 NotebookLM 個人檔案，符合最高隱私標準。
 
 - **2026-05-29**：🟢 **開工與國小國語素養學習單生成器實裝完成**。
