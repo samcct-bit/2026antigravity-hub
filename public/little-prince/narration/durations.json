@@ -1,0 +1,152 @@
+{
+  "1": {
+    "text": "一望無際的沙漠中，飛行員遇見了從外太空來的小王子，他畫了一幅看起來像帽子的圖畫給小王子看。",
+    "role": "narrator",
+    "duration": 9.696,
+    "padded_duration": 11.5
+  },
+  "2": {
+    "text": "你猜我畫的是什麼？",
+    "role": "aviator",
+    "duration": 2.688,
+    "padded_duration": 4.49
+  },
+  "3": {
+    "text": "這很容易呀！你畫得很像。",
+    "role": "prince",
+    "duration": 4.224,
+    "padded_duration": 6.02
+  },
+  "4": {
+    "text": "你是不是要猜「這是一頂帽子」？很多人都這麼猜。",
+    "role": "aviator",
+    "duration": 6.432,
+    "padded_duration": 8.23
+  },
+  "5": {
+    "text": "它不是帽子！你畫的是一條吞了大象的蛇！",
+    "role": "prince",
+    "duration": 5.4,
+    "padded_duration": 7.2
+  },
+  "6": {
+    "text": "你怎麼知道？",
+    "role": "aviator",
+    "duration": 2.208,
+    "padded_duration": 4.01
+  },
+  "7": {
+    "text": "連三歲小孩都看得出來！而且……。",
+    "role": "prince",
+    "duration": 4.608,
+    "padded_duration": 6.41
+  },
+  "8": {
+    "text": "而且什麼？",
+    "role": "aviator",
+    "duration": 2.064,
+    "padded_duration": 3.86
+  },
+  "9": {
+    "text": "這條蛇不久前才吞過大鯨魚！",
+    "role": "prince",
+    "duration": 3.624,
+    "padded_duration": 5.42
+  },
+  "10": {
+    "text": "天哪！這件事連我都不知道……。",
+    "role": "aviator",
+    "duration": 4.872,
+    "padded_duration": 6.67
+  },
+  "11": {
+    "text": "我覺得你很會畫畫！能不能請你畫一隻羊給我？",
+    "role": "prince",
+    "duration": 5.856,
+    "padded_duration": 7.66
+  },
+  "12": {
+    "text": "沒問題！",
+    "role": "aviator",
+    "duration": 2.16,
+    "padded_duration": 3.96
+  },
+  "13": {
+    "text": "這隻太老了，我希望我的羊可以活得久一點。",
+    "role": "prince",
+    "duration": 4.728,
+    "padded_duration": 6.53
+  },
+  "14": {
+    "text": "好！等一下。",
+    "role": "aviator",
+    "duration": 3.696,
+    "padded_duration": 5.5
+  },
+  "15": {
+    "text": "這是已經長大的公羊，我想要一隻小羊。",
+    "role": "prince",
+    "duration": 4.512,
+    "padded_duration": 6.31
+  },
+  "16": {
+    "text": "再給我一次機會，這次保證讓你滿意！",
+    "role": "aviator",
+    "duration": 4.368,
+    "padded_duration": 6.17
+  },
+  "17": {
+    "text": "這隻羊生病了，看起來沒什麼精神，麻煩你幫我重新畫一隻活活潑潑、健健康康的小羊！",
+    "role": "prince",
+    "duration": 9.24,
+    "padded_duration": 11.04
+  },
+  "18": {
+    "text": "你的意見真多！這樣好了，我畫這個給你。",
+    "role": "aviator",
+    "duration": 5.76,
+    "padded_duration": 7.56
+  },
+  "19": {
+    "text": "我要的小羊呢？",
+    "role": "prince",
+    "duration": 2.232,
+    "padded_duration": 4.03
+  },
+  "20": {
+    "text": "這是一個寵物箱，你要的小羊就在裡面。",
+    "role": "aviator",
+    "duration": 4.752,
+    "padded_duration": 6.55
+  },
+  "21": {
+    "text": "這隻小羊太適合我了，牠正是我想要的！",
+    "role": "prince",
+    "duration": 4.536,
+    "padded_duration": 6.34
+  },
+  "22": {
+    "text": "是……是嗎？既然你喜歡，那麼這隻小羊就送給你吧！",
+    "role": "aviator",
+    "duration": 6.432,
+    "padded_duration": 8.23
+  },
+  "23": {
+    "text": "這隻小羊需要吃很多草嗎？牠是不是大胃王？我住的星球很小，草不多，不知道夠不夠讓牠吃飽？",
+    "role": "prince",
+    "duration": 11.256,
+    "padded_duration": 13.06
+  },
+  "24": {
+    "text": "放心吧！我畫給你的是一隻很小很小的小小羊，牠的食量不大。",
+    "role": "aviator",
+    "duration": 7.344,
+    "padded_duration": 9.14
+  },
+  "25": {
+    "text": "小王子：這樣我就放心了。你看，牠睡著了，還會打呼呢！真的好可愛呀！ 飛行員：我用「手」畫畫，你卻能用「心」來看畫，真是了不起！",
+    "role": "both",
+    "duration": 14.328,
+    "padded_duration": 16.83
+  }
+}

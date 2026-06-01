@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>第十課 飛行員和小王子 — 課堂教學影片</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/simple.min.css">
+  <style>
+    :root {
+      --paper: #FAF7EE;
+      --paper-dark: #F2EDDC;
+      --ink: #1A1A1A;
+      --teal: #0E7C7B;
+      --coral: #E36414;
+      --gold: #C8941F;
+    }
+    
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Microsoft JhengHei', 'GenSeki TW', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .reveal {
+      background: var(--paper);
+    }
+    
+    /* 4:3 投影片尺寸 */
+    .reveal .slides {
+      width: 1440px;
+      height: 1080px;
+    }
+    
+    .reveal .slide {
+      width: 1440px;
+      height: 1080px;
+      padding: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      position: relative;
+    }
+    
+    /* Ken Burns 微幅縮放特效 */
+    @keyframes kenburns {
+      0% { transform: scale(1.0); }
+      100% { transform: scale(1.05); }
+    }
+    
+    .slide-bg-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .slide-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* 4:3 完美貼合，無拉伸變形 */
+      animation: kenburns 15s linear infinite alternate;
+    }
+    
+    /* 遮罩過濾器，微調亮度 */
+    .slide-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(250, 247, 238, 0.05);
+      z-index: 2;
+    }
+    
+    /* 章節晶片 */
+    .chapter-chip {
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      z-index: 10;
+      background: var(--teal);
+      color: #FFFFFF;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 24px;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(14,124,123,0.3);
+    }
+    
+    .chapter-title {
+      position: absolute;
+      top: 40px;
+      left: 170px;
+      z-index: 10;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ink);
+      background: rgba(250, 247, 238, 0.85);
+      padding: 6px 14px;
+      border-radius: 4px;
+    }
+    
+    /* 字幕條 */
+    .sub-bar-container {
+      position: absolute;
+      bottom: 50px;
+      left: 5%;
+      width: 90%;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .sub-bar {
+      background: rgba(26, 26, 26, 0.92);
+      color: #FFFFFF;
+      padding: 16px 36px;
+      border-radius: 12px;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.45;
+      text-align: center;
+      max-width: 85%;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+      letter-spacing: 1px;
+    }
+    
+    .sub-role {
+      color: var(--coral);
+      margin-right: 12px;
+    }
+    
+    /* 進度條 */
+    .bottom-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 6px;
+      background: var(--teal);
+      z-index: 10;
+      transition: width 0.3s linear;
+    }
+    
+    /* Autoplay 點擊大遮罩 */
+    .play-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--paper);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+    
+    .play-btn {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--teal);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 8px 24px rgba(14,124,123,0.4);
+      margin-bottom: 24px;
+      transition: transform 0.2s ease;
+    }
+    
+    .play-btn:hover {
+      transform: scale(1.1);
+    }
+    
+    .play-icon {
+      width: 0;
+      height: 0;
+      border-top: 20px solid transparent;
+      border-bottom: 20px solid transparent;
+      border-left: 36px solid #FFFFFF;
+      margin-left: 10px;
+    }
+    
+    .play-text {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--teal);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Autoplay Trigger Screen -->
+  <div id="play-overlay" class="play-overlay" onclick="startPresentation()">
+    <div class="play-btn">
+      <div class="play-icon"></div>
+    </div>
+    <div class="play-text">點擊啟動《飛行員和小王子》教學影片</div>
+  </div>
+
+  <!-- Audio Player -->
+  <audio id="narration-player"></audio>
+
+  <div class="reveal">
+    <div class="slides">
+      
+      <!-- 25 Sections generated dynamically -->
+      <!-- We will create them via javascript to prevent redundant HTML, keeping file cleaner -->
+      
+    </div>
+    
+    <!-- Progress Indicator -->
+    <div id="progress" class="bottom-progress" style="width: 0%;"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+  <script>
+    // Exact audio durations and dialog texts generated by Edge-TTS + FFprobe
+    const pageData = {
+      "1": {
+        "text": "一望無際的沙漠中，飛行員遇見了從外太空來的小王子，他畫了一幅看起來像帽子的圖畫給小王子看。",
+        "role": "旁白",
+        "duration": 9.696,
+        "padded_duration": 11.5
+      },
+      "2": {
+        "text": "你猜我畫的是什麼？",
+        "role": "飛行員",
+        "duration": 2.688,
+        "padded_duration": 4.49
+      },
+      "3": {
+        "text": "這很容易呀！你畫得很像。",
+        "role": "小王子",
+        "duration": 4.224,
+        "padded_duration": 6.02
+      },
+      "4": {
+        "text": "你是不是要猜「這是一頂帽子」？很多人都這麼猜。",
+        "role": "飛行員",
+        "duration": 6.432,
+        "padded_duration": 8.23
+      },
+      "5": {
+        "text": "它不是帽子！你畫的是一條吞了大象的蛇！",
+        "role": "小王子",
+        "duration": 5.4,
+        "padded_duration": 7.2
+      },
+      "6": {
+        "text": "你怎麼知道？",
+        "role": "飛行員",
+        "duration": 2.208,
+        "padded_duration": 4.01
+      },
+      "7": {
+        "text": "連三歲小孩都看得出來！而且……。",
+        "role": "小王子",
+        "duration": 4.608,
+        "padded_duration": 6.41
+      },
+      "8": {
+        "text": "而且什麼？",
+        "role": "飛行員",
+        "duration": 2.064,
+        "padded_duration": 3.86
+      },
+      "9": {
+        "text": "這條蛇不久前才吞過大鯨魚！",
+        "role": "小王子",
+        "duration": 3.624,
+        "padded_duration": 5.42
+      },
+      "10": {
+        "text": "天哪！這件事連我都不知道……。",
+        "role": "飛行員",
+        "duration": 4.872,
+        "padded_duration": 6.67
+      },
+      "11": {
+        "text": "我覺得你很會畫畫！能不能請你畫一隻羊給我？",
+        "role": "小王子",
+        "duration": 5.856,
+        "padded_duration": 7.66
+      },
+      "12": {
+        "text": "沒問題！",
+        "role": "飛行員",
+        "duration": 2.16,
+        "padded_duration": 3.96
+      },
+      "13": {
+        "text": "這隻太老了，我希望我的羊可以活得久一點。",
+        "role": "小王子",
+        "duration": 4.728,
+        "padded_duration": 6.53
+      },
+      "14": {
+        "text": "好！等一下。",
+        "role": "飛行員",
+        "duration": 3.696,
+        "padded_duration": 5.5
+      },
+      "15": {
+        "text": "這是已經長大的公羊，我想要一隻小羊。",
+        "role": "小王子",
+        "duration": 4.512,
+        "padded_duration": 6.31
+      },
+      "16": {
+        "text": "再給我一次機會，這次保證讓你滿意！",
+        "role": "飛行員",
+        "duration": 4.368,
+        "padded_duration": 6.17
+      },
+      "17": {
+        "text": "這隻羊生病了，看起來沒什麼精神，麻煩你幫取重新畫一隻活活潑潑、健健康康的小羊！",
+        "role": "小王子",
+        "duration": 9.24,
+        "padded_duration": 11.04
+      },
+      "18": {
+        "text": "你的意見真多！這樣好了，我畫這個給你。",
+        "role": "飛行員",
+        "duration": 5.76,
+        "padded_duration": 7.56
+      },
+      "19": {
+        "text": "我要的小羊呢？",
+        "role": "小王子",
+        "duration": 2.232,
+        "padded_duration": 4.03
+      },
+      "20": {
+        "text": "這是一個寵物箱，你要的小羊就在裡面。",
+        "role": "飛行員",
+        "duration": 4.752,
+        "padded_duration": 6.55
+      },
+      "21": {
+        "text": "這隻小羊太適合我了，牠正是我想要的！",
+        "role": "小王子",
+        "duration": 4.536,
+        "padded_duration": 6.34
+      },
+      "22": {
+        "text": "是……是嗎？既然你喜歡，那麼這隻小羊就送給你吧！",
+        "role": "飛行員",
+        "duration": 6.432,
+        "padded_duration": 8.23
+      },
+      "23": {
+        "text": "這隻小羊需要吃很多草嗎？牠是不是大胃王？我住的星球很小，草不多，不知道夠不夠讓牠吃飽？",
+        "role": "小王子",
+        "duration": 11.256,
+        "padded_duration": 13.06
+      },
+      "24": {
+        "text": "放心吧！我畫給你的是一隻很小很小的小小羊，牠的食量不大。",
+        "role": "飛行員",
+        "duration": 7.344,
+        "padded_duration": 9.14
+      },
+      "25": {
+        "text": "小王子：這樣我就放心了。你看，牠睡著了，還會打呼呢！真的好可愛呀！ 飛行員：我用「手」畫畫，你卻能用「心」來看畫，真是了不起！",
+        "role": "角色對白",
+        "duration": 14.328,
+        "padded_duration": 16.83
+      }
+    };
+
+    const slidesContainer = document.querySelector('.reveal .slides');
+
+    // 1. Build all 25 slides dynamically
+    for (let i = 1; i <= 25; i++) {
+      const idxStr = String(i).padStart(2, '0');
+      const data = pageData[i];
+      
+      const section = document.createElement('section');
+      section.className = 'slide';
+      section.setAttribute('data-transition', 'fade');
+      
+      section.innerHTML = `
+        <!-- Chapter Chip -->
+        <div class="chapter-chip">${idxStr} / 25</div>
+        <div class="chapter-title">第十課 飛行員和小王子</div>
+        
+        <!-- Storyboard Visual Background -->
+        <div class="slide-bg-container">
+          <img class="slide-img" src="images/scene_${idxStr}.png" alt="Scene ${idxStr}">
+          <div class="slide-overlay"></div>
+        </div>
+        
+        <!-- Highly Readable Subtitle Bar -->
+        <div class="sub-bar-container">
+          <div class="sub-bar">
+            <span class="sub-role">[${data.role}]</span>${data.text}
+          </div>
+        </div>
+      `;
+      
+      slidesContainer.appendChild(section);
+    }
+
+    // 2. Setup Reveal presenting
+    Reveal.initialize({
+      width: 1440,
+      height: 1080,
+      margin: 0,
+      minScale: 1.0,
+      maxScale: 1.0,
+      controls: false,
+      progress: false,
+      keyboard: false,
+      touch: false,
+      overview: false,
+      history: false
+    });
+
+    const player = document.getElementById('narration-player');
+    const progressBar = document.getElementById('progress');
+    let timer = null;
+
+    window.isFinished = false;
+
+    // Handle slide change
+    Reveal.on('slidechanged', event => {
+      const pageIndex = event.indexh + 1;
+      const data = pageData[pageIndex];
+      const idxStr = String(pageIndex).padStart(2, '0');
+      
+      // Update global progress bar
+      const pct = (pageIndex / 25) * 100;
+      progressBar.style.width = pct + '%';
+      
+      // Play Audio
+      player.src = `narration/page-${idxStr}.mp3`;
+      player.play().catch(err => console.log("Audio Autoplay pending...", err));
+      
+      // Audio driver for transition
+      player.onended = () => {
+        // Safe buffer for renderingTail
+        setTimeout(() => {
+          if (pageIndex < 25) {
+            Reveal.next();
+          } else {
+            console.log("Presentation finished! Freeze on last frame.");
+            window.isFinished = true;
+          }
+        }, 1200); // 1.2s delay to absorb remaining tail buffer smoothly
+      };
+    });
+
+    function startPresentation() {
+      // Hide play-overlay
+      document.getElementById('play-overlay').style.display = 'none';
+      
+      // Initial trigger
+      const pageIndex = 1;
+      const idxStr = "01";
+      const pct = (pageIndex / 25) * 100;
+      progressBar.style.width = pct + '%';
+      
+      player.src = `narration/page-${idxStr}.mp3`;
+      player.play().catch(err => console.log("Failed to play initial audio: ", err));
+      
+      player.onended = () => {
+        setTimeout(() => {
+          Reveal.next();
+        }, 1200);
+      };
+    }
+  </script>
+</body>
+</html>
