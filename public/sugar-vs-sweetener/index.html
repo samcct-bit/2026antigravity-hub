@@ -693,9 +693,12 @@
 
   async function vote(optId) {
     myVote = optId;
-    const data = {};
-    data[`votes.${userId}`] = optId;
-    data.updated_at = serverTimestamp();
+    const data = {
+      votes: {
+        [userId]: optId
+      },
+      updated_at: serverTimestamp()
+    };
     try {
       if (!fdb) throw new Error("Firestore 未成功初始化！");
       await setDoc(pollRef, data, { merge: true });
