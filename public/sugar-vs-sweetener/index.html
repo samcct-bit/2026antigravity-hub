@@ -345,11 +345,11 @@
             <input id="wc-input" type="text" placeholder="例：無糖可樂、口香糖…" maxlength="20"
               style="width:100%; padding:9px 12px; border-radius:8px; border:1px solid rgba(79,195,247,0.3);
                      background:rgba(255,255,255,0.08); color:#fff; font-size:14px;
-                     box-sizing:border-box; font-family:inherit; outline:none;" />
+                     box-sizing:border-box; font-family:inherit; outline:none; position: relative; z-index: 1000;" />
             <button id="wc-btn"
               style="width:100%; margin-top:8px; padding:10px; background:var(--accent2); color:#0a0e17;
                      border:none; border-radius:8px; font-weight:700; font-size:14px; cursor:pointer;
-                     box-shadow: 0 4px 12px rgba(79,195,247,0.3);">
+                     box-shadow: 0 4px 12px rgba(79,195,247,0.3); position: relative; z-index: 1000;">
               送出 ↵
             </button>
           </div>
@@ -513,6 +513,15 @@
     controls: true,
     slideNumber: 'c/t',
     plugins: []
+  });
+
+  // 防止 Reveal.js 攔截輸入框鍵盤事件，確保鍵盤輸入能順暢穿透且按 Enter 鍵不會觸發簡報切換
+  document.querySelectorAll('input, textarea').forEach(el => {
+    ['keydown', 'keyup', 'keypress'].forEach(event => {
+      el.addEventListener(event, e => {
+        e.stopPropagation();
+      });
+    });
   });
 
   // VIZ 滑桿控制
