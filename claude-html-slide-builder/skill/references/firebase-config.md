@@ -245,22 +245,45 @@ SDK 版本：`11.0.2`（CDN：`https://www.gstatic.com/firebasejs/11.0.2/`）
     `;
     btn.style.cssText = `width:100%;padding:12px 16px;background:rgba(255,255,255,0.06);
       border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;
-      font-size:0.48em;cursor:pointer;font-family:inherit;text-align:left;`;
+      font-size:0.48em;cursor:pointer;font-family:inherit;text-align:left;position:relative;z-index:1000;`;
     btn.onclick = () => vote(opt.id);
     container.appendChild(btn);
   });
 
   async function vote(optId) {
     myVote = optId;
-    const data = {};
-    data[`votes.${userId}`] = optId;
-    data.updated_at = serverTimestamp();
-    await setDoc(pollRef, data, { merge: true });
+    
+    // 【修正重要 Bug】：在 setDoc 搭配 { merge: true } 時，絕對不要使用 "votes.userId" 點狀字串 Key！
+    // 點狀 Key 會被視為字面扁平欄位寫入，導致 map 結構被破壞。必須使用正規的 JS 巢狀 Map 物件！
+    const data = {
+      votes: {
+        [userId]: optId
+      },
+      updated_at: serverTimestamp()
+    };
+    
+    try {
+      await setDoc(pollRef, data, { merge: true });
+    } catch (err) {
+      alert("投票失敗！請確保您的 Firestore 資料庫安全規則有開啟匿名讀寫權限。");
+      console.error(err);
+    }
   }
 
   onSnapshot(pollRef, snap => {
     const data = snap.data() || {};
-    const votes = data.votes || {};
+    
+    // 【防呆相容解析】：雙格式相容（同時解析 nested map 與扁平 "votes.userId" 欄位，確保歷史/快取版本完全相容）
+    const votes = {};
+    if (data.votes && typeof data.votes === 'object') {
+      Object.assign(votes, data.votes);
+    }
+    Object.entries(data).forEach(([key, val]) => {
+      if (key.startsWith('votes.') && typeof val === 'string') {
+        votes[key.substring(6)] = val;
+      }
+    });
+
     const counts = {};
     OPTIONS.forEach(o => counts[o.id] = 0);
     Object.values(votes).forEach(v => { if (counts[v] !== undefined) counts[v]++; });
@@ -273,11 +296,8 @@ SDK 版本：`11.0.2`（CDN：`https://www.gstatic.com/firebasejs/11.0.2/`）
       document.getElementById(`poll-pct-${opt.id}`).textContent = pct + '%';
       const check = document.getElementById(`poll-check-${opt.id}`);
       if (myVote === opt.id) {
-        check.textContent = '✓';
+        check.innerHTML = '✓';
         check.style.background = 'var(--accent2)';
         check.style.borderColor = 'var(--accent2)';
-      }
-    });
-  });
 </script>
 ```

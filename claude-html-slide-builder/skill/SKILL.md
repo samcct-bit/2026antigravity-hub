@@ -249,10 +249,61 @@ Phase 7: 確認一切完成後才 push
 
 ---
 
-## 參考資源
+## 避坑指南與最佳實踐 (Gotchas & Best Practices)
 
-| 檔案 | 用途 |
-|------|------|
-| `references/reveal-template.md` | Reveal.js HTML 完整模板、CSS 元件庫 |
-| `references/firebase-config.md` | 文字雲、投票完整程式碼片段 |
-| `scripts/remove_bg.py` | PIL 圖標去背腳本（對 images/icon_*.png 執行） |
+### 1. 🔏 防止 Reveal.js 攔截鍵盤輸入
+*   **現象**：由於 Reveal.js 全局捕獲了任何鍵盤事件以支援簡報導航（如空白鍵/方向鍵切頁），導致簡報中的 `<input>` 和 `<textarea>` 完全無法打字，或按 Enter 時會直接跳頁。
+*   **解法**：在簡報初始化（`Reveal.initialize`）後，必須立刻透過 JS 攔截所有輸入框的鍵盤事件並阻止事件冒泡：
+    ```javascript
+    document.querySelectorAll('input, textarea').forEach(el => {
+      ['keydown', 'keyup', 'keypress'].forEach(event => {
+        el.addEventListener(event, e => {
+          e.stopPropagation();
+        });
+      });
+    });
+    ```
+
+### 2. 🗂 Firestore 巢狀地圖（Nested Map）正確寫入
+*   **現象**：當使用 `setDoc(docRef, data, { merge: true })` 進行匿名投票寫入時，如果 Key 採用點狀字串 `data["votes.userId"] = val`，Firestore Web SDK **不會**將其視為 nested map，而是會當作字面扁平欄位寫入。這會導致 `data.votes` 為 `undefined`，投票統計數永遠為 `0`。
+*   **解法**：必須將資料寫為**正規的 JS 巢狀 Map 物件**：
+    ```javascript
+    const data = {
+      votes: {
+        [userId]: optId
+      },
+      updated_at: serverTimestamp()
+    };
+    await setDoc(pollRef, data, { merge: true });
+    ```
+
+### 3. 🛡 雙格式相容解析（Resilient defensive parsing）
+*   **現象**：若資料庫已有先前寫入的點狀平鋪欄位（舊格式），新版代碼如果不支援相容解析，歷史票數將會全部歸零無法呈現。
+*   **解法**：在 `onSnapshot` 數據解算時，應同時支援解析新舊雙格式：
+    ```javascript
+    const votes = {};
+    // 1. 讀取新格式 (nested map)
+    if (data.votes && typeof data.votes === 'object') {
+      Object.assign(votes, data.votes);
+    }
+    // 2. 讀取舊格式 (flat "votes.user_xxxx" fields)
+    Object.entries(data).forEach(([key, val]) => {
+      if (key.startsWith('votes.') && typeof val === 'string') {
+        votes[key.substring(6)] = val;
+      }
+    });
+    ```
+
+### 🔓 4. Firestore 安全規則
+*   在課堂即時互動場景中，通常需要開放匿名學員的快速寫入。如果發布時遇到 `Missing or insufficient permissions` 權限錯誤，應建立並使用 `firestore.rules` 部署開放規則：
+    ```rules
+    rules_version = '2';
+    service cloud.firestore {
+      match /databases/{database}/documents {
+        match /{document=**} {
+          allow read, write: if true;
+        }
+      }
+    }
+    ```
+
