@@ -551,8 +551,14 @@
     messagingSenderId: "552535919921",
     appId: "1:552535919921:web:95b4c1288edbae9572b410"
   };
-  const app = initializeApp(firebaseConfig);
-  const fdb = getFirestore(app);
+  
+  let app, fdb;
+  try {
+    app = initializeApp(firebaseConfig);
+    fdb = getFirestore(app);
+  } catch (err) {
+    alert("Firebase 初始化錯誤，請檢查您的 Firestore 連線或專案狀態：\n" + err.message);
+  }
 
   // 簡報獨立 Slug
   const SLUG = 'sugar_sweetener';
@@ -571,9 +577,13 @@
     const btn = document.getElementById('wc-btn');
     btn.disabled = true;
     try {
+      if (!fdb) throw new Error("Firestore 未成功初始化！");
       await addDoc(wordsRef, { word, created_at: serverTimestamp() });
       input.value = '';
-    } catch(e) { console.error(e); }
+    } catch(e) { 
+      alert("傳送資料失敗！請確認您的 Firestore 資料庫安全規則是否有開放讀寫權限。\n\n錯誤詳細內容:\n" + e.message);
+      console.error(e); 
+    }
     finally { btn.disabled = false; }
   };
 
@@ -582,28 +592,33 @@
   });
   document.getElementById('wc-btn')?.addEventListener('click', window.wcSubmit);
 
-  onSnapshot(query(wordsRef, orderBy('created_at', 'asc')), snap => {
-    const words = [];
-    snap.forEach(doc => words.push(doc.data().word));
-    const counts = {};
-    words.forEach(w => counts[w] = (counts[w] || 0) + 1);
-    wcData = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  if (fdb) {
+    onSnapshot(query(wordsRef, orderBy('created_at', 'asc')), snap => {
+      const words = [];
+      snap.forEach(doc => words.push(doc.data().word));
+      const counts = {};
+      words.forEach(w => counts[w] = (counts[w] || 0) + 1);
+      wcData = Object.entries(counts).sort((a, b) => b[1] - a[1]);
 
-    document.getElementById('wc-total').textContent = words.length;
-    document.getElementById('wc-unique').textContent = wcData.length;
+      document.getElementById('wc-total').textContent = words.length;
+      document.getElementById('wc-unique').textContent = wcData.length;
 
-    const listEl = document.getElementById('wc-list');
-    listEl.innerHTML = wcData.slice(0, 5).map(([w, c]) =>
-      `<div style="display:flex;justify-content:space-between;padding:5px 0;
-                   border-bottom:1px solid rgba(255,255,255,0.06); font-size: 15px;">
-        <span>${w}</span><span style="color:var(--accent);font-weight:700;">${c} 票</span>
-      </div>`
-    ).join('') || '<div style="color:#555;padding:8px 0;font-size:14px;">尚無排行</div>';
+      const listEl = document.getElementById('wc-list');
+      listEl.innerHTML = wcData.slice(0, 5).map(([w, c]) =>
+        `<div style="display:flex;justify-content:space-between;padding:5px 0;
+                     border-bottom:1px solid rgba(255,255,255,0.06); font-size: 15px;">
+          <span>${w}</span><span style="color:var(--accent);font-weight:700;">${c} 票</span>
+        </div>`
+      ).join('') || '<div style="color:#555;padding:8px 0;font-size:14px;">尚無排行</div>';
 
-    const empty = document.getElementById('wc-empty');
-    if (empty) empty.style.display = wcData.length > 0 ? 'none' : '';
-    drawWordCloud();
-  });
+      const empty = document.getElementById('wc-empty');
+      if (empty) empty.style.display = wcData.length > 0 ? 'none' : '';
+      drawWordCloud();
+    }, err => {
+      alert("文字雲即時連線監聽失敗！請確保您的 Firestore 資料庫有開放讀取權限。\n\n錯誤詳細內容:\n" + err.message);
+      console.error(err);
+    });
+  }
 
   function drawWordCloud() {
     const canvas = document.getElementById('wc-canvas');
@@ -681,7 +696,13 @@
     const data = {};
     data[`votes.${userId}`] = optId;
     data.updated_at = serverTimestamp();
-    await setDoc(pollRef, data, { merge: true });
+    try {
+      if (!fdb) throw new Error("Firestore 未成功初始化！");
+      await setDoc(pollRef, data, { merge: true });
+    } catch (err) {
+      alert("投票傳送失敗！請確保您的 Firestore 規則有允許寫入權限。\n\n錯誤詳細內容:\n" + err.message);
+      console.error(err);
+    }
     
     // 更新選中樣式
     OPTIONS.forEach(o => {
@@ -696,33 +717,38 @@
     });
   }
 
-  onSnapshot(pollRef, snap => {
-    const data = snap.data() || {};
-    const votes = data.votes || {};
-    const counts = {};
-    OPTIONS.forEach(o => counts[o.id] = 0);
-    Object.values(votes).forEach(v => { if (counts[v] !== undefined) counts[v]++; });
-    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+  if (fdb) {
+    onSnapshot(pollRef, snap => {
+      const data = snap.data() || {};
+      const votes = data.votes || {};
+      const counts = {};
+      OPTIONS.forEach(o => counts[o.id] = 0);
+      Object.values(votes).forEach(v => { if (counts[v] !== undefined) counts[v]++; });
+      const total = Object.values(counts).reduce((a, b) => a + b, 0);
 
-    document.getElementById('poll-total').textContent = total;
-    OPTIONS.forEach(opt => {
-      const pct = total > 0 ? Math.round((counts[opt.id] / total) * 100) : 0;
-      document.getElementById(`poll-bar-${opt.id}`).style.width = pct + '%';
-      document.getElementById(`poll-pct-${opt.id}`).textContent = pct + '%';
-      const check = document.getElementById(`poll-check-${opt.id}`);
-      if (myVote === opt.id) {
-        check.innerHTML = '✓';
-        check.style.background = 'var(--accent2)';
-        check.style.borderColor = 'var(--accent2)';
-        check.style.color = '#0a0e17';
-        check.style.fontWeight = 'bold';
-      } else {
-        check.innerHTML = '';
-        check.style.background = 'transparent';
-        check.style.borderColor = 'rgba(255,255,255,0.3)';
-      }
+      document.getElementById('poll-total').textContent = total;
+      OPTIONS.forEach(opt => {
+        const pct = total > 0 ? Math.round((counts[opt.id] / total) * 100) : 0;
+        document.getElementById(`poll-bar-${opt.id}`).style.width = pct + '%';
+        document.getElementById(`poll-pct-${opt.id}`).textContent = pct + '%';
+        const check = document.getElementById(`poll-check-${opt.id}`);
+        if (myVote === opt.id) {
+          check.innerHTML = '✓';
+          check.style.background = 'var(--accent2)';
+          check.style.borderColor = 'var(--accent2)';
+          check.style.color = '#0a0e17';
+          check.style.fontWeight = 'bold';
+        } else {
+          check.innerHTML = '';
+          check.style.background = 'transparent';
+          check.style.borderColor = 'rgba(255,255,255,0.3)';
+        }
+      });
+    }, err => {
+      alert("投票即時連線監聽失敗！請確認您的 Firestore 安全規則。\n\n錯誤詳細內容:\n" + err.message);
+      console.error(err);
     });
-  });
+  }
 
   // ==========================================
   // ④ Reveal.js 切換頁面重繪事件
