@@ -38,18 +38,7 @@
 | 專案名稱 | 本地路徑 | 移轉後之 GitHub Pages 網址 | 備註 |
 | :--- | :--- | :--- | :--- |
 | 🍬 代糖與糖類大對決 | `public/index.html` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/index.html) | 當前主頁 (亦備用 Firebase Hosting) |
-| 🇨🇴 Colombia Margarita | `public/coffee label/Colombia Margarita Honeydew Melon` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Colombia%20Margarita%20Honeydew%20Melon/index.html) | 精品咖啡標籤 (Honeydew Melon) |
-| 🇪🇹 Ethiopia Worka | `public/coffee label/Ethiopia Worka Berry Queen` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Ethiopia%20Worka%20Berry%20Queen/index.html) | 精品咖啡標籤 (Berry Queen) |
-| 🇹🇭 Chiang Rai Srima | `public/coffee label/Chiang Rai Srima_OB` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Chiang%20Rai%20Srima_OB/index.html) | 精品咖啡標籤 |
-| ☕ Guji Gelana Gesha B | `public/coffee label/Guji Gelana Gesha_B` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Guji%20Gelana%20Gesha_B/index.html) | 精品咖啡標籤 (Gesha B) |
-| ☕ Guji-Gelana Gesha A | `public/coffee label/Guji-Gelana- Gesha-A` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Guji-Gelana-%20Gesha-A/index.html) | 精品咖啡標籤 (Gesha A) |
-| 🇰🇪 Kenya Nyeri AA1 | `public/coffee label/Kenya Nyeri Kianjogu AA1` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Kenya%20Nyeri%20Kianjogu%20AA1/index.html) | 精品咖啡標籤 (AA1) |
-| 🇰🇪 Kenya Nyeri AA2 | `public/coffee label/Kenya Nyeri Kianjogu AA2` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/Kenya%20Nyeri%20Kianjogu%20AA2/index.html) | 精品咖啡標籤 (AA2) |
-| 🍼 Baby Gesha | `public/coffee label/baby_gesha` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/baby_gesha/index.html) | 精品咖啡標籤 |
-| 🌲 Elida Gesha | `public/coffee label/elida_gesha` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/elida_gesha/index.html) | 精品咖啡標籤 |
-| 🇰🇪 Kenya AA | `public/coffee label/kenya` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/kenya/index.html) | 精品咖啡標籤 |
-| 🌸 Las Marias | `public/coffee label/las_marias` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/las_marias/index.html) | 精品咖啡標籤 |
-| 🔔 Purple Wind Chime | `public/coffee label/purple_wind_chime` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/coffee%20label/purple_wind_chime/index.html) | 精品咖啡標籤 |
+| ☕ **金成淬精品咖啡入口平台** | `[獨立倉庫] 2026coffeewebsite` | [🔗 點擊開啟](https://samcct-bit.github.io/2026coffeewebsite/) | **[NEW] 整合 13 款熟豆與職人手沖計算器的專屬門戶網站** |
 | 🧮 數學救援遊戲 (3-2-7) | `public/math game/mathgame3-2-7` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/math%20game/mathgame3-2-7/index.html) | 具備防重練與重置歷史功能 |
 | ⏱️ **數學時間遊戲 (3-2-8)** | `public/math game/timegame3-2-8` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/math%20game/timegame3-2-8/index.html) | **[NEW] 今日上線之全新數學遊戲** |
 
