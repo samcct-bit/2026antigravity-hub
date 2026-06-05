@@ -15,6 +15,10 @@
     <!-- 引入 Babel 用來在瀏覽器中編譯 JSX (CDN) -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
+    <!-- 引入 Firebase Compat SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <style>
         @keyframes float {
             0% { transform: translateY(0px); }
@@ -47,8 +51,27 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // 1. 新增 useRef，用來作為不重複題庫與防止連點的記憶體
         const { useState, useEffect, useCallback, useRef } = React;
+
+        // === Firebase 初始化 ===
+        const firebaseConfig = {
+            apiKey: "AIzaSyC48oAqalT77SPpYVtCupYfV5hd6_ZrD2I",
+            authDomain: "my-teaching-tools-01.firebaseapp.com",
+            projectId: "my-teaching-tools-01",
+            storageBucket: "my-teaching-tools-01.firebasestorage.app",
+            messagingSenderId: "552535919921",
+            appId: "1:552535919921:web:95b4c1288edbae9572b410"
+        };
+        
+        let db = null;
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            db = firebase.firestore();
+        } catch (err) {
+            console.error("Firebase initialization failed:", err);
+        }
 
         // === 題庫資料 (共36題) ===
         const GAME_DATA = {
@@ -93,35 +116,7 @@
                 subtitle: "活動3：被除數或除數未知的問題",
                 pool: [
                     { text: "( ? ) ÷ 3 = 24。請找出原本的軌道總長度！該怎麼算？", correctOption: "24 × 3", wrongOptions: ["24 ÷ 3", "24 + 3", "24 - 3"], hint: "💡 提示：要求未知的「被除數（最前面的數字）」，要把商(24)和除數(3)乘起來喔！" },
-                    { text: "224 ÷ ( ? ) = 8。軌道被平分成了幾段？請選出算法。", correctOption: "224 ÷ 8", wrongOptions: ["224 × 8", "224 + 8", "224 - 8"], hint: "💡 提示：要求未知的「除數（中間的數字）」，要用被除數(224)除以商(8)喔！" },
-                    { text: "( ? ) ÷ 5 = 35。找出被平分前的總星塵量算法！", correctOption: "35 × 5", wrongOptions: ["35 ÷ 5", "35 + 5", "35 - 5"], hint: "💡 提示：不知道最前面的「被除數」，就把後面的 35 和 5 乘起來！" },
-                    { text: "156 ÷ ( ? ) = 6。這些隕石被分成了幾堆？怎麼算？", correctOption: "156 ÷ 6", wrongOptions: ["156 × 6", "156 + 6", "156 - 6"], hint: "💡 提示：求中間的「除數」，用最前面的數(156)除以結果(6)。" },
-                    { text: "( ? ) ÷ 7 = 42。還原修復前的總能量值，要用哪個算式？", correctOption: "42 × 7", wrongOptions: ["42 ÷ 7", "42 + 7", "42 - 7"], hint: "💡 提示：缺最前面的大數字（被除數），要把 42 和 7 相乘喔。" },
-                    { text: "315 ÷ ( ? ) = 9。光束砲被拆成了幾部分？算法是？", correctOption: "315 ÷ 9", wrongOptions: ["315 × 9", "315 + 9", "315 - 9"], hint: "💡 提示：求未知的除數，要用 315 除以 9。" },
-                    { text: "( ? ) ÷ 4 = 68。解開傳送門的原始座標，怎麼算？", correctOption: "68 × 4", wrongOptions: ["68 ÷ 4", "68 + 4", "68 - 4"], hint: "💡 提示：不知道被除數時，將商(68)乘上除數(4)。" },
-                    { text: "208 ÷ ( ? ) = 8。貨物艙被分成了幾個區塊？", correctOption: "208 ÷ 8", wrongOptions: ["208 × 8", "208 + 8", "208 - 8"], hint: "💡 提示：要求中間的除數，拿 208 除以 8 就對了。" },
-                    { text: "( ? ) ÷ 6 = 55。找出雷達探測的總面積算法！", correctOption: "55 × 6", wrongOptions: ["55 ÷ 6", "55 + 6", "55 - 6"], hint: "💡 提示：要求最大的被除數，要把 55 乘以 6。" },
-                    { text: "189 ÷ ( ? ) = 7。星圖被劃分成了幾個象限？", correctOption: "189 ÷ 7", wrongOptions: ["189 × 7", "189 + 7", "189 - 7"], hint: "💡 提示：求除數，用被除數 189 除以 商 7。" },
-                    { text: "( ? ) ÷ 8 = 46。計算發動機的總耐久度！", correctOption: "46 × 8", wrongOptions: ["46 ÷ 8", "46 + 8", "46 - 8"], hint: "💡 提示：要求前面的被除數，要用乘法：46 × 8。" },
-                    { text: "270 ÷ ( ? ) = 5。這批食物可以吃幾天？請找出算法。", correctOption: "270 ÷ 5", wrongOptions: ["270 × 5", "270 + 5", "270 - 5"], hint: "💡 提示：求除數，拿最前面的 270 除以結果的 5。" }
-                ]
-            }
-        };
-
-        const shuffleArray = (array) => {
-            const shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
-        };
-
-        const getRandomQuestions = (pool, count) => {
-            return shuffleArray(pool).slice(0, count);
-        };
-
-        // 改用 Inline SVG 避免 React DOM 被外部腳本修改導致當機
+                    { text: "224 ÷ ( ? ) = 8。軌道被平分成了幾段？請選出算法。", correctOption: "224 ÷ 8", wrongOptions: ["224 × 8", "224 + 8", "224 - 8"], hint: "💡 提示：要求未知的「除數（中間的數字）」，        // 改用 Inline SVG 避免 React DOM 被外部腳本修改導致當機
         const Icon = ({ name, className }) => {
             const icons = {
                 'rocket': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>,
@@ -132,7 +127,9 @@
                 'circle-x': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>,
                 'shield-check': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>,
                 'star': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-                'refresh-ccw': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21v-5h5"/></svg>
+                'refresh-ccw': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21v-5h5"/></svg>,
+                'home': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+                'badge': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             };
             return icons[name] || null;
         };
@@ -144,6 +141,15 @@
             const [qIndex, setQIndex] = useState(0);
             const [score, setScore] = useState(0);
             
+            // 學生登入資料
+            const [studentClass, setStudentClass] = useState(localStorage.getItem('student_class') || '');
+            const [studentSeat, setStudentSeat] = useState(localStorage.getItem('student_seat') || '');
+            const [showLoginModal, setShowLoginModal] = useState(false);
+
+            // 排行榜資料
+            const [leaderboard, setLeaderboard] = useState([]);
+            const [loadingLeaderboard, setLoadingLeaderboard] = useState(false);
+            
             const [questionPotentialScore, setQuestionPotentialScore] = useState(20);
             const [lockedOptions, setLockedOptions] = useState([]);
             const [showHint, setShowHint] = useState(false);
@@ -152,6 +158,15 @@
             const [currentOptions, setCurrentOptions] = useState([]);
             const [correctIndex, setCorrectIndex] = useState(-1);
             const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
+
+            // 確保有班級座號
+            useEffect(() => {
+                const storedClass = localStorage.getItem('student_class');
+                const storedSeat = localStorage.getItem('student_seat');
+                if (!storedClass || !storedSeat) {
+                    setShowLoginModal(true);
+                }
+            }, []);
 
             // 2. 建立不重複題庫的抽題機制，以及防止連點的機制
             const availableQsRef = useRef({
@@ -205,6 +220,10 @@
             };
 
             const startGame = () => {
+                if (!studentClass || !studentSeat) {
+                    setShowLoginModal(true);
+                    return;
+                }
                 setGameState('PLAYING');
                 setScore(0);
                 setLevel(1);
@@ -226,7 +245,9 @@
                 if (index === correctIndex) {
                     isProcessingRef.current = true; // 答對時立即鎖定，防止連點加分
                     setFeedback('correct');
-                    setScore(prev => prev + questionPotentialScore);
+                    const pts = questionPotentialScore;
+                    const newScore = score + pts;
+                    setScore(prev => prev + pts);
                     
                     // 將答對的題目文字存入 localStorage 記憶中
                     const answered = JSON.parse(localStorage.getItem('answered_math_questions') || '[]');
@@ -236,7 +257,7 @@
                         localStorage.setItem('answered_math_questions', JSON.stringify(answered));
                     }
 
-                    setTimeout(() => nextQuestion(), 1500);
+                    setTimeout(() => nextQuestion(newScore), 1500);
                 } else {
                     isProcessingRef.current = true; // 答錯時也短暫鎖定避免動畫出錯
                     setFeedback('incorrect');
@@ -252,12 +273,12 @@
                     setTimeout(() => {
                         setFeedback(null);
                         setSelectedOptionIndex(null);
-                        isProcessingRef.current = false; // 動畫播完後解除鎖定
+                        isProcessingRef.current = false; // 放開鎖定
                     }, 800);
                 }
             };
 
-            const nextQuestion = () => {
+            const nextQuestion = (currentScore) => {
                 if (qIndex + 1 < questions.length) {
                     const nextIdx = qIndex + 1;
                     setQIndex(nextIdx);
@@ -269,7 +290,56 @@
                         initLevel(nextLevel);
                     } else {
                         setGameState('END');
+                        submitScoreAndFetchLeaderboard(currentScore);
                     }
+                }
+            };
+
+            const submitScoreAndFetchLeaderboard = async (finalScore) => {
+                if (!db) return;
+                setLoadingLeaderboard(true);
+                const payload = {
+                    class: studentClass.trim(),
+                    seat: studentSeat.trim(),
+                    score: finalScore,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                try {
+                    await db.collection("math_game_scores_7").add(payload);
+                    const snapshot = await db.collection("math_game_scores_7")
+                        .orderBy("score", "desc")
+                        .limit(50)
+                        .get();
+                    const list = [];
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        list.push({
+                            class: data.class,
+                            seat: data.seat,
+                            score: data.score,
+                            timestamp: data.timestamp ? data.timestamp.toDate() : new Date()
+                        });
+                    });
+                    list.sort((a, b) => {
+                        if (b.score !== a.score) {
+                            return b.score - a.score;
+                        }
+                        return a.timestamp - b.timestamp;
+                    });
+                    setLeaderboard(list.slice(0, 20));
+                } catch (err) {
+                    console.error("Firebase submit/query failed:", err);
+                } finally {
+                    setLoadingLeaderboard(false);
+                }
+            };
+
+            const handleSaveLogin = (e) => {
+                e.preventDefault();
+                if (studentClass.trim() && studentSeat.trim()) {
+                    localStorage.setItem('student_class', studentClass.trim());
+                    localStorage.setItem('student_seat', studentSeat.trim());
+                    setShowLoginModal(false);
                 }
             };
 
@@ -282,6 +352,13 @@
                     <h1 className="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 tracking-wider drop-shadow-sm leading-tight">
                         星際數學救援行動
                     </h1>
+
+                    {studentClass && studentSeat && (
+                        <div className="text-sm text-blue-300/80 font-mono bg-blue-950/30 border border-blue-800/40 px-4 py-2 rounded-full">
+                            🚀 太空人代號：{studentClass} 班 {studentSeat} 號
+                            <button onClick={() => setShowLoginModal(true)} className="ml-3 underline text-blue-400 hover:text-blue-200">修改</button>
+                        </div>
+                    )}
                     
                     <div className="bg-slate-800 p-4 md:p-6 rounded-2xl text-left text-sm md:text-base text-slate-300 w-full max-w-md shadow-inner border border-slate-700">
                         <h3 className="font-bold text-white flex items-center gap-2 mb-3">
@@ -304,10 +381,16 @@
                         </ul>
                     </div>
 
-                    <button onClick={startGame} className="mt-4 w-full max-w-xs py-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white text-xl font-bold rounded-2xl shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 touch-manipulation">
-                        <Icon name="rocket" className="w-6 h-6" />
-                        接受挑戰
-                    </button>
+                    <div className="flex flex-col sm:flex-row gap-4 w-full max-w-xs">
+                        <button onClick={startGame} className="w-full py-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white text-lg md:text-xl font-bold rounded-2xl shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 touch-manipulation">
+                            <Icon name="rocket" className="w-5 h-5" />
+                            接受挑戰
+                        </button>
+                        <a href="../index.html" className="w-full py-4 bg-slate-800 hover:bg-slate-700 text-blue-300 text-lg md:text-xl font-bold rounded-2xl transition-all border border-blue-800/40 flex items-center justify-center gap-2">
+                            <Icon name="home" className="w-5 h-5" />
+                            返回大廳
+                        </a>
+                    </div>
                     {localStorage.getItem('answered_math_questions') && (
                         <button onClick={() => {
                             if(confirm("確定要清除所有答對的歷史紀錄，重新開始嗎？")) {
@@ -423,40 +506,65 @@
             };
 
             const renderEndScreen = () => (
-                <div className="flex flex-col items-center justify-center min-h-[80vh] text-center animate-pop-in space-y-6 px-4">
+                <div className="flex flex-col items-center justify-center min-h-[80vh] text-center animate-pop-in space-y-6 px-4 py-6">
                     <div className="relative">
-                        <Icon name="star" className="w-28 h-28 md:w-40 md:h-40 text-yellow-400 animate-float drop-shadow-[0_0_40px_rgba(250,204,21,0.6)]" />
-                        <Icon name="sparkles" className="w-10 h-10 text-white absolute top-0 right-0 animate-pulse" />
+                        <div className="w-24 h-24 bg-blue-500/10 border-2 border-blue-400/50 rounded-full flex items-center justify-center animate-float shadow-[0_0_20px_rgba(59,130,246,0.2)]">
+                            <Icon name="star" className="w-12 h-12 text-yellow-400" />
+                        </div>
+                        <Icon name="circle-check" className="w-6 h-6 text-emerald-400 absolute bottom-0 right-0 bg-slate-900 border border-slate-800 rounded-full p-1" />
                     </div>
-                    <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-wider drop-shadow-lg">
-                        任務完成！
+                    
+                    <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-wider drop-shadow-lg">
+                        救援任務完成！
                     </h1>
                     
-                    <div className="bg-slate-800 p-8 md:p-10 rounded-[2rem] border-4 border-yellow-400/30 mt-6 w-full max-w-sm shadow-[0_0_50px_rgba(250,204,21,0.15)] relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-b from-yellow-400/5 to-transparent"></div>
-                        <div className="text-slate-400 text-sm md:text-base uppercase tracking-widest mb-2 relative z-10">最終獲得能量積分</div>
-                        <div className="text-6xl md:text-7xl font-black text-yellow-400 relative z-10">{score}</div>
-                        <div className="text-slate-400 text-sm mt-4">滿分 240 分</div>
+                    <div className="bg-slate-800 p-6 rounded-2xl border border-blue-500/20 mt-4 w-full max-w-sm shadow-[0_0_30px_rgba(59,130,246,0.1)] relative overflow-hidden">
+                        <div className="text-slate-400 text-xs md:text-sm uppercase tracking-widest mb-1">最終獲得能量積分</div>
+                        <div className="text-5xl md:text-6xl font-black text-yellow-400 font-mono">{score}</div>
+                        <div className="text-slate-500 text-xs mt-3">滿分 240 分</div>
+                        <div className="text-[10px] text-blue-300/80 font-mono mt-1 bg-blue-950/30 py-1 px-3 rounded-full inline-block">
+                            登記者：{studentClass} 班 {studentSeat} 號
+                        </div>
                     </div>
 
-                    {score === 240 ? (
-                        <p className="text-green-400 text-xl font-bold mt-4">🏆 完美過關！你完全沒有猜測！</p>
-                    ) : score > 180 ? (
-                        <p className="text-blue-300 text-xl mt-4">表現很棒！下次挑戰完美通關吧！</p>
-                    ) : (
-                        <p className="text-yellow-300 text-xl mt-4">有很多是看提示或猜出來的對吧？再多練習一次！</p>
-                    )}
+                    {/* Firestore 即時排行榜 */}
+                    <div className="bg-slate-950/80 p-5 rounded-2xl border border-slate-800 w-full max-w-md">
+                        <h3 className="font-bold text-white flex items-center gap-2 mb-3 border-b border-slate-800 pb-2 text-sm md:text-base">
+                            <Icon name="badge" className="w-4 h-4 text-yellow-400" />
+                            【即時排行榜】🧮 星際救援
+                        </h3>
+                        
+                        {loadingLeaderboard ? (
+                            <div className="text-slate-400 text-sm py-8 font-mono animate-pulse">正在調取雷達數據...</div>
+                        ) : leaderboard.length > 0 ? (
+                            <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                                {leaderboard.map((item, idx) => (
+                                    <div key={idx} className={`flex justify-between items-center p-2 rounded text-xs md:text-sm font-mono ${item.class === studentClass && item.seat === studentSeat ? 'bg-blue-950/40 border border-blue-500/30' : 'bg-slate-900/50'}`}>
+                                        <div className="flex items-center gap-3">
+                                            <span className={`w-5 h-5 flex items-center justify-center rounded-full text-[10px] font-bold ${idx === 0 ? 'bg-yellow-400 text-slate-950' : idx === 1 ? 'bg-slate-300 text-slate-950' : idx === 2 ? 'bg-amber-700 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                                                {idx + 1}
+                                            </span>
+                                            <span className="text-slate-200">{item.class} 班 {item.seat} 號</span>
+                                        </div>
+                                        <span className="text-yellow-400 font-bold">{item.score} 分</span>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-slate-500 text-xs py-8">尚無挑戰數據，你是第一位救援者！</div>
+                        )}
+                    </div>
 
-                    <button onClick={startGame} className="mt-8 w-full max-w-xs py-4 bg-slate-700 hover:bg-slate-600 text-white text-xl font-bold rounded-2xl transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 border border-slate-500 shadow-lg touch-manipulation">
-                        <Icon name="refresh-ccw" className="w-6 h-6" />
-                        再次挑戰新題目
-                    </button>
-                    <button onClick={() => {
-                        localStorage.removeItem('answered_math_questions');
-                        startGame();
-                    }} className="mt-3 text-sm text-slate-400 hover:text-slate-200 underline transition-colors touch-manipulation">
-                        清除所有答對紀錄並重來
-                    </button>
+                    <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
+                        <button onClick={startGame} className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white text-base md:text-lg font-extrabold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg">
+                            <Icon name="refresh-ccw" className="w-4 h-4" />
+                            重新挑戰
+                        </button>
+                        <a href="../index.html" className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-blue-300 text-base md:text-lg font-bold rounded-xl transition-all border border-blue-800/40 flex items-center justify-center gap-2">
+                            <Icon name="home" className="w-4 h-4" />
+                            返回大廳
+                        </a>
+                    </div>
                 </div>
             );
 
@@ -467,6 +575,55 @@
                         {gameState === 'PLAYING' && renderPlayingScreen()}
                         {gameState === 'END' && renderEndScreen()}
                     </div>
+
+                    {/* 班級座號登入浮窗 */}
+                    {showLoginModal && (
+                        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+                            <form onSubmit={handleSaveLogin} className="bg-slate-900 border border-blue-500/30 p-6 md:p-8 rounded-3xl max-w-sm w-full space-y-6 shadow-[0_0_40px_rgba(59,130,246,0.2)] animate-pop-in">
+                                <div className="text-center space-y-2">
+                                    <div className="w-12 h-12 bg-blue-500/10 border border-blue-400/40 rounded-full flex items-center justify-center mx-auto text-blue-400">
+                                        🚀
+                                    </div>
+                                    <h3 className="text-xl font-bold text-white">請登記太空人身份</h3>
+                                    <p className="text-slate-400 text-xs font-mono">登記後成績將自動上傳即時排行榜</p>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs font-mono text-blue-400 uppercase tracking-widest mb-1.5">班級 (Class)</label>
+                                        <input 
+                                            type="text" 
+                                            required
+                                            value={studentClass} 
+                                            onChange={(e) => setStudentClass(e.target.value)}
+                                            placeholder="例如：305" 
+                                            className="w-full bg-slate-950 border border-slate-750 focus:border-blue-500 rounded-xl px-4 py-3 text-white outline-none transition-colors text-sm font-mono"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-mono text-blue-400 uppercase tracking-widest mb-1.5">座號 (Seat No.)</label>
+                                        <input 
+                                            type="number" 
+                                            required
+                                            min="1"
+                                            max="100"
+                                            value={studentSeat} 
+                                            onChange={(e) => setStudentSeat(e.target.value)}
+                                            placeholder="例如：12" 
+                                            className="w-full bg-slate-950 border border-slate-755 focus:border-blue-500 rounded-xl px-4 py-3 text-white outline-none transition-colors text-sm font-mono"
+                                        />
+                                    </div>
+                                </div>
+
+                                <button 
+                                    type="submit" 
+                                    className="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white font-black rounded-xl shadow-lg transition-all"
+                                >
+                                    完成登記，開始挑戰
+                                </button>
+                            </form>
+                        </div>
+                    )}
                 </div>
             );
         }

@@ -8,6 +8,10 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 引入 Firebase Compat SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
         body { background-color: #1a202c; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .glass-panel { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.2); }
@@ -77,6 +81,26 @@
             Star: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         };
 
+        // === Firebase 配置 ===
+        const firebaseConfig = {
+            apiKey: "AIzaSyC48oAqalT77SPpYVtCupYfV5hd6_ZrD2I",
+            authDomain: "my-teaching-tools-01.firebaseapp.com",
+            projectId: "my-teaching-tools-01",
+            storageBucket: "my-teaching-tools-01.firebasestorage.app",
+            messagingSenderId: "552535919921",
+            appId: "1:552535919921:web:95b4c1288edbae9572b410"
+        };
+        
+        let db = null;
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            db = firebase.firestore();
+        } catch (err) {
+            console.error("Firebase init error:", err);
+        }
+
         const App = () => {
             const [gameState, setGameState] = useState('start'); // start, playing, end
             const [currentLevel, setCurrentLevel] = useState(1);
@@ -93,6 +117,24 @@
             
             // 防連點鎖定
             const isProcessingRef = useRef(false);
+
+            // 學生登入資料
+            const [studentClass, setStudentClass] = useState(localStorage.getItem('student_class') || '');
+            const [studentSeat, setStudentSeat] = useState(localStorage.getItem('student_seat') || '');
+            const [showLoginModal, setShowLoginModal] = useState(false);
+
+            // 排行榜資料
+            const [leaderboard, setLeaderboard] = useState([]);
+            const [loadingLeaderboard, setLoadingLeaderboard] = useState(false);
+
+            // 確保有班級座號
+            useEffect(() => {
+                const storedClass = localStorage.getItem('student_class');
+                const storedSeat = localStorage.getItem('student_seat');
+                if (!storedClass || !storedSeat) {
+                    setShowLoginModal(true);
+                }
+            }, []);
             
             // 題庫記憶區 (直到抽完才洗牌)
             const poolsRef = useRef({
@@ -131,6 +173,10 @@
             };
 
             const startGame = () => {
+                if (!studentClass || !studentSeat) {
+                    setShowLoginModal(true);
+                    return;
+                }
                 setScore(0);
                 startLevel(1);
             };
@@ -150,7 +196,8 @@
                     if (mistakes === 2) pts = 5;
                     if (mistakes >= 3) pts = 0;
                     
-                    setScore(prev => prev + pts);
+                    const newScore = score + pts;
+                    setScore(newScore);
                     
                     // 視覺回饋 (答對按鈕變綠色) - 透過鎖定所有非正確選項並標示正確選項達成
                     setDisabledOptions(currentQ.options.filter(o => o !== currentQ.ans));
@@ -169,6 +216,7 @@
                                 startLevel(currentLevel + 1);
                             } else {
                                 setGameState('end');
+                                submitScoreAndFetchLeaderboard(newScore);
                             }
                         }
                     }, 1500);
@@ -178,24 +226,80 @@
                     setMistakes(prev => prev + 1);
                     setDisabledOptions(prev => [...prev, opt]);
                     setShowHint(true); // 第一次答錯強制顯示提示
-                    // 不鎖定 processing，讓學生可以繼續選
+                }
+            };
+
+            // 提交成績並拉取排行榜
+            const submitScoreAndFetchLeaderboard = async (finalScore) => {
+                if (!db) return;
+                setLoadingLeaderboard(true);
+                const payload = {
+                    class: studentClass.trim(),
+                    seat: studentSeat.trim(),
+                    score: finalScore,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                try {
+                    await db.collection("math_game_scores_8").add(payload);
+                    const snapshot = await db.collection("math_game_scores_8")
+                        .orderBy("score", "desc")
+                        .limit(50)
+                        .get();
+                    const list = [];
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        list.push({
+                            class: data.class,
+                            seat: data.seat,
+                            score: data.score,
+                            timestamp: data.timestamp ? data.timestamp.toDate() : new Date()
+                        });
+                    });
+                    list.sort((a, b) => {
+                        if (b.score !== a.score) {
+                            return b.score - a.score;
+                        }
+                        return a.timestamp - b.timestamp;
+                    });
+                    setLeaderboard(list.slice(0, 20));
+                } catch (err) {
+                    console.error("Firebase submit/query failed:", err);
+                } finally {
+                    setLoadingLeaderboard(false);
+                }
+            };
+
+            const handleSaveLogin = (e) => {
+                e.preventDefault();
+                if (studentClass.trim() && studentSeat.trim()) {
+                    localStorage.setItem('student_class', studentClass.trim());
+                    localStorage.setItem('student_seat', studentSeat.trim());
+                    setShowLoginModal(false);
                 }
             };
 
             if (gameState === 'start') {
                 return (
                     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-indigo-900 via-purple-900 to-black">
-                        <div className="glass-panel p-10 max-w-lg w-full text-center fade-in">
-                            <div className="flex justify-center mb-6 text-yellow-400">
+                        <div className="glass-panel p-10 max-w-lg w-full text-center fade-in space-y-6">
+                            <div className="flex justify-center text-yellow-400">
                                 <Icons.Wand />
                             </div>
-                            <h1 className="text-4xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-600">
-                                時光魔法使的試煉
-                            </h1>
-                            <p className="text-lg mb-8 text-gray-300">
-                                歡迎來到魔法學院！三年級的見習生，<br/>請利用你學到的「時間魔法」破解三道關卡。
-                            </p>
-                            <div className="text-left bg-black/30 p-4 rounded-lg mb-8 text-sm text-gray-300">
+                            <div>
+                                <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-600">
+                                    時光魔法使的試煉
+                                </h1>
+                                <p className="text-gray-300 text-xs mt-1 font-mono tracking-widest uppercase">CASE FILE: UNIT-08 / TIME_DUNGEON</p>
+                            </div>
+
+                            {studentClass && studentSeat && (
+                                <div className="text-xs text-purple-300 font-mono bg-purple-950/40 border border-purple-800/40 px-4 py-1.5 rounded-full inline-block">
+                                    🧙‍♂️ 魔法使代號：{studentClass} 班 {studentSeat} 號
+                                    <button onClick={() => setShowLoginModal(true)} className="ml-3 underline text-purple-400 hover:text-purple-200">修改</button>
+                                </div>
+                            )}
+
+                            <div className="text-left bg-black/30 p-4 rounded-lg text-sm text-gray-300 border border-purple-900/30">
                                 <p className="font-bold text-white mb-2">📜 魔法規則：</p>
                                 <ul className="list-disc pl-5 space-y-1">
                                     <li>共 3 個關卡，每關 4 題。</li>
@@ -204,9 +308,15 @@
                                     <li>慢慢算，魔法世界沒有時間限制！</li>
                                 </ul>
                             </div>
-                            <button onClick={startGame} className="w-full py-4 rounded-xl font-bold text-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 magic-btn shadow-lg">
-                                開始魔法試煉
-                            </button>
+                            
+                            <div className="flex flex-col sm:flex-row gap-3">
+                                <button onClick={startGame} className="w-full py-4 rounded-xl font-bold text-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 magic-btn shadow-lg">
+                                    開始魔法試煉
+                                </button>
+                                <a href="../index.html" className="w-full py-4 rounded-xl font-bold text-xl bg-slate-800 hover:bg-slate-700 text-purple-300 border border-purple-900/40 flex items-center justify-center">
+                                    返回大廳
+                                </a>
+                            </div>
                         </div>
                     </div>
                 );
@@ -215,23 +325,65 @@
             if (gameState === 'end') {
                 return (
                     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-indigo-900 via-purple-900 to-black">
-                        <div className="glass-panel p-10 max-w-lg w-full text-center fade-in">
-                            <div className="flex justify-center mb-6 text-yellow-400">
+                        <div className="glass-panel p-6 md:p-8 max-w-lg w-full text-center fade-in space-y-5">
+                            <div className="flex justify-center text-yellow-400">
                                 <Icons.Star />
                             </div>
-                            <h1 className="text-4xl font-bold mb-4 text-white">試煉完成！</h1>
-                            <p className="text-2xl mb-2 text-gray-300">你的魔力積分：</p>
-                            <p className="text-6xl font-black text-yellow-400 mb-8">{score}</p>
+                            <h1 className="text-3xl font-bold text-white">試煉完成！</h1>
+                            
+                            <div className="bg-black/30 p-5 rounded-2xl border border-purple-800/30 w-full max-w-xs mx-auto shadow-inner">
+                                <div className="text-gray-400 text-xs md:text-sm uppercase tracking-widest mb-1 font-mono">你的魔力積分</div>
+                                <div className="text-5xl md:text-6xl font-black text-yellow-400 font-mono">{score}</div>
+                                <div className="text-gray-500 text-xs mt-2">滿分 240 分</div>
+                                <div className="text-[10px] text-purple-300 font-mono mt-1 bg-purple-950/30 py-0.5 px-3 rounded-full inline-block border border-purple-900/40">
+                                    登記者：{studentClass} 班 {studentSeat} 號
+                                </div>
+                            </div>
+
                             {score >= 200 ? (
-                                <p className="text-green-400 font-bold mb-8">太厲害了！你已經是首席大魔法使！</p>
+                                <p className="text-green-400 font-bold text-lg">🏆 太厲害了！你已經是首席大魔法使！</p>
                             ) : score >= 150 ? (
-                                <p className="text-blue-400 font-bold mb-8">做得很棒！合格的魔法使！</p>
+                                <p className="text-blue-400 font-bold text-lg">做得很棒！合格的魔法使！</p>
                             ) : (
-                                <p className="text-purple-400 font-bold mb-8">魔法還不夠熟練，請再挑戰一次吧！</p>
+                                <p className="text-purple-400 font-bold text-lg">魔法還不夠熟練，請再挑戰一次吧！</p>
                             )}
-                            <button onClick={startGame} className="w-full py-4 rounded-xl font-bold text-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 magic-btn">
-                                重新挑戰
-                            </button>
+
+                            {/* Firestore 即時排行榜 */}
+                            <div className="bg-black/40 p-4 rounded-xl border border-purple-900/40 w-full text-left">
+                                <h3 className="font-bold text-purple-200 flex items-center justify-center gap-2 mb-2 border-b border-purple-900/40 pb-1.5 text-xs md:text-sm font-mono">
+                                    <Icons.Star />
+                                    【即時排行榜】⏱️ 時光魔法使
+                                </h3>
+                                
+                                {loadingLeaderboard ? (
+                                    <div className="text-purple-400 text-xs py-5 font-mono text-center animate-pulse">正在共鳴魔力能量...</div>
+                                ) : leaderboard.length > 0 ? (
+                                    <div className="space-y-1 max-h-36 overflow-y-auto pr-1">
+                                        {leaderboard.map((item, idx) => (
+                                            <div key={idx} className={`flex justify-between items-center p-1.5 rounded text-xs font-mono ${item.class === studentClass && item.seat === studentSeat ? 'bg-purple-950/40 border border-purple-500/30' : 'bg-black/20'}`}>
+                                                <div className="flex items-center gap-2">
+                                                    <span className={`w-4 h-4 flex items-center justify-center rounded-full text-[9px] font-bold ${idx === 0 ? 'bg-yellow-400 text-slate-950' : idx === 1 ? 'bg-slate-350 text-slate-950' : idx === 2 ? 'bg-amber-700 text-white' : 'bg-slate-800 text-purple-300'}`}>
+                                                        {idx + 1}
+                                                    </span>
+                                                    <span className="text-gray-300">{item.class} 班 {item.seat} 號</span>
+                                                </div>
+                                                <span className="text-yellow-400 font-bold">{item.score} 分</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="text-gray-500 text-xs py-5 text-center">尚無連線紀錄</div>
+                                )}
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row gap-3">
+                                <button onClick={startGame} className="w-full py-3 rounded-xl font-bold text-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 magic-btn">
+                                    重新挑戰
+                                </button>
+                                <a href="../index.html" className="w-full py-3 rounded-xl font-bold text-lg bg-slate-800 hover:bg-slate-700 text-purple-300 border border-purple-900/40 flex items-center justify-center">
+                                    返回大廳
+                                </a>
+                            </div>
                         </div>
                     </div>
                 );
@@ -258,7 +410,6 @@
 
                     {/* Question Area */}
                     <div className="w-full max-w-3xl glass-panel p-8 mb-8 fade-in relative">
-                        {/* 答對時顯示的遮罩與綠色外框會透過選項顏色呈現 */}
                         <h2 className="text-3xl md:text-4xl font-bold text-center leading-relaxed mb-8">
                             {currentQ.q}
                         </h2>
@@ -309,6 +460,55 @@
                             </span>
                         </div>
                     </div>
+
+                    {/* 班級座號登入浮窗 */}
+                    {showLoginModal && (
+                        <div className="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center z-50 p-4">
+                            <form onSubmit={handleSaveLogin} className="bg-slate-900 border border-purple-500/30 p-6 md:p-8 rounded-3xl max-w-sm w-full space-y-6 shadow-[0_0_40px_rgba(167,139,250,0.2)] animate-pop-in text-center">
+                                <div className="space-y-2">
+                                    <div className="w-12 h-12 bg-purple-500/10 border border-purple-400/40 rounded-full flex items-center justify-center mx-auto text-purple-400 text-2xl">
+                                        🔮
+                                    </div>
+                                    <h3 className="text-xl font-bold text-white">請登記魔法使身份</h3>
+                                    <p className="text-slate-400 text-xs font-mono">登記後成績將自動上傳即時排行榜</p>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs font-mono text-purple-400 uppercase tracking-widest mb-1.5 text-left">班級 (Class)</label>
+                                        <input 
+                                            type="text" 
+                                            required
+                                            value={studentClass} 
+                                            onChange={(e) => setStudentClass(e.target.value)}
+                                            placeholder="例如：305" 
+                                            className="w-full bg-slate-950 border border-slate-750 focus:border-purple-500 rounded-xl px-4 py-3 text-white outline-none transition-colors text-sm font-mono text-left"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-mono text-purple-400 uppercase tracking-widest mb-1.5 text-left">座號 (Seat No.)</label>
+                                        <input 
+                                            type="number" 
+                                            required
+                                            min="1"
+                                            max="100"
+                                            value={studentSeat} 
+                                            onChange={(e) => setStudentSeat(e.target.value)}
+                                            placeholder="例如：12" 
+                                            className="w-full bg-slate-950 border border-slate-755 focus:border-purple-500 rounded-xl px-4 py-3 text-white outline-none transition-colors text-sm font-mono text-left"
+                                        />
+                                    </div>
+                                </div>
+
+                                <button 
+                                    type="submit" 
+                                    className="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black rounded-xl shadow-lg transition-all"
+                                >
+                                    開始魔法挑戰
+                                </button>
+                            </form>
+                        </div>
+                    )}
                 </div>
             );
         };

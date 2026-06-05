@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三年級數學挑戰大廳 - 互動學習入口網</title>
+    
+    <!-- 引入 Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- 引入 Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+                        outfit: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- 引入 React 和 ReactDOM (CDN) -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- 引入 Babel (CDN) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- 引入 Firebase Compat SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        .animate-pulse-glow {
+            animation: pulse-glow 8s ease-in-out infinite;
+        }
+
+        /* 自訂滾動條 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.3);
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-indigo-500/30 selection:text-indigo-200">
+
+    <!-- 背景動態霓虹光球 -->
+    <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none animate-pulse-glow"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none animate-pulse-glow" style="animation-delay: -3s;"></div>
+    <div class="absolute top-[30%] right-[10%] w-[40%] h-[40%] rounded-full bg-purple-500/5 blur-[120px] pointer-events-none animate-pulse-glow" style="animation-delay: -5s;"></div>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useCallback } = React;
+
+        // === Firebase 初始化 ===
+        const firebaseConfig = {
+            apiKey: "AIzaSyC48oAqalT77SPpYVtCupYfV5hd6_ZrD2I",
+            authDomain: "my-teaching-tools-01.firebaseapp.com",
+            projectId: "my-teaching-tools-01",
+            storageBucket: "my-teaching-tools-01.firebasestorage.app",
+            messagingSenderId: "552535919921",
+            appId: "1:552535919921:web:95b4c1288edbae9572b410"
+        };
+        
+        let db = null;
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            db = firebase.firestore();
+        } catch (err) {
+            console.error("Firebase initialization failed:", err);
+        }
+
+        // === 遊戲卡片配置 ===
+        const GAMES = [
+            {
+                id: 'game1',
+                title: "星際數學救援行動",
+                unit: "單元七：乘與除",
+                desc: "太空船遭遇小行星撞擊，能量系統受損！快運用乘除互逆的關係，以及未知數的破譯密碼，修復航行軌道，拯救迷航的探測器！",
+                path: "mathgame3-2-7/index.html",
+                collection: "math_game_scores_7",
+                bgGradient: "from-blue-600/20 via-indigo-600/10 to-slate-900/80 border-blue-500/30 hover:border-blue-400/60 shadow-[0_0_30px_rgba(59,130,246,0.1)]",
+                btnStyle: "bg-blue-600 hover:bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]",
+                iconBg: "bg-blue-500/10 border-blue-500/30 text-blue-400",
+                icon: "🚀",
+                badge: "乘法與除法"
+            },
+            {
+                id: 'game2',
+                title: "時光魔法使的試煉",
+                unit: "單元八：時間",
+                desc: "時鐘之塔的魔法水晶碎裂了！時光魔法使，請運用 12/24 時制轉換、時間與秒的換算以及時間加減的魔法，修復碎裂的時空裂縫！",
+                path: "timegame3-2-8/index.html",
+                collection: "math_game_scores_8",
+                bgGradient: "from-purple-600/20 via-indigo-600/10 to-slate-900/80 border-purple-500/30 hover:border-purple-400/60 shadow-[0_0_30px_rgba(167,139,250,0.1)]",
+                btnStyle: "bg-purple-600 hover:bg-purple-500 shadow-[0_0_15px_rgba(167,139,250,0.3)]",
+                iconBg: "bg-purple-500/10 border-purple-500/30 text-purple-400",
+                icon: "🔮",
+                badge: "時間與時刻"
+            },
+            {
+                id: 'game3',
+                title: "數據偵探的統計解密",
+                unit: "單元九：統計表",
+                desc: "偵探事務所接到緊急委託！商業密碼被藏在複雜的表格中，請運用你報讀一維與二維表格的本領，重組合計數據，揭開事件的真相！",
+                path: "mathgame3-2-9/index.html",
+                collection: "math_game_scores_9",
+                bgGradient: "from-cyan-600/20 via-teal-600/10 to-slate-900/80 border-cyan-500/30 hover:border-cyan-400/60 shadow-[0_0_30px_rgba(6,182,212,0.1)]",
+                btnStyle: "bg-cyan-600 hover:bg-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.3)] text-slate-950 font-black",
+                iconBg: "bg-cyan-500/10 border-cyan-500/30 text-cyan-400",
+                icon: "🕵️",
+                badge: "報讀與統計"
+            }
+        ];
+
+        // === SVG 圖標組件 ===
+        const Icon = ({ name, className }) => {
+            const icons = {
+                'trophy': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H4v2h16v-2h-5c-.55 0-1-.45-1-1v-2.34"/><path d="M12 2a6 6 0 0 1 6 6c0 3.32-2.11 6.13-5 7.18V2H12Z"/></svg>,
+                'user': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+                'refresh': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21v-5h5"/></svg>,
+                'edit': <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            };
+            return icons[name] || null;
+        };
+
+        function PortalApp() {
+            const [studentClass, setStudentClass] = useState(localStorage.getItem('student_class') || '');
+            const [studentSeat, setStudentSeat] = useState(localStorage.getItem('student_seat') || '');
+            const [showLoginModal, setShowLoginModal] = useState(false);
+
+            // 排行榜狀態
+            const [activeTab, setActiveTab] = useState('game1');
+            const [leaderboards, setLeaderboards] = useState({ game1: [], game2: [], game3: [] });
+            const [loading, setLoading] = useState({ game1: false, game2: false, game3: false });
+
+            // 確保有班級座號
+            useEffect(() => {
+                const storedClass = localStorage.getItem('student_class');
+                const storedSeat = localStorage.getItem('student_seat');
+                if (!storedClass || !storedSeat) {
+                    setShowLoginModal(true);
+                }
+            }, []);
+
+            // 獲取排行榜資料
+            const fetchLeaderboard = useCallback(async (gameId) => {
+                if (!db) return;
+                const gameConfig = GAMES.find(g => g.id === gameId);
+                if (!gameConfig) return;
+
+                setLoading(prev => ({ ...prev, [gameId]: true }));
+                try {
+                    const snapshot = await db.collection(gameConfig.collection)
+                        .orderBy("score", "desc")
+                        .limit(50)
+                        .get();
+                    
+                    const list = [];
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        list.push({
+                            class: data.class,
+                            seat: data.seat,
+                            score: data.score,
+                            timestamp: data.timestamp ? data.timestamp.toDate() : new Date()
+                        });
+                    });
+
+                    // 進行時間的二次排序 (相同分數時，完成時間越早越前面)
+                    list.sort((a, b) => {
+                        if (b.score !== a.score) {
+                            return b.score - a.score;
+                        }
+                        return a.timestamp - b.timestamp;
+                    });
+
+                    setLeaderboards(prev => ({ ...prev, [gameId]: list.slice(0, 20) }));
+                } catch (err) {
+                    console.error(`Failed to fetch leaderboard for ${gameId}:`, err);
+                } finally {
+                    setLoading(prev => ({ ...prev, [gameId]: false }));
+                }
+            }, []);
+
+            // 載入所有排行榜
+            useEffect(() => {
+                fetchLeaderboard('game1');
+                fetchLeaderboard('game2');
+                fetchLeaderboard('game3');
+            }, [fetchLeaderboard]);
+
+            const handleSaveLogin = (e) => {
+                e.preventDefault();
+                if (studentClass.trim() && studentSeat.trim()) {
+                    localStorage.setItem('student_class', studentClass.trim());
+                    localStorage.setItem('student_seat', studentSeat.trim());
+                    setShowLoginModal(false);
+                }
+            };
+
+            const handleGameClick = (path) => {
+                if (!studentClass || !studentSeat) {
+                    setShowLoginModal(true);
+                } else {
+                    window.location.href = path;
+                }
+            };
+
+            const formatTime = (date) => {
+                if (!date) return '-';
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const d = String(date.getDate()).padStart(2, '0');
+                const h = String(date.getHours()).padStart(2, '0');
+                const min = String(date.getMinutes()).padStart(2, '0');
+                return `${m}/${d} ${h}:${min}`;
+            };
+
+            const activeGame = GAMES.find(g => g.id === activeTab);
+
+            return (
+                <div className="w-full max-w-7xl mx-auto px-4 py-8 md:py-16 relative z-10">
+                    
+                    {/* Header */}
+                    <header className="flex flex-col md:flex-row justify-between items-center mb-12 md:mb-16 gap-6">
+                        <div className="text-center md:text-left">
+                            <h1 className="text-4xl md:text-6xl font-black font-outfit tracking-tight leading-tight">
+                                三年級數學<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">挑戰大廳</span>
+                            </h1>
+                            <p className="text-slate-400 text-sm md:text-base tracking-widest mt-2 uppercase font-mono">
+                                Interactive Math Learning Portal
+                            </p>
+                        </div>
+                        
+                        {/* 學生卡片資訊 */}
+                        {studentClass && studentSeat ? (
+                            <div className="flex items-center gap-4 bg-slate-900/60 backdrop-blur-md border border-indigo-500/20 px-6 py-3 rounded-2xl shadow-lg">
+                                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                                    <Icon name="user" className="w-5 h-5" />
+                                </div>
+                                <div className="text-left font-mono">
+                                    <div className="text-[10px] text-slate-500">挑戰者身分</div>
+                                    <div className="text-base font-bold text-slate-200">
+                                        {studentClass} 班 {studentSeat} 號
+                                    </div>
+                                </div>
+                                <button 
+                                    onClick={() => setShowLoginModal(true)} 
+                                    className="ml-2 p-2 text-slate-400 hover:text-indigo-400 rounded-lg hover:bg-slate-800/50 transition-colors"
+                                    title="修改資訊"
+                                >
+                                    <Icon name="edit" className="w-4 h-4" />
+                                </button>
+                            </div>
+                        ) : (
+                            <button 
+                                onClick={() => setShowLoginModal(true)} 
+                                className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl shadow-[0_0_20px_rgba(99,102,241,0.3)] transition-all transform hover:scale-105"
+                            >
+                                👤 登記身分開始挑戰
+                            </button>
+                        )}
+                    </header>
+
+                    {/* 遊戲卡片區域 */}
+                    <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16 md:mb-24">
+                        {GAMES.map((game, idx) => (
+                            <div 
+                                key={game.id} 
+                                className={`flex flex-col justify-between p-6 md:p-8 rounded-[2rem] border backdrop-blur-md transition-all duration-300 transform hover:scale-[1.03] group ${game.bgGradient}`}
+                            >
+                                <div>
+                                    {/* 頂部圖標與標籤 */}
+                                    <div className="flex justify-between items-start mb-6">
+                                        <span className="text-xs font-mono font-bold tracking-widest text-slate-400 bg-slate-950/60 px-3 py-1.5 rounded-full border border-slate-800">
+                                            {game.unit}
+                                        </span>
+                                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl border ${game.iconBg}`}>
+                                            {game.icon}
+                                        </div>
+                                    </div>
+
+                                    {/* 標題與說明 */}
+                                    <h3 className="text-2xl font-black text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-300 transition-all mb-3">
+                                        {game.title}
+                                    </h3>
+                                    
+                                    <div className="inline-block bg-slate-950/40 px-2.5 py-0.5 rounded text-xs font-bold text-slate-400 border border-slate-900 mb-4">
+                                        主題：{game.badge}
+                                    </div>
+
+                                    <p className="text-slate-400 text-sm leading-relaxed mb-8">
+                                        {game.desc}
+                                    </p>
+                                </div>
+
+                                <button 
+                                    onClick={() => handleGameClick(game.path)} 
+                                    className={`w-full py-4 rounded-2xl text-white font-bold transition-all flex items-center justify-center gap-2 group-hover:shadow-lg ${game.btnStyle}`}
+                                >
+                                    進入遊戲挑戰 🎮
+                                </button>
+                            </div>
+                        ))}
+                    </section>
+
+                    {/* 排行榜區域 */}
+                    <section className="bg-slate-900/40 backdrop-blur-md border border-slate-800 rounded-[2.5rem] p-6 md:p-10 shadow-2xl relative overflow-hidden max-w-4xl mx-auto">
+                        <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                            <Icon name="trophy" className="w-48 h-48 text-white" />
+                        </div>
+
+                        {/* 頂部控制列 */}
+                        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 border-b border-slate-800 pb-6">
+                            <h2 className="text-2xl md:text-3xl font-black flex items-center gap-3 text-white">
+                                <Icon name="trophy" className="w-7 h-7 text-yellow-500" />
+                                榮譽排行榜
+                            </h2>
+                            
+                            {/* 手動更新 */}
+                            <button 
+                                onClick={() => fetchLeaderboard(activeTab)} 
+                                disabled={loading[activeTab]}
+                                className="flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-indigo-400 bg-slate-950/50 hover:bg-slate-950 border border-slate-800 px-4 py-2 rounded-xl transition-all disabled:opacity-50"
+                            >
+                                <Icon name="refresh" className={`w-3.5 h-3.5 ${loading[activeTab] ? 'animate-spin' : ''}`} />
+                                更新數據
+                            </button>
+                        </div>
+
+                        {/* 排行榜分頁標籤 */}
+                        <div className="flex gap-2 mb-6 p-1.5 bg-slate-950/80 rounded-2xl border border-slate-800">
+                            {GAMES.map(g => (
+                                <button
+                                    key={g.id}
+                                    onClick={() => setActiveTab(g.id)}
+                                    className={`flex-1 py-3 text-xs md:text-sm font-bold rounded-xl transition-all ${activeTab === g.id ? 'bg-slate-800 text-white border border-slate-700/50 shadow-md' : 'text-slate-500 hover:text-slate-300'}`}
+                                >
+                                    <span className="mr-1.5">{g.icon}</span>
+                                    {g.title.split('的')[0]}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* 排行榜列表 */}
+                        <div className="overflow-x-auto min-h-[350px]">
+                            {loading[activeTab] ? (
+                                <div className="flex flex-col items-center justify-center py-24 space-y-4 font-mono text-slate-400 animate-pulse">
+                                    <Icon name="refresh" className="w-8 h-8 animate-spin text-indigo-400" />
+                                    <div>正在連線現場雷達...</div>
+                                </div>
+                            ) : leaderboards[activeTab]?.length > 0 ? (
+                                <table className="w-full text-left border-collapse font-mono">
+                                    <thead>
+                                        <tr className="text-slate-500 text-xs md:text-sm border-b border-slate-800/80">
+                                            <th className="py-3 px-4 font-semibold w-16 text-center">排名</th>
+                                            <th className="py-3 px-4 font-semibold">挑戰者</th>
+                                            <th className="py-3 px-4 font-semibold text-right">獲得分數</th>
+                                            <th className="py-3 px-4 font-semibold text-right">挑戰時間</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-800/30 text-xs md:text-sm">
+                                        {leaderboards[activeTab].map((item, idx) => {
+                                            const isSelf = item.class === studentClass && item.seat === studentSeat;
+                                            return (
+                                                <tr 
+                                                    key={idx} 
+                                                    className={`hover:bg-slate-800/20 transition-colors ${isSelf ? 'bg-indigo-500/10 text-indigo-200 border-y border-indigo-500/20' : 'text-slate-300'}`}
+                                                >
+                                                    <td className="py-3.5 px-4 text-center">
+                                                        <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full font-bold text-[10px] ${
+                                                            idx === 0 ? 'bg-yellow-400 text-slate-950 shadow-[0_0_10px_rgba(250,204,21,0.4)]' :
+                                                            idx === 1 ? 'bg-slate-350 text-slate-950' :
+                                                            idx === 2 ? 'bg-amber-700 text-white' :
+                                                            'bg-slate-800/80 text-slate-400'
+                                                        }`}>
+                                                            {idx + 1}
+                                                        </span>
+                                                    </td>
+                                                    <td className="py-3.5 px-4 font-semibold">
+                                                        {item.class} 班 {item.seat} 號
+                                                    </td>
+                                                    <td className="py-3.5 px-4 text-right font-black text-amber-400 text-sm md:text-base">
+                                                        {item.score} <span className="text-[10px] font-normal text-slate-500">pts</span>
+                                                    </td>
+                                                    <td className="py-3.5 px-4 text-right text-slate-500 text-xs">
+                                                        {formatTime(item.timestamp)}
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center py-24 text-slate-600 text-xs md:text-sm">
+                                    <span className="text-3xl mb-2">🪐</span>
+                                    <span>目前尚無挑戰數據，快成為宇宙第一位破關的勇士吧！</span>
+                                </div>
+                            )}
+                        </div>
+                    </section>
+
+                    {/* 學生身分登入浮窗 */}
+                    {showLoginModal && (
+                        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+                            <form onSubmit={handleSaveLogin} className="bg-slate-900 border border-slate-800 p-6 md:p-8 rounded-3xl max-w-sm w-full space-y-6 shadow-[0_0_40px_rgba(99,102,241,0.15)] animate-pop-in">
+                                <div className="text-center space-y-2 animate-float">
+                                    <div className="w-12 h-12 bg-indigo-500/10 border border-indigo-500/30 rounded-full flex items-center justify-center mx-auto text-indigo-400 text-2xl">
+                                        🎓
+                                    </div>
+                                </div>
+                                <div className="text-center space-y-1">
+                                    <h3 className="text-xl font-bold text-white">請登錄學生身分</h3>
+                                    <p className="text-slate-400 text-xs font-mono">登記後挑戰成績將自動記錄到排行榜</p>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs font-mono text-indigo-400 uppercase tracking-widest mb-1.5">班級 (Class)</label>
+                                        <input 
+                                            type="text" 
+                                            required
+                                            value={studentClass} 
+                                            onChange={(e) => setStudentClass(e.target.value)}
+                                            placeholder="例如：305" 
+                                            className="w-full bg-slate-950 border border-slate-700 focus:border-indigo-500 rounded-xl px-4 py-3 text-white outline-none transition-colors text-sm font-mono"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-mono text-indigo-400 uppercase tracking-widest mb-1.5">座號 (Seat No.)</label>
+                                        <input 
+                                            type="number" 
+                                            required
+                                            min="1"
+                                            max="100"
+                                            value={studentSeat} 
+                                            onChange={(e) => setStudentSeat(e.target.value)}
+                                            placeholder="例如：12" 
+                                            className="w-full bg-slate-950 border border-slate-700 focus:border-indigo-500 rounded-xl px-4 py-3 text-white outline-none transition-colors text-sm font-mono"
+                                        />
+                                    </div>
+                                </div>
+
+                                <button 
+                                    type="submit" 
+                                    className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg transition-all"
+                                >
+                                    確認登記，進入大廳
+                                </button>
+                            </form>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<PortalApp />);
+    </script>
+</body>
+</html>
