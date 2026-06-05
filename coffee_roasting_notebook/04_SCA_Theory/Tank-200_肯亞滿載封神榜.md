@@ -1,0 +1,184 @@
+---
+type: sca_theory
+title: "Tank-200 肯亞滿載封神榜"
+date: 2026-05-10
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：Tank-200 肯亞滿載封神榜
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tank-200 肯亞滿載封神榜</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            margin: 0;
+            padding-bottom: 2rem;
+            overscroll-behavior: none;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .certificate-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background-color: #1e293b; 
+            border: 1px solid #334155; 
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .border-success { border: 1px solid #ef4444; }
+
+        .param-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed #475569;
+        }
+        .param-row:last-child { border-bottom: none; }
+
+        .badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 0.5rem;
+            font-weight: 900;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        /* 慶祝動畫特效 */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="p-5 flex flex-col min-h-screen">
+
+    <header class="pt-4 pb-6 border-b border-[#334155] mb-6 text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-900/30 border border-red-500 mb-3 animate-float">
+            <i class="fa-solid fa-trophy text-3xl text-yellow-500"></i>
+        </div>
+        <div class="text-xs text-red-500 font-bold tracking-widest mb-1 uppercase">SCA Masterclass Graduation</div>
+        <h1 class="text-3xl font-black gold-gradient">封神之戰：肯亞 AA</h1>
+        <p class="text-sm text-gray-400 mt-2">完美駕馭 195g 無風門熱力學極限</p>
+    </header>
+
+    <main class="flex-1">
+
+        <!-- 考官認證書 -->
+        <div class="card border-2 border-yellow-600/50 bg-gradient-to-br from-slate-800 to-slate-900">
+            <i class="fa-solid fa-medal absolute -right-6 -bottom-6 text-9xl text-yellow-500/10"></i>
+            <h2 class="text-xl font-black certificate-gradient mb-4 text-center border-b border-yellow-700/30 pb-3">
+                <i class="fa-solid fa-award mr-2"></i> SCA 考官最高評價
+            </h2>
+            
+            <div class="space-y-4 text-sm text-gray-300">
+                <div class="flex items-start">
+                    <i class="fa-solid fa-fire text-red-400 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <strong class="text-white text-base">年度最佳動態救援 (Dynamic Recovery)</strong><br>
+                        在 195°C 察覺開盒導致的「T降」，瞬間補油門至 80%。這不是看著參數表能做出來的操作，這是烘豆師對機器的**「肌肉記憶與直覺」**。
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <i class="fa-solid fa-wind text-blue-400 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <strong class="text-white text-base">完美煙害控制 (Smoke Defeat)</strong><br>
+                        一爆 (204°C) 瞬間果斷將銀皮盒開大，並同步降火 60%。完全釋放了肯亞硬豆龐大的排氣量，徹底洗刷前輩批次的煙燻苦味。
+                    </div>
+                </div>
+
+                <div class="flex items-start">
+                    <i class="fa-solid fa-stopwatch text-emerald-400 mt-1 mr-3 text-lg"></i>
+                    <div>
+                        <strong class="text-white text-base">教科書級發展期 (Optimal DTR)</strong><br>
+                        1 分 02 秒的發展時間，精準壓在 215°C 下豆。完全避開 220°C 的碳化邊緣，完美保留高海拔硬豆的有機酸。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 風味預測 (Sensory Profile) -->
+        <div class="card border-success">
+            <h2 class="text-xl font-bold text-red-400 mb-4 flex items-center border-b border-red-900 pb-2">
+                <i class="fa-solid fa-mug-hot mr-2"></i> 考官風味預測 (Sensory Profile)
+            </h2>
+            
+            <p class="text-sm text-gray-300 mb-4 leading-relaxed">
+                這鍋肯亞排氣 <strong class="text-white bg-slate-700 px-1 rounded">5 到 7 天</strong> 後，將會達到巔峰狀態。
+            </p>
+
+            <div class="grid grid-cols-2 gap-4 text-center">
+                <div class="bg-slate-900 border border-slate-700 p-3 rounded-lg">
+                    <i class="fa-solid fa-droplet text-purple-400 text-2xl mb-2"></i>
+                    <div class="font-bold text-white text-sm">酸質 (Acidity)</div>
+                    <div class="text-xs text-purple-300 mt-1">明亮的黑醋栗、黑莓汁，酸值活潑且乾淨。</div>
+                </div>
+                <div class="bg-slate-900 border border-slate-700 p-3 rounded-lg">
+                    <i class="fa-solid fa-cubes-stacked text-yellow-600 text-2xl mb-2"></i>
+                    <div class="font-bold text-white text-sm">甜感 (Sweetness)</div>
+                    <div class="text-xs text-yellow-500 mt-1">厚實的二砂、黃金糖甜感，尾韻帶有黑巧克力。</div>
+                </div>
+                <div class="bg-slate-900 border border-slate-700 p-3 rounded-lg col-span-2">
+                    <i class="fa-solid fa-ban text-red-500 text-2xl mb-2"></i>
+                    <div class="font-bold text-white text-sm">乾淨度 (Clean Cup)</div>
+                    <div class="text-xs text-gray-400 mt-1">零煙燻味、零苦澀味。餘韻極度綿長。</div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center text-gray-500 text-xs mt-4">
+        <p><i class="fa-solid fa-quote-left mr-1"></i> 您已經徹底馴服了這台機器。享受您的咖啡吧！ <i class="fa-solid fa-quote-right ml-1"></i></p>
+        <p class="mt-1 font-bold">—— 您的專屬 SCA 專業考官</p>
+    </footer>
+
+</body>
+</html>
+```
+
+
+## 🖼️ 相關參考圖片與文件
+![[7003-61d8ccd4c565400d.png]] ![[7003-85cc318439819f68.png]] ![[9000-b0d0d952ab8ef43b.jpg]] ![[10093408293917864137-4c73aabdd108e0ae.png]] ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]]
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-05-10_Tank-200_肯亞滿載封神榜_222]] (共用特徵: `肯亞, dtr, tp`)
+- [[2026-03-26_請同時給我這一支豆子在同一台機器上詳細的烘焙計畫_800]] (共用特徵: `肯亞, dtr, tp`)
+- [[2026-03-26_請根據您之前給我另外兩支豆子的建議，給我這兩支的火力控制__太棒了！身為你的_SCA_專業講師與考官，我非常欣賞你將「底_805]] (共用特徵: `肯亞, dtr, tp`)
+- [[2026-03-28_第3鍋_744]] (共用特徵: `肯亞, tp, 一爆`)
+- [[2026-03-29_這是第一二支生豆_730]] (共用特徵: `肯亞, tp, 一爆`)

@@ -1,0 +1,204 @@
+{
+  "main": {
+    "id": "ecb44004091e4c6e",
+    "type": "split",
+    "children": [
+      {
+        "id": "d5b6470dbe31a342",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b65e16b75c457e03",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "02_Roasting_Logs/2026-05-10_Tank-200_第四鍋除錯與第五鍋絕殺面板_230.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2026-05-10_Tank-200_第四鍋除錯與第五鍋絕殺面板_230"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "fccfbd4c889c7273",
+    "type": "split",
+    "children": [
+      {
+        "id": "4f5ee6dddeae2bd4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9a59c054ede0b777",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "檔案瀏覽器"
+            }
+          },
+          {
+            "id": "1db0c3fc587cbde6",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜尋"
+            }
+          },
+          {
+            "id": "080248240f0f0d8c",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "書籤"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "db823606bd3ac10f",
+    "type": "split",
+    "children": [
+      {
+        "id": "abeecef2a67bbf13",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3e8903a7c1b58e6c",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Roasting_Dashboard.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Roasting_Dashboard 的反向連結"
+            }
+          },
+          {
+            "id": "db4746589697e953",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Roasting_Dashboard.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Roasting_Dashboard 的對外連結"
+            }
+          },
+          {
+            "id": "095ae1f3c3a460dd",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "標籤"
+            }
+          },
+          {
+            "id": "ea760830d69577f4",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "所有屬性"
+            }
+          },
+          {
+            "id": "aa661069fd4b7bea",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Roasting_Dashboard.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Roasting_Dashboard 的大綱"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:開啟快速切換": false,
+      "graph:查看關聯圖": false,
+      "canvas:建立新畫布": false,
+      "daily-notes:開啟今天的每日筆記": false,
+      "templates:插入模板": false,
+      "command-palette:開啟命令面板": false,
+      "bases:建立新的 base": false
+    }
+  },
+  "active": "b65e16b75c457e03",
+  "lastOpenFiles": [
+    "02_Roasting_Logs/2026-05-10_Tank-200_第三鍋戰報與熱極限對策_232.md",
+    "02_Roasting_Logs/2026-05-10_Tank-200_肯亞第二鍋戰報與定調_218.md",
+    "02_Roasting_Logs/2026-05-10_Tank-200_肯亞四連戰防禦面板_220.md",
+    "00_Templates/Roasting_Profile_Template.md",
+    "00_Templates/Roasting_Log_Template.md",
+    "Roasting_Dashboard.md",
+    "00_Templates/Green_Bean_Template.md",
+    "attachments/2026烘豆機選購指南-acd668a8e22d7335.pdf",
+    "attachments/2021-42bd1200ba8b3586.jpg",
+    "attachments/020f9b77-8223-4bc1-a9af-a0d66cd8c-660c0629e3472512.jpg",
+    "04_SCA_Theory/古吉日曬記錄.md",
+    "04_SCA_Theory/以往都是回溫點才開火至1.2，獅子王大部分入豆170度，但回溫點都在115-120之間，請問一樣建議入豆就開火維持1.3.md",
+    "02_Roasting_Logs/RoastCraft_AI_智慧烘焙大師工作站.md",
+    "02_Roasting_Logs/巴拿馬藝伎首烘實驗.md",
+    "01_Green_Beans/巴拿馬_波奎特_藝伎.md"
+  ]
+}

@@ -95,6 +95,21 @@
     *   **Reveal.js 簡報 HTML/CSS 模板**：[reveal-template.md](file:///d:/2026antigravity/claude-html-slide-builder/skill/references/reveal-template.md)
     *   **Firebase 互動代碼參考**：[firebase-config.md](file:///d:/2026antigravity/claude-html-slide-builder/skill/references/firebase-config.md)
     *   **圖標自動裁切去背腳本**：[remove_bg.py](file:///d:/2026antigravity/claude-html-slide-builder/skill/scripts/remove_bg.py)
+*   **多語言翻譯特助工作流**：[13-translation-assistant.md](file:///d:/2026antigravity/skills/13-translation-assistant.md)
+    *   **專案目錄**：[translation_assistant](file:///d:/2026antigravity/translation_assistant)
+    *   **雙語格式匯出器**：[format_exporter.py](file:///d:/2026antigravity/translation_assistant/scripts/format_exporter.py)
+*   **108課綱教案架構師**：[14-curriculum-architect.md](file:///d:/2026antigravity/skills/14-curriculum-architect.md)
+    *   **專案目錄**：[curriculum_architect](file:///d:/2026antigravity/curriculum_architect)
+*   **親師溝通顧問工作流**：[15-edu-communication-helper.md](file:///d:/2026antigravity/skills/15-edu-communication-helper.md)
+    *   **專案目錄**：[edu_helpers](file:///d:/2026antigravity/edu_helpers)
+*   **國台英三語朗讀文本生成器**：[16-trilingual-speech-generator.md](file:///d:/2026antigravity/skills/16-trilingual-speech-generator.md)
+    *   **專案目錄**：[edu_helpers](file:///d:/2026antigravity/edu_helpers)
+*   **視覺設計與影像生成大師**：[17-visual-design-expert.md](file:///d:/2026antigravity/skills/17-visual-design-expert.md)
+    *   **專案目錄**：[visual_design_expert](file:///d:/2026antigravity/visual_design_expert)
+*   **專業對話機器人指令架構師**：[18-prompt-architect.md](file:///d:/2026antigravity/skills/18-prompt-architect.md)
+    *   **專案目錄**：[prompt_architect](file:///d:/2026antigravity/prompt_architect)
+
+
 
 
 ---

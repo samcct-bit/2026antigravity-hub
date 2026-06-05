@@ -19,4 +19,12 @@ description: 一次安裝所有 AntiGravity 懶人包技能。說「全部安裝
 10. **10-clasp-netlify-workflow** — Clasp + Netlify MCP 閉環系統工作流
 11. **11-html-slide-builder** — HTML 互動簡報生成器 (Reveal.js)
 12. **12-video-specs** — 三類影片製作規範與自動 Bootstrap 渲染系統
+13. **13-translation-assistant** — 多語言翻譯特助工作流
+14. **14-curriculum-architect** — 108課綱教案架構師
+15. **15-edu-communication-helper** — 親師溝通的GEMs
+16. **16-trilingual-speech-generator** — 國台英朗讀文本生成師
+17. **17-visual-design-expert** — 視覺設計與影像生成大師
+18. **18-prompt-architect** — 專業對話機器人指令架構師
+
+
 

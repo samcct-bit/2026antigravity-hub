@@ -1,0 +1,354 @@
+---
+type: sca_theory
+title: "SCA 微型烘豆訓練 (手機版)"
+date: 2026-05-03
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：SCA 微型烘豆訓練 (手機版)
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SCA 微型烘豆訓練 (手機版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #121212; /* 深色背景保護眼睛 */
+            color: #e5e7eb;
+            margin: 0;
+            overflow: hidden; /* 防止整個頁面滾動 */
+            overscroll-behavior: none;
+            touch-action: pan-y; /* 允許上下滾動，左右保留給 JS 處理滑動 */
+        }
+
+        #app-container {
+            height: 100dvh; /* 使用 dvh 解決手機瀏覽器網址列問題 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        #slides-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 1.5rem;
+            overflow-y: auto; /* 內容過長時允許單頁上下滾動 */
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateX(100%);
+            display: flex;
+            flex-direction: column;
+            background-color: #121212;
+        }
+
+        .slide.active {
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+
+        .gold-text {
+            background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 隱藏滾動條但保留功能 */
+        .slide::-webkit-scrollbar {
+            display: none;
+        }
+        .slide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <!-- 進度條 -->
+    <div class="h-1 w-full bg-gray-800 flex">
+        <div id="progress-bar" class="h-full bg-yellow-600 transition-all duration-300" style="width: 16.66%;"></div>
+    </div>
+
+    <!-- 頁面容器 -->
+    <div id="slides-container">
+        
+        <!-- Slide 1: 封面 -->
+        <div class="slide active" id="slide-0">
+            <div class="flex flex-col items-center justify-center h-full text-center space-y-6 pb-12">
+                <i class="fa-solid fa-fire text-5xl text-yellow-600 mb-2"></i>
+                <h3 class="text-sm text-gray-400 tracking-widest">SCA 進階微型烘豆</h3>
+                <h1 class="text-3xl font-bold gold-text leading-snug">Tank 200 曲線建構<br>與極致風味解析</h1>
+                <p class="text-gray-300 mt-4 px-4 leading-relaxed">
+                    選豆：水洗藝伎 vs 日曬古優種<br>
+                    目標：掌握微批次熱能慣性
+                </p>
+                <div class="mt-auto animate-bounce text-gray-500 text-sm">
+                    <i class="fa-solid fa-hand-pointer mb-2"></i><br>
+                    向左滑動開始訓練
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 設備與策略 -->
+        <div class="slide" id="slide-1">
+            <h2 class="text-2xl font-bold gold-text mb-4 border-b border-gray-700 pb-2">1. 設備與選豆策略</h2>
+            
+            <div class="card border-l-4 border-l-yellow-600">
+                <h3 class="text-lg font-bold mb-2"><i class="fa-solid fa-microchip text-yellow-600 mr-2"></i>Tank 200 特性</h3>
+                <p class="text-sm text-gray-300 mb-2"><strong>低熱慣性：</strong> 反應極快，火力調整會立即反映在 RoR 上。</p>
+                <p class="text-sm text-gray-300 mb-2"><strong>風門敏感：</strong> 小容量時風門過大易抽走熱能導致發展停滯。</p>
+                <p class="text-sm text-yellow-500 font-medium">👉 訓練重點：預測一爆前的放熱，提前降火防 Flick。</p>
+            </div>
+
+            <div class="card">
+                <h3 class="text-lg font-bold mb-3"><i class="fa-solid fa-scale-balanced text-gray-400 mr-2"></i>對照訓練選豆</h3>
+                <div class="bg-blue-900/30 p-3 rounded mb-2 border border-blue-800">
+                    <span class="text-blue-400 font-bold text-sm">對照 A (水洗)：古吉 藝伎 G1</span><br>
+                    <span class="text-xs text-gray-400">密度 852 g/L | 水份 10.8%<br>測試極致酸甜平衡與花香。</span>
+                </div>
+                <div class="bg-orange-900/30 p-3 rounded border border-orange-800">
+                    <span class="text-orange-400 font-bold text-sm">對照 B (日曬)：罕貝拉 布穀鳥</span><br>
+                    <span class="text-xs text-gray-400">海拔 1800-2000m<br>測試複雜水果調與甜感發展。</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 水洗藝伎 -->
+        <div class="slide" id="slide-2">
+            <h2 class="text-2xl font-bold text-blue-400 mb-4 border-b border-gray-700 pb-2">2. 水洗藝伎 (對照 A)</h2>
+            <p class="text-sm text-gray-400 mb-4">高密度耐火，明亮花果香取向。</p>
+            
+            <div class="card">
+                <h4 class="text-blue-300 font-bold mb-1">1. 脫水期 (Drying)</h4>
+                <p class="text-sm text-gray-300">密度高且水份健康，代表傳熱佳。<strong>入豆溫可偏高</strong>，快速通過脫水期，保留茉莉花香。</p>
+            </div>
+            <div class="card">
+                <h4 class="text-blue-300 font-bold mb-1">2. 梅納期 (Maillard)</h4>
+                <p class="text-sm text-gray-300">穩步降火，保持 RoR 平緩下降。<strong>此階段不宜拖長</strong>，避免消耗白桃與荔枝果酸。</p>
+            </div>
+            <div class="card">
+                <h4 class="text-blue-300 font-bold mb-1">3. 發展期 (Dev.)</h4>
+                <p class="text-sm text-gray-300">一爆前 10-15 秒必須提前收火防止 RoR 飆升。建議 <strong>DTR 控制在 10% - 12%</strong>。</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: 日曬古優 -->
+        <div class="slide" id="slide-3">
+            <h2 class="text-2xl font-bold text-orange-400 mb-4 border-b border-gray-700 pb-2">3. 日曬古優種 (對照 B)</h2>
+            <p class="text-sm text-gray-400 mb-4">表面糖分多，需溫和給熱建構甜感。</p>
+            
+            <div class="card">
+                <h4 class="text-orange-300 font-bold mb-1">1. 脫水期 (Drying)</h4>
+                <p class="text-sm text-gray-300">防表面焦斑，入豆溫需比水洗豆 <strong>低 5-10°C</strong>。初期吸熱慢，需耐心給熱。</p>
+            </div>
+            <div class="card">
+                <h4 class="text-orange-300 font-bold mb-1">2. 梅納期 (Maillard)</h4>
+                <p class="text-sm text-gray-300"><strong>稍微延長</strong>此階段，強化百香果、芒果等厚實度 (Body) 與甜感。風門中等。</p>
+            </div>
+            <div class="card">
+                <h4 class="text-orange-300 font-bold mb-1">3. 發展期 (Dev.)</h4>
+                <p class="text-sm text-gray-300">一爆瞬間可適度開大風門排煙防煙燻味。建議 <strong>DTR 落在 13% - 15%</strong>。</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: 曲線對照 -->
+        <div class="slide" id="slide-4">
+            <h2 class="text-2xl font-bold gold-text mb-4 border-b border-gray-700 pb-2">4. 曲線預期與杯測計畫</h2>
+            
+            <div class="card flex flex-col space-y-4">
+                <h3 class="font-bold text-gray-200">RoR 曲線型態差異</h3>
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-1 bg-blue-400"></div>
+                    <div class="text-sm text-gray-300 flex-1">
+                        <span class="text-blue-400 font-bold">水洗：</span> 起步高、陡降、短發展。
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-1 bg-orange-400"></div>
+                    <div class="text-sm text-gray-300 flex-1">
+                        <span class="text-orange-400 font-bold">日曬：</span> 起步緩、平順、稍長發展。
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <h3 class="font-bold text-gray-200 mb-3"><i class="fa-solid fa-list-check text-yellow-600 mr-2"></i>5鍋 (各200g) 執行計畫</h3>
+                <ul class="text-sm text-gray-300 space-y-2 list-disc pl-4">
+                    <li><strong class="text-white">鍋次 1 & 2：</strong> 設定水洗/日曬基準線 (Baseline)。</li>
+                    <li><strong class="text-white">杯測驗證：</strong> 尋找發展不足(澀)或過度(平淡)的瑕疵。</li>
+                    <li><strong class="text-white">鍋次 3 & 4：</strong> 每次只微調<span class="text-yellow-500">單一變數</span> (如: 入豆溫)。</li>
+                    <li><strong class="text-white">鍋次 5：</strong> 完美重現表現最好的一鍋。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 6: 結語 -->
+        <div class="slide" id="slide-5">
+            <div class="flex flex-col items-center justify-center h-full text-center space-y-6 pb-12">
+                <div class="w-20 h-20 bg-yellow-600/20 rounded-full flex items-center justify-center border border-yellow-600/50">
+                    <i class="fa-solid fa-check text-3xl text-yellow-500"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white">準備好您的 Tank 200</h2>
+                <p class="text-gray-400 text-sm px-6">
+                    微型打樣機的關鍵在於「數據記錄」與「杯測驗證」。不要怕失敗，勇敢在杯測桌上找答案！
+                </p>
+                <button onclick="alert('加油！若烘焙遇到瓶頸，隨時帶上您的曲線截圖來找我！')" class="mt-8 px-6 py-3 bg-yellow-600 hover:bg-yellow-700 text-white rounded-full font-bold shadow-lg w-full max-w-[250px]">
+                    開始烘豆！
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 底部導覽列 -->
+    <div class="h-14 bg-gray-900 border-t border-gray-800 flex justify-between items-center px-6">
+        <button id="btn-prev" class="text-gray-400 p-2 opacity-50 cursor-default">
+            <i class="fa-solid fa-chevron-left text-xl"></i>
+        </button>
+        <div class="text-xs text-gray-500 font-mono tracking-widest">
+            <span id="page-indicator">1 / 6</span>
+        </div>
+        <button id="btn-next" class="text-yellow-600 p-2">
+            <i class="fa-solid fa-chevron-right text-xl"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const pageIndicator = document.getElementById('page-indicator');
+    const progressBar = document.getElementById('progress-bar');
+    const container = document.getElementById('slides-container');
+    
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    function updateUI() {
+        slides.forEach((slide, index) => {
+            slide.classList.remove('active', 'prev');
+            if (index === currentIndex) {
+                slide.classList.add('active');
+            } else if (index < currentIndex) {
+                slide.classList.add('prev');
+            }
+        });
+
+        pageIndicator.innerText = `${currentIndex + 1} / ${totalSlides}`;
+        progressBar.style.width = `${((currentIndex + 1) / totalSlides) * 100}%`;
+
+        // Update buttons
+        if (currentIndex === 0) {
+            btnPrev.classList.replace('text-yellow-600', 'text-gray-400');
+            btnPrev.classList.add('opacity-50', 'cursor-default');
+        } else {
+            btnPrev.classList.replace('text-gray-400', 'text-yellow-600');
+            btnPrev.classList.remove('opacity-50', 'cursor-default');
+        }
+
+        if (currentIndex === totalSlides - 1) {
+            btnNext.classList.replace('text-yellow-600', 'text-gray-400');
+            btnNext.classList.add('opacity-50', 'cursor-default');
+        } else {
+            btnNext.classList.replace('text-gray-400', 'text-yellow-600');
+            btnNext.classList.remove('opacity-50', 'cursor-default');
+        }
+    }
+
+    function goNext() {
+        if (currentIndex < totalSlides - 1) {
+            currentIndex++;
+            updateUI();
+        }
+    }
+
+    function goPrev() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateUI();
+        }
+    }
+
+    btnNext.addEventListener('click', goNext);
+    btnPrev.addEventListener('click', goPrev);
+
+    // --- 手機滑動 (Swipe) 偵測邏輯 ---
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let touchStartY = 0;
+    let touchEndY = 0;
+    const minSwipeDistance = 50; // 最小滑動距離才觸發翻頁
+
+    container.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, {passive: true});
+
+    container.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+    }, {passive: true});
+
+    function handleSwipe() {
+        const xDiff = touchStartX - touchEndX;
+        const yDiff = touchStartY - touchEndY;
+
+        // 確保是水平滑動（X軸位移大於Y軸位移）
+        if (Math.abs(xDiff) > Math.abs(yDiff)) {
+            if (xDiff > minSwipeDistance) {
+                // 向左滑，下一頁
+                goNext();
+            } else if (xDiff < -minSwipeDistance) {
+                // 向右滑，上一頁
+                goPrev();
+            }
+        }
+    }
+</script>
+</body>
+</html>
+```
+
+
+## 🖼️ 相關參考圖片與文件
+![[7003-61d8ccd4c565400d.png]] ![[7003-85cc318439819f68.png]] ![[10093408293917864137-4c73aabdd108e0ae.png]] [[index (6)-4cccc038d5b1e1e1.html]] (附件檔案) ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]]
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-05-03_SCA_微型烘豆訓練_(手機版)_338]] (共用特徵: `藝伎, dtr, ror`)
+- [[2026-05-03_SCA_進階微型烘豆訓練簡報_340]] (共用特徵: `藝伎, dtr, ror`)
+- [[SCA_進階微型烘豆訓練簡報]] (共用特徵: `藝伎, dtr, ror`)
+- [[2026-03-26_請同時給我這一支豆子在同一台機器上詳細的烘焙計畫_800]] (共用特徵: `藝伎, dtr, ror`)
+- [[2026-02-05_SCA_Roasting_Intermediate_烘豆中級模擬試題_1386]] (共用特徵: `dtr, ror, tp`)

@@ -1,0 +1,254 @@
+---
+type: sca_theory
+title: "Tank-200 熟豆拼配與包裝指南"
+date: 2026-05-10
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：Tank-200 熟豆拼配與包裝指南
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tank-200 熟豆拼配與包裝指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            margin: 0;
+            padding-bottom: 3rem;
+            overscroll-behavior: none;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background-color: #1e293b; 
+            border: 1px solid #334155; 
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        .tab-pane.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #0f172a;
+            border-top: 1px solid #334155;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+            z-index: 50;
+        }
+
+        .nav-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #64748b;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+            background: none;
+            border: none;
+        }
+        .nav-btn i {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+        .nav-btn.active { color: #d4af37; }
+        .nav-btn.active i { transform: scale(1.15); }
+    </style>
+</head>
+<body class="p-5">
+
+    <header class="pt-2 pb-4 border-b border-[#334155] mb-5">
+        <div class="text-xs text-yellow-500 font-bold tracking-wider mb-1 flex items-center">
+            <i class="fa-solid fa-box-open mr-2"></i> POST-ROAST BLENDING
+        </div>
+        <h1 class="text-2xl font-black gold-gradient">熟豆拼配與包裝指南</h1>
+        <p class="text-sm text-gray-400 mt-1">2 鍋拼配 = 1 包半磅 + 100g 專屬品飲包</p>
+    </header>
+
+    <main>
+
+        <!-- 絕對禁區 -->
+        <div class="bg-red-900/40 border border-red-500 rounded-xl p-4 mb-6 shadow-lg shadow-red-900/20">
+            <h3 class="text-red-400 font-bold text-lg mb-2 flex items-center">
+                <i class="fa-solid fa-ban mr-2"></i> 絕對不可送人的鍋次
+            </h3>
+            <p class="text-sm text-red-200">
+                <strong class="text-white bg-red-600 px-1 rounded">藝伎 B#4 (忘記開火那鍋)</strong><br>
+                這鍋發展嚴重停滯 (Baked)。請把它裝進密封罐，貼上「瑕疵教材」標籤，留給自己做感官校正訓練。這鍋的麥片味會是您未來進步的最好養分，但千萬別送給朋友！
+            </p>
+        </div>
+
+        <!-- Tab 1: 古吉藝伎拼配 -->
+        <div id="tab-gesha" class="tab-pane active">
+            <h2 class="text-xl font-bold text-blue-400 mb-4 border-b border-blue-900 pb-2">
+                <i class="fa-solid fa-water mr-2"></i> 古吉藝伎 G1 拼配法
+            </h2>
+            <p class="text-sm text-gray-300 mb-4">我們手上有 4 鍋極其優秀的藝伎 (B#1, B#2, B#3, B#5)。我為您配出兩包不同風格的半磅！</p>
+
+            <!-- 藝伎第一包 -->
+            <div class="card border border-emerald-500/50">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-white text-lg"><i class="fa-solid fa-gift text-emerald-400 mr-2"></i>藝伎 A包：完美平衡感</h3>
+                    <span class="text-xs bg-emerald-900 text-emerald-300 px-2 py-1 rounded border border-emerald-500">B#1 + B#5</span>
+                </div>
+                <ul class="text-sm text-gray-300 space-y-2 mb-3">
+                    <li><strong class="text-emerald-400">B#1 (Dev 44")：</strong> 第一鍋穩定的溫機起步，風味圓潤。</li>
+                    <li><strong class="text-emerald-400">B#5 (Dev 41")：</strong> 最後一鍋的完美救場，花香封存極佳。</li>
+                </ul>
+                <div class="bg-slate-900 p-2 rounded text-xs text-gray-400">
+                    <strong class="text-white">送禮對象：</strong> 喜歡喝淺焙，但怕酸味太刺激、追求尾韻甜感與花香優雅平衡的朋友。
+                </div>
+            </div>
+
+            <!-- 藝伎第二包 -->
+            <div class="card border border-blue-500/50">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-white text-lg"><i class="fa-solid fa-bolt text-blue-400 mr-2"></i>藝伎 B包：極致果汁酸</h3>
+                    <span class="text-xs bg-blue-900 text-blue-300 px-2 py-1 rounded border border-blue-500">B#2 + B#3</span>
+                </div>
+                <ul class="text-sm text-gray-300 space-y-2 mb-3">
+                    <li><strong class="text-blue-400">B#2 (Dev 39")：</strong> 發展極短，酸值非常銳利明亮。</li>
+                    <li><strong class="text-blue-400">B#3 (Ye 4:10)：</strong> 脫水期極短的高動能，果汁感爆發。</li>
+                </ul>
+                <div class="bg-slate-900 p-2 rounded text-xs text-gray-400">
+                    <strong class="text-white">送禮對象：</strong> 喜歡明亮檸檬酸、白桃香氣，追求咖啡如熱帶水果汁般層次分明的老饕。
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: 肯亞AA拼配 -->
+        <div id="tab-kenya" class="tab-pane">
+            <h2 class="text-xl font-bold text-red-400 mb-4 border-b border-red-900 pb-2">
+                <i class="fa-solid fa-fire mr-2"></i> 肯亞 AA 拼配法
+            </h2>
+            <p class="text-sm text-gray-300 mb-4">我們手上有 5 鍋高水準的肯亞 (B#1~B#5)。可以包出兩包半磅，並留下一鍋當特調！</p>
+
+            <!-- 肯亞第一包 -->
+            <div class="card border border-yellow-500/50">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-white text-lg"><i class="fa-solid fa-mug-hot text-yellow-500 mr-2"></i>肯亞 A包：經典黑醋栗</h3>
+                    <span class="text-xs bg-yellow-900 text-yellow-300 px-2 py-1 rounded border border-yellow-500">肯亞 B#1 + B#4</span>
+                </div>
+                <ul class="text-sm text-gray-300 space-y-2 mb-3">
+                    <li><strong class="text-yellow-500">B#1 (Ye 4:05)：</strong> 第一鍋破風定調，1分02秒完美發展。</li>
+                    <li><strong class="text-yellow-500">B#4 (Ye 4:15)：</strong> 巔峰熱能狀態下的完美複製 (1分02秒)。</li>
+                </ul>
+                <div class="bg-slate-900 p-2 rounded text-xs text-gray-400">
+                    <strong class="text-white">送禮對象：</strong> 追求肯亞經典調性，喜愛乾淨、無煙燻味，酸甜平衡且帶有黑醋栗風味的朋友。這包是最高水準的日常口糧！
+                </div>
+            </div>
+
+            <!-- 肯亞第二包 -->
+            <div class="card border border-red-500/50">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-white text-lg"><i class="fa-solid fa-droplet text-red-400 mr-2"></i>肯亞 B包：濃郁黑糖果醬</h3>
+                    <span class="text-xs bg-red-900 text-red-300 px-2 py-1 rounded border border-red-500">肯亞 B#2 + B#5</span>
+                </div>
+                <ul class="text-sm text-gray-300 space-y-2 mb-3">
+                    <li><strong class="text-red-400">B#2 (Ye 5:15)：</strong> 脫水期最長，熱穿透極佳，甜感厚實。</li>
+                    <li><strong class="text-red-400">B#5 (晚降火)：</strong> 梅納反應吸滿熱能，Body 醇厚度最強。</li>
+                </ul>
+                <div class="bg-slate-900 p-2 rounded text-xs text-gray-400">
+                    <strong class="text-white">送禮對象：</strong> 怕酸，喜歡咖啡有重量感 (Body)、喝起來像果醬或帶有濃郁黑糖甜感的朋友。
+                </div>
+            </div>
+
+            <!-- 考官特留品 -->
+            <div class="card border border-purple-500/50 mt-4">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="font-bold text-white text-base"><i class="fa-solid fa-crown text-purple-400 mr-2"></i>考官特留：酸質極限</h3>
+                    <span class="text-xs bg-purple-900 text-purple-300 px-2 py-1 rounded border border-purple-500">肯亞 B#3 單獨留存</span>
+                </div>
+                <p class="text-sm text-gray-300">
+                    這鍋是發展僅 <strong class="text-white">49 秒</strong> 的特異點！請單獨留下來給自己喝。它會讓您徹底明白「短發展」對肯亞酸質的爆發力有多大的影響。
+                </p>
+            </div>
+        </div>
+
+    </main>
+
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="switchTab('gesha', this)">
+            <i class="fa-solid fa-water text-blue-400"></i>
+            <span class="text-blue-400">藝伎包裝</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('kenya', this)">
+            <i class="fa-solid fa-fire text-red-400"></i>
+            <span class="text-red-400">肯亞包裝</span>
+        </button>
+    </nav>
+
+    <script>
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-pane').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btnElement.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
+```
+
+
+## 🖼️ 相關參考圖片與文件
+![[7003-61d8ccd4c565400d.png]] ![[7003-85cc318439819f68.png]] ![[9000-b0d0d952ab8ef43b.jpg]] ![[10093408293917864137-4c73aabdd108e0ae.png]] ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]]
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-05-10_Tank-200_熟豆拼配與包裝指南_208]] (共用特徵: `藝伎, gesha, 肯亞`)
+- [[2026-03-26_請同時給我這一支豆子在同一台機器上詳細的烘焙計畫_800]] (共用特徵: `藝伎, gesha, 肯亞`)
+- [[2026-03-26_請根據您之前給我另外兩支豆子的建議，給我這兩支的火力控制__太棒了！身為你的_SCA_專業講師與考官，我非常欣賞你將「底_805]] (共用特徵: `藝伎, 肯亞, 梅納反應`)
+- [[2026-05-03_SCA_進階微型烘豆訓練簡報_340]] (共用特徵: `藝伎, gesha, 梅納反應`)
+- [[2026-05-08_附上之前成功在Tank200上的烘豆紀錄，我還有幾支生豆要請你幫我評估哪些較適合在Tank200烘，可以和水洗藝伎及日曬_265]] (共用特徵: `藝伎, 肯亞, 梅納反應`)

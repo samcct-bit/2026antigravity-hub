@@ -1,0 +1,185 @@
+---
+type: sca_theory
+title: "Tank-200 第二鍋戰報與連烘對策"
+date: 2026-05-10
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：Tank-200 第二鍋戰報與連烘對策
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tank-200 第二鍋戰報與連烘對策</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            margin: 0;
+            padding-bottom: 3rem;
+            overscroll-behavior: none;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); /* Sky blue for washed */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background-color: #1e293b; 
+            border: 1px solid #334155; 
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .border-excellent { border: 1px solid #38bdf8; }
+        .border-action { border: 1px solid #f59e0b; }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed #334155;
+        }
+        .data-row:last-child { border-bottom: none; }
+
+        .stat-box {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 0.8rem;
+            text-align: center;
+            flex: 1;
+            margin: 0 0.3rem;
+        }
+    </style>
+</head>
+<body class="p-5">
+
+    <header class="pt-2 pb-4 border-b border-[#334155] mb-5">
+        <div class="text-xs text-sky-400 font-bold tracking-wider mb-1 flex items-center">
+            <i class="fa-solid fa-microscope mr-2"></i> BATCH #2 ANALYSIS
+        </div>
+        <h1 class="text-2xl font-black gold-gradient">第二鍋 深度解析</h1>
+        <p class="text-sm text-gray-400 mt-1">完美熱機狀態 / 高階微調展現</p>
+    </header>
+
+    <main>
+        <!-- 數據對比區 -->
+        <div class="card border-excellent">
+            <h2 class="text-lg font-bold text-sky-400 mb-3 flex items-center">
+                <i class="fa-solid fa-scale-balanced mr-2"></i> B#1 vs B#2 關鍵數據
+            </h2>
+            
+            <div class="flex justify-between mb-4">
+                <div class="stat-box">
+                    <div class="text-xs text-gray-400 mb-1">Batch 1 (溫機)</div>
+                    <div class="font-bold text-white text-lg">205°C 入</div>
+                    <div class="text-sm text-emerald-400">發展 44秒</div>
+                </div>
+                <div class="stat-box border-sky-500/50">
+                    <div class="text-xs text-sky-300 mb-1">Batch 2 (熱機)</div>
+                    <div class="font-bold text-white text-lg">200°C 入</div>
+                    <div class="text-sm text-sky-400">發展 39秒</div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 rounded-lg p-3 text-sm text-gray-300 space-y-2">
+                <div class="flex items-start">
+                    <i class="fa-solid fa-caret-right text-sky-500 mt-1 mr-2"></i>
+                    <p><strong class="text-white">轉黃點控制完美：</strong> B#1 是 162°C 轉黃，B#2 在 200°C 入豆的修正下，提早於 155°C 順利轉黃，且時間都在 4分55秒。這代表你精準抵銷了機器的熱動能！</p>
+                </div>
+                <div class="flex items-start">
+                    <i class="fa-solid fa-caret-right text-sky-500 mt-1 mr-2"></i>
+                    <p><strong class="text-white">發展時間縮短的真相：</strong> B#2 抵達 216°C 下豆只花了 39 秒（比前一鍋快 5 秒）。這是因為機器完全熱透，鑄鐵釋放的潛熱疊加了一爆的放熱反應 (Exothermic reaction)，讓尾段爬升更有效率。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 杯測風味預測 -->
+        <div class="card">
+            <h2 class="text-lg font-bold text-purple-400 mb-2 flex items-center">
+                <i class="fa-solid fa-mug-hot mr-2"></i> 考官風味預測 (Sensory)
+            </h2>
+            <p class="text-sm text-gray-300 leading-relaxed">
+                這兩鍋都是極度優秀的極淺焙藝伎。<br>
+                <span class="text-emerald-400 font-bold">Batch 1 (44秒)</span> 的甜感與花香會稍微圓潤、厚實一點。<br>
+                <span class="text-sky-400 font-bold">Batch 2 (39秒)</span> 發展更快，你將會喝到極度明亮、銳利、如香水般爆發的檸檬/白桃酸香，乾淨度極高。
+            </p>
+        </div>
+
+        <!-- 3到5鍋 連烘極限對策 -->
+        <div class="card border-action">
+            <div class="flex items-center justify-between mb-3 border-b border-slate-700 pb-2">
+                <h2 class="text-lg font-bold text-yellow-500 flex items-center">
+                    <i class="fa-solid fa-fire text-orange-500 mr-2"></i> Batch 3 ~ 5 戰術指南
+                </h2>
+                <span class="bg-red-600 text-white text-xs px-2 py-1 rounded font-bold animate-pulse">熱飽和巔峰</span>
+            </div>
+            
+            <p class="text-sm text-gray-300 mb-4">
+                接下來的鍋次，Tank 200 會處於「極度高溫、極易暴衝」的狀態。請堅守以下陣線：
+            </p>
+            
+            <div class="space-y-3">
+                <div class="data-row">
+                    <div>
+                        <div class="font-bold text-white text-sm">入豆溫 (Charge)</div>
+                        <div class="text-xs text-gray-400">維持現狀，不可再低</div>
+                    </div>
+                    <div class="font-black text-blue-400">死守 200°C</div>
+                </div>
+                
+                <div class="data-row">
+                    <div>
+                        <div class="font-bold text-white text-sm">轉黃點 (Ye) 降火</div>
+                        <div class="text-xs text-gray-400">機器極熱，提早卸除火力</div>
+                    </div>
+                    <div class="font-black text-yellow-500">155°C 降 75%</div>
+                </div>
+
+                <div class="bg-orange-900/30 border border-orange-500/50 p-3 rounded-lg mt-2">
+                    <div class="font-bold text-orange-400 text-sm mb-1">
+                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> 尾段發展控制 (發展時間微調)
+                    </div>
+                    <div class="text-xs text-orange-200">
+                        如果你希望接下來幾鍋的發展時間回到 45 秒左右（增加甜感），請在<strong>「一爆 207°C 拔抽屜排煙時，火力不要補到 70%，維持 65% 即可」</strong>，利用拔抽屜的熱流失，微微踩住煞車，讓它慢慢滑行到 216°C。
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+
+</body>
+</html>
+```
+
+
+## 🖼️ 相關參考圖片與文件
+![[7003-61d8ccd4c565400d.png]] ![[7003-85cc318439819f68.png]] ![[9000-b0d0d952ab8ef43b.jpg]] ![[10093408293917864137-4c73aabdd108e0ae.png]] ![[15535583523822020334-c7f4ccfba84206d6.png]] ![[2070008902362922822-55e4bd152ce255b3.png]] ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]]
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-05-10_Tank-200_第二鍋戰報與連烘對策_234]] (共用特徵: `藝伎, tp, 一爆`)
+- [[2026-03-26_請同時給我這一支豆子在同一台機器上詳細的烘焙計畫_800]] (共用特徵: `藝伎, tp, 一爆`)
+- [[2026-05-03_Tank-200_實戰風火配置面板_334]] (共用特徵: `藝伎, tp, 一爆`)
+- [[2026-05-10_Tank-200_195g滿載全線指南_242]] (共用特徵: `藝伎, tp, 一爆`)
+- [[2026-05-10_Tank-200_第一鍋戰報與連烘對策_236]] (共用特徵: `藝伎, tp, 一爆`)

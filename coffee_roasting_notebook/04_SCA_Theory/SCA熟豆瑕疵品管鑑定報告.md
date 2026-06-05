@@ -1,0 +1,318 @@
+---
+type: sca_theory
+title: "SCA熟豆瑕疵品管鑑定報告"
+date: 2026-05-10
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：SCA熟豆瑕疵品管鑑定報告
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SCA 熟豆瑕疵品管 (QC) 鑑定報告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            margin: 0;
+            overflow: hidden;
+            overscroll-behavior: none;
+            touch-action: pan-y;
+        }
+
+        #app-container {
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #slides-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 1.5rem;
+            overflow-y: auto;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateX(100%);
+            display: flex;
+            flex-direction: column;
+            background-color: #0f172a;
+        }
+
+        .slide.active { transform: translateX(0); }
+        .slide.prev { transform: translateX(-100%); }
+
+        .slide::-webkit-scrollbar { display: none; }
+        .slide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background-color: #1e293b; 
+            border: 1px solid #334155; 
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .defect-badge {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.3rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <!-- 進度條 -->
+    <div class="h-1 w-full bg-slate-800 flex">
+        <div id="progress-bar" class="h-full bg-yellow-500 transition-all duration-300" style="width: 25%;"></div>
+    </div>
+
+    <div id="slides-container">
+        
+        <!-- Slide 1: 封面與總評 -->
+        <div class="slide active" id="slide-0">
+            <div class="flex flex-col items-center justify-center h-full text-center space-y-6 pb-12">
+                <div class="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center border border-slate-600 mb-2">
+                    <i class="fa-solid fa-microscope text-4xl text-yellow-500"></i>
+                </div>
+                <h3 class="text-xs text-gray-400 tracking-widest uppercase">Post-Roast Quality Control</h3>
+                <h1 class="text-3xl font-black gold-gradient leading-snug">熟豆瑕疵品管<br>鑑定報告</h1>
+                
+                <div class="bg-slate-800/80 border border-emerald-500/50 p-4 rounded-xl mt-4 w-full text-left">
+                    <h4 class="text-emerald-400 font-bold mb-2 flex items-center"><i class="fa-solid fa-shield-check mr-2"></i>考官總評</h4>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        您的挑豆非常精準！這盤豆子若混入杯中，會瞬間扼殺水洗藝伎最珍貴的「乾淨度 (Clean Cup)」與「花香」。挑出它們，是成就極致微批次的最後一道防線。
+                    </p>
+                </div>
+                
+                <div class="mt-auto animate-bounce text-gray-500 text-sm">
+                    <i class="fa-solid fa-hand-pointer mb-2"></i><br>向左滑動檢視瑕疵分析
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: 奎克豆 (Quakers) -->
+        <div class="slide" id="slide-1">
+            <h2 class="text-2xl font-bold text-yellow-500 mb-4 border-b border-slate-700 pb-2">
+                1. 奎克豆 (Quakers / 未熟豆)
+            </h2>
+            
+            <div class="card border-l-4 border-yellow-500">
+                <p class="text-sm text-gray-300 mb-3">
+                    照片中最明顯、數量最多，呈現<strong class="text-yellow-400">「極度淺色、泛白、甚至是花生色」</strong>的豆子。
+                </p>
+                <div class="bg-slate-900 p-3 rounded mb-3">
+                    <h4 class="text-white font-bold text-sm mb-1">成因 (為何生豆看不出來？)</h4>
+                    <p class="text-xs text-gray-400">
+                        這是因為咖啡果實採收時「未完全成熟」，或是種植過程缺乏營養。這類豆子內部<strong class="text-red-400">缺乏足夠的糖分與蛋白質</strong>。因為沒有糖，在烘焙時「無法進行焦糖化與梅納反應」，所以不管您怎麼烘，它都不會變深色。
+                    </p>
+                </div>
+                <div class="bg-red-900/20 border border-red-500/30 p-3 rounded">
+                    <h4 class="text-red-400 font-bold text-sm mb-1"><i class="fa-solid fa-skull mr-2"></i>杯測風味影響</h4>
+                    <p class="text-xs text-red-200">
+                        嚴重的<strong class="text-white">花生味、紙板味、生糙木質味</strong>。它會直接破壞藝伎的甜感，並在尾韻帶來明顯的「乾澀感 (Astringency)」。只要 2 到 3 顆，就能毀掉一杯手沖！
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: 破損豆與畸形豆 -->
+        <div class="slide" id="slide-2">
+            <h2 class="text-2xl font-bold text-orange-400 mb-4 border-b border-slate-700 pb-2">
+                2. 破損、蟲蛀與貝殼豆
+            </h2>
+            
+            <div class="card border-l-4 border-orange-500">
+                <p class="text-sm text-gray-300 mb-3">
+                    照片中可以看到一些<strong class="text-orange-300">缺角、破裂、或是呈現中空貝殼狀</strong>的豆子。
+                </p>
+                <div class="bg-slate-900 p-3 rounded mb-3">
+                    <h4 class="text-white font-bold text-sm mb-1">成因分析</h4>
+                    <p class="text-xs text-gray-400">
+                        <strong class="text-gray-200">破損豆：</strong> 多為處理廠脫殼機設定不當壓碎，或運輸擠壓。<br>
+                        <strong class="text-gray-200">貝殼豆 (Shells)：</strong> 基因遺傳問題，導致種子內部中空。
+                    </p>
+                </div>
+                <div class="bg-orange-900/20 border border-orange-500/30 p-3 rounded">
+                    <h4 class="text-orange-400 font-bold text-sm mb-1"><i class="fa-solid fa-fire mr-2"></i>烘焙熱力學破壞</h4>
+                    <p class="text-xs text-orange-200">
+                        因為這些豆子體積小、邊緣薄或中空，它們無法承受 195g 滿載時高達 200°C 的入豆溫與 85% 強火。它們會<strong class="text-white">提早被烤焦 (Tipping / Scorching)</strong>，釋放出煙燻味與焦苦味，掩蓋掉藝伎細緻的花香。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: SCA 終極感官作業 -->
+        <div class="slide" id="slide-3">
+            <div class="flex flex-col items-center justify-center h-full text-center space-y-5 pb-12">
+                <div class="w-16 h-16 bg-red-900/50 rounded-full flex items-center justify-center border border-red-500">
+                    <i class="fa-solid fa-flask text-2xl text-red-400"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white">SCA 考官的終極作業</h2>
+                
+                <p class="text-sm text-gray-400 px-4">
+                    恭喜您成功守護了藝伎的品質！但這盤瑕疵豆，請<strong class="text-red-400">絕對不要丟掉！</strong>
+                </p>
+
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-600 text-left w-full mt-4">
+                    <h3 class="text-yellow-500 font-bold mb-3"><i class="fa-solid fa-book-open mr-2"></i>建立瑕疵資料庫 (Defect Cupping)</h3>
+                    <ol class="text-sm text-gray-300 space-y-3 list-decimal pl-5">
+                        <li>將這盤瑕疵豆（特別是那些很白的奎克豆）集中起來磨成粉。</li>
+                        <li>用杯測碗或手沖濾杯，單獨沖泡這杯「純瑕疵咖啡」。</li>
+                        <li><strong class="text-white">喝一口，記住這個味道。</strong> 記住那股花生紙板味與澀感。</li>
+                    </ol>
+                    <p class="text-xs text-emerald-400 mt-4 font-bold text-center">
+                        這口難喝的咖啡，將會讓您的味覺從此覺醒。未來在外面喝到任何一杯咖啡，您都能瞬間喝出烘豆師有沒有用心挑豆！
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 底部導覽列 -->
+    <div class="h-14 bg-slate-900 border-t border-slate-800 flex justify-between items-center px-6 z-50 relative">
+        <button id="btn-prev" class="text-gray-500 p-2 opacity-50 cursor-default transition">
+            <i class="fa-solid fa-chevron-left text-xl"></i>
+        </button>
+        <div class="text-xs text-gray-400 font-mono tracking-widest">
+            <span id="page-indicator">1 / 4</span>
+        </div>
+        <button id="btn-next" class="text-yellow-500 p-2 transition">
+            <i class="fa-solid fa-chevron-right text-xl"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const pageIndicator = document.getElementById('page-indicator');
+    const progressBar = document.getElementById('progress-bar');
+    const container = document.getElementById('slides-container');
+    
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    function updateUI() {
+        slides.forEach((slide, index) => {
+            slide.classList.remove('active', 'prev');
+            if (index === currentIndex) {
+                slide.classList.add('active');
+            } else if (index < currentIndex) {
+                slide.classList.add('prev');
+            }
+        });
+
+        pageIndicator.innerText = `${currentIndex + 1} / ${totalSlides}`;
+        progressBar.style.width = `${((currentIndex + 1) / totalSlides) * 100}%`;
+
+        // Update buttons
+        if (currentIndex === 0) {
+            btnPrev.classList.remove('text-yellow-500');
+            btnPrev.classList.add('text-gray-500', 'opacity-50', 'cursor-default');
+        } else {
+            btnPrev.classList.remove('text-gray-500', 'opacity-50', 'cursor-default');
+            btnPrev.classList.add('text-yellow-500');
+        }
+
+        if (currentIndex === totalSlides - 1) {
+            btnNext.classList.remove('text-yellow-500');
+            btnNext.classList.add('text-gray-500', 'opacity-50', 'cursor-default');
+        } else {
+            btnNext.classList.remove('text-gray-500', 'opacity-50', 'cursor-default');
+            btnNext.classList.add('text-yellow-500');
+        }
+    }
+
+    function goNext() {
+        if (currentIndex < totalSlides - 1) {
+            currentIndex++;
+            updateUI();
+        }
+    }
+
+    function goPrev() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateUI();
+        }
+    }
+
+    btnNext.addEventListener('click', goNext);
+    btnPrev.addEventListener('click', goPrev);
+
+    // 手機滑動邏輯
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let touchStartY = 0;
+    let touchEndY = 0;
+
+    container.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, {passive: true});
+
+    container.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+    }, {passive: true});
+
+    function handleSwipe() {
+        const xDiff = touchStartX - touchEndX;
+        const yDiff = touchStartY - touchEndY;
+        if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(xDiff) > 50) {
+            if (xDiff > 0) goNext();
+            else goPrev();
+        }
+    }
+</script>
+</body>
+</html>
+```
+
+
+## 🖼️ 相關參考圖片與文件
+![[7003-61d8ccd4c565400d.png]] ![[7003-85cc318439819f68.png]] ![[9000-b0d0d952ab8ef43b.jpg]] ![[10093408293917864137-4c73aabdd108e0ae.png]] [[index (6)-4cccc038d5b1e1e1.html]] (附件檔案) ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]]
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-05-10_SCA熟豆瑕疵品管鑑定報告_206]] (共用特徵: `藝伎, 肯亞, 梅納反應`)
+- [[2026-05-10_Tank-200_肯亞AA_195g_轉換面板_226]] (共用特徵: `藝伎, 肯亞, 梅納反應`)
+- [[Tank-200_肯亞AA_195g_轉換面板]] (共用特徵: `藝伎, 肯亞, 梅納反應`)
+- [[2026-05-08_Tank-200_四大天王戰役面板_262]] (共用特徵: `藝伎, 肯亞, 梅納反應`)
+- [[2026-05-08_Tank-200_雙日戰役面板_264]] (共用特徵: `藝伎, 肯亞, 梅納反應`)

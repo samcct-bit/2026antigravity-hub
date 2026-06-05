@@ -1,0 +1,153 @@
+---
+type: sca_theory
+title: "肯亞 AA A - 經典澄淨 | 金成淬"
+date: 2026-05-18
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：肯亞 AA A - 經典澄淨 | 金成淬
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>肯亞 AA 祈安喬古 (經典澄淨) | 金成淬 · 淬成金</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { 'zen-white': '#FAFAFA', 'ink-gray': '#2C2C2C', 'refine-gold': '#B8905B' }, fontFamily: { serif: ['"Noto Serif TC"', 'serif'] } } }
+        }
+    </script>
+    <style>
+        body { font-family: 'Noto Serif TC', serif; background-color: #FAFAFA; color: #2C2C2C; }
+        .fade-in { opacity: 0; transform: translateY(15px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .paper-texture { background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); }
+        .zen-border { position: relative; }
+        .zen-border::before, .zen-border::after { content: ''; position: absolute; width: 20px; height: 20px; border: 1px solid #B8905B; }
+        .zen-border::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+        .zen-border::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+    </style>
+</head>
+<body class="antialiased paper-texture selection:bg-refine-gold selection:text-white flex flex-col min-h-screen">
+
+    <header class="w-full flex flex-col items-center justify-center pt-20 pb-12 px-4 fade-in">
+        <!-- 強制帶入的 Logo 程式碼 -->
+        <div class="w-32 h-32 mb-4 relative flex items-center justify-center">
+            <img src="https://lh3.googleusercontent.com/d/1B82p7LcB66OSw61u-TH6UIC-g3LnuJ4M" 
+                 alt="金成淬 Logo" 
+                 class="w-full h-full object-contain mix-blend-multiply brightness-110 contrast-125 grayscale"
+                 onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='flex';">
+                 
+            <div id="logo-fallback" class="hidden w-28 h-28 rounded-full border-2 border-gray-800 flex-col items-center justify-center relative">
+                <div class="absolute inset-1 rounded-full border border-gray-800 opacity-30"></div>
+                <div class="text-center leading-tight mt-1">
+                    <span class="block text-xs font-bold tracking-widest text-gray-800">金成</span>
+                    <span class="block text-3xl font-bold my-1 text-gray-800">淬</span>
+                    <span class="block text-xs font-bold tracking-widest text-gray-800">成金</span>
+                </div>
+            </div>
+        </div>
+        <h1 class="text-xl md:text-2xl font-light tracking-[0.3em] text-ink-gray mt-6 mb-2">本期淬煉精選</h1>
+        <div class="w-12 h-[1px] bg-refine-gold mb-8"></div>
+        <p class="text-sm tracking-widest text-gray-500 font-light">自然 · 禪意 · 專業 · 淬煉</p>
+    </header>
+
+    <main class="flex-grow max-w-5xl mx-auto px-6 pb-24 w-full">
+        <section class="fade-in flex flex-col lg:flex-row gap-16 items-center lg:items-start justify-center mt-8">
+            <div class="w-full max-w-md lg:w-1/2 p-2 relative">
+                <div class="bg-white p-8 md:p-12 shadow-[0_15px_50px_-15px_rgba(0,0,0,0.05)] border border-gray-100 zen-border relative z-10">
+                    <div class="flex items-center justify-between mb-8 pb-6 border-b border-gray-100">
+                        <span class="text-xs tracking-[0.2em] text-refine-gold border border-refine-gold px-3 py-1.5">72hr 水洗 · 澄淨</span>
+                        <span class="text-xs tracking-widest text-gray-400">Light-Med Roast</span>
+                    </div>
+                    
+                    <h2 class="text-2xl md:text-3xl font-semibold text-ink-gray mb-3 tracking-wide leading-snug">肯亞 AA 涅里<br>祈安喬古</h2>
+                    <p class="text-xs md:text-sm tracking-widest text-gray-400 mb-10 uppercase font-light">Kenya AA Nyeri - Classic</p>
+                    
+                    <div class="space-y-5 mb-12">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-400 tracking-widest">產區品種</span>
+                            <span class="text-ink-gray font-medium tracking-wider">SL28, SL34 / 1800M</span>
+                        </div>
+                        <div class="w-full h-[1px] bg-gray-50"></div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-400 tracking-widest">烘焙日期</span>
+                            <span class="text-ink-gray font-semibold tracking-wider text-refine-gold">2026.05.12</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-zen-white p-6 space-y-4 border-l-2 border-refine-gold">
+                        <p class="text-sm flex gap-5 items-center"><span class="text-refine-gold font-medium w-12 text-center text-xs tracking-widest">初韻</span> <span class="text-ink-gray tracking-wider">黑醋栗香、蔓越莓酸甜</span></p>
+                        <p class="text-sm flex gap-5 items-center"><span class="text-refine-gold font-medium w-12 text-center text-xs tracking-widest">中調</span> <span class="text-ink-gray tracking-wider">柑橘明亮、乾淨澄澈</span></p>
+                        <p class="text-sm flex gap-5 items-center"><span class="text-refine-gold font-medium w-12 text-center text-xs tracking-widest">尾韻</span> <span class="text-ink-gray tracking-wider">經典洛神、酸甜平衡</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full max-w-md lg:w-1/2 space-y-12 lg:pt-8">
+                <div>
+                    <h3 class="text-lg font-medium text-ink-gray tracking-widest mb-6 flex items-center">
+                        <span class="w-8 h-[1px] bg-refine-gold mr-4"></span> 品牌敘事
+                    </h3>
+                    <p class="text-gray-600 leading-[2.2] tracking-wide text-justify font-light text-[15px]">
+                        極致乾淨的肯亞經典。沒有多餘的煙燻干擾，只有純粹的黑醋栗與蔓越莓在舌尖跳躍。酸與甜在這裡達到了完美的黃金比例。作為您每日最高水準的口糧，百喝不膩，純粹如初。
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-medium text-ink-gray tracking-widest mb-6 flex items-center">
+                        <span class="w-8 h-[1px] bg-refine-gold mr-4"></span> 考官沖煮指引
+                    </h3>
+                    <ul class="space-y-6 text-[15px] text-gray-600 tracking-wider font-light leading-[1.8]">
+                        <li class="flex items-start">
+                            <span class="text-refine-gold mr-4 mt-1.5 text-xs">◆</span>
+                            <span><strong class="font-medium text-ink-gray tracking-widest">溫控萃取：</strong> <br>建議水溫 90°C。這個溫度能確保香氣足夠，同時避免萃取出不必要的雜澀味。</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-refine-gold mr-4 mt-1.5 text-xs">◆</span>
+                            <span><strong class="font-medium text-ink-gray tracking-widest">節奏流速：</strong> <br>中度研磨，穩定的流速即可帶出最經典的肯亞酸甜平衡。不需刻意拉長萃取，以保留其極致乾淨的口感。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="w-full py-12 flex flex-col items-center justify-center border-t border-gray-200/50 mt-auto fade-in">
+        <p class="text-ink-gray tracking-[0.25em] text-sm font-medium mb-4">金成淬 ALCHEMY OF REFINEMENT</p>
+        <p class="text-gray-400 text-xs tracking-[0.2em] font-light">© 2026 Gàn-sîng-Kim. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const elements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }});
+            }, { threshold: 0.1 });
+            elements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
+```
+
+
+## 🖼️ 相關參考圖片與文件
+![[7003-61d8ccd4c565400d.png]] ![[7003-85cc318439819f68.png]] ![[image_5bd301-a2e77f6c827bfe5a.png]] ![[image_db3f9f-6b6329d1c4cb4e92.png]] ![[10093408293917864137-4c73aabdd108e0ae.png]] ![[IMG20260405202251-d26edf580f6611b8.jpg]] ![[IMG_0016-1381311bbb20b6d0.jpg]] ![[IMG_0020-259844b3aec492b8.png]] ![[IMG_0021-259844b3aec492b8.png]] ![[IMG_0022-259844b3aec492b8.jpg]] ![[IMG_0024-259844b3aec492b8.jpg]] ![[IMG_0025-259844b3aec492b8.png]] ![[IMG_0025-63235577b267a9cf.png]] [[Roasting_Intermediate_ProfileLog_-37207be7c8cf4ed8.pdf]] (附件檔案) [[2026烘豆機選購指南-acd668a8e22d7335.pdf]] (附件檔案) [[New Note-d803819e815fe0e1]] (附件檔案) ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]]
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-04-13_肯亞AA_完整版_530]] (共用特徵: `肯亞, 巴拿馬, ror`)
+- [[肯亞AA_完整版]] (共用特徵: `肯亞, 巴拿馬, ror`)
+- [[2026-03-06_溫度17度，濕度85%，962公克的生豆，需要調整建議的風火配置嗎？_1048]] (共用特徵: `肯亞, 巴拿馬, ror`)
+- [[2026-03-07_美國的s800和kaleido相比_1041]] (共用特徵: `肯亞, 巴拿馬, ror`)
+- [[2026-03-24_咖啡烘焙自主訓練教材_841]] (共用特徵: `肯亞, 巴拿馬, ror`)

@@ -1,0 +1,1011 @@
+---
+type: sca_theory
+title: "SlideCraft AI"
+date: 2026-03-01
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：SlideCraft AI
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlideCraft AI - 雜誌拼貼版簡報架構師</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Noto+Sans+TC:wght@400;700;900&display=swap');
+
+        :root {
+            /* 雜誌拼貼 / 粗獷主義配色 */
+            --bg-paper: #F4F0EA;     /* 米白紙張底色 */
+            --panel-bg: #FFFFFF;     /* 純白面板 */
+            --panel-border: #111111; /* 極黑粗框 */
+            --primary: #FF1493;      /* 螢光桃紅 */
+            --primary-hover: #E6007E;
+            --accent: #0044FF;       /* 電光藍 */
+            --accent-yellow: #FFEA00;/* 標籤亮黃 */
+            --text-main: #111111;    /* 極黑文字 */
+            --text-muted: #555555;
+            --input-bg: #FFFFFF;
+            --success: #00C853;
+            --warning: #FF6D00;
+        }
+
+        * { box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif; }
+        
+        body { 
+            background-color: var(--bg-paper); 
+            /* 點陣/網點背景效果 */
+            background-image: radial-gradient(#d1caba 2px, transparent 2px);
+            background-size: 20px 20px;
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 20px; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        }
+
+        /* 頂部標題列：拼貼字體風格 */
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 25px; 
+            padding-bottom: 15px;
+            border-bottom: 4px solid var(--panel-border);
+            flex-shrink: 0;
+        }
+        .header h1 { 
+            margin: 0; 
+            font-size: 32px; 
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            letter-spacing: 2px;
+        }
+        /* 拼貼字母特效 */
+        .title-part-1 { background: var(--primary); color: #fff; padding: 2px 10px; transform: rotate(-3deg); display: inline-block; border: 2px solid #000; box-shadow: 3px 3px 0 #000; }
+        .title-part-2 { background: var(--accent); color: #fff; padding: 2px 10px; transform: rotate(2deg); display: inline-block; margin-left: -5px; border: 2px solid #000; box-shadow: 3px 3px 0 #000; }
+        .title-part-3 { background: var(--accent-yellow); color: #000; padding: 2px 10px; transform: rotate(-1deg); display: inline-block; margin-left: 10px; font-family: 'Courier Prime', monospace; font-weight: bold; border: 2px solid #000; }
+
+        .subtitle { font-family: 'Courier Prime', monospace; font-weight: bold; font-size: 14px; background: #000; color: #fff; padding: 5px 10px; transform: rotate(1deg); }
+
+        /* 主佈局 - 三欄式 */
+        .container { 
+            display: flex; 
+            gap: 25px; 
+            flex: 1; 
+            min-height: 0; 
+        }
+        
+        .panel { 
+            background: var(--panel-bg); 
+            border: 3px solid var(--panel-border); 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            overflow-y: auto; 
+            /* 粗獷主義實心陰影 */
+            box-shadow: 8px 8px 0px rgba(0,0,0,1);
+            position: relative;
+        }
+        
+        .panel-left { flex: 1; }
+        .panel-mid { flex: 1.5; background: #FAFAFA; position: relative;}
+        .panel-right { flex: 1.2; }
+
+        .panel h2 { 
+            font-size: 18px; 
+            font-weight: 900;
+            margin-top: 0; 
+            margin-bottom: 20px; 
+            color: var(--text-main);
+            display: inline-block;
+            background: var(--accent-yellow);
+            padding: 5px 10px;
+            border: 2px solid #000;
+            transform: rotate(-1deg);
+        }
+
+        /* 輸入區塊樣式 */
+        label { font-size: 14px; color: var(--text-main); margin-bottom: 8px; display: block; font-weight: 900; font-family: 'Courier Prime', monospace; }
+        
+        textarea, select, input[type="text"] { 
+            width: 100%; 
+            background-color: var(--input-bg); 
+            border: 2px solid var(--panel-border); 
+            padding: 12px; 
+            font-size: 14px; 
+            color: var(--text-main); 
+            outline: none; 
+            transition: 0.2s; 
+            margin-bottom: 18px;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+        }
+        textarea { resize: vertical; min-height: 120px; line-height: 1.6; font-family: 'Courier Prime', monospace; }
+        textarea:focus, select:focus, input[type="text"]:focus { 
+            background-color: #FFFFF0; 
+            border-color: var(--accent); 
+            box-shadow: 4px 4px 0px var(--accent); 
+            transform: translate(-1px, -1px);
+        }
+
+        /* 檔案上傳與拖曳區塊 */
+        .upload-zone {
+            border: 3px dashed var(--panel-border);
+            padding: 20px;
+            text-align: center;
+            background: #f8f8f8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .upload-zone:hover { background: #FFFFE0; border-color: var(--primary); transform: rotate(1deg); box-shadow: 4px 4px 0 var(--primary); }
+        .upload-zone input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .upload-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+        .file-name { font-size: 13px; color: var(--accent); margin-top: 10px; font-weight: bold; word-break: break-all; font-family: 'Courier Prime', monospace; }
+        #imgPreview { max-width: 100%; max-height: 150px; border: 2px solid #000; display: none; margin-top: 10px; box-shadow: 3px 3px 0 #000; transform: rotate(-2deg); }
+
+        /* 粗獷主義按鈕樣式 */
+        button { 
+            background: var(--primary); 
+            color: white; 
+            border: 3px solid #000; 
+            padding: 12px 20px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            transition: all 0.1s; 
+            font-size: 15px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            text-transform: uppercase;
+            box-shadow: 4px 4px 0px #000;
+        }
+        button:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #000; background: var(--primary-hover); }
+        button:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px #000; }
+        
+        button.action-btn { background: var(--accent); margin-top: auto; }
+        button.action-btn:hover { background: #0033CC; }
+        
+        button.suggest-btn { background: #FFF; border: 2px solid #000; color: #000; width: auto; padding: 4px 12px; font-size: 12px; box-shadow: 2px 2px 0px #000; }
+        button.suggest-btn:hover { background: var(--accent-yellow); }
+
+        /* 中間：分鏡卡片編輯區 */
+        #slideEditorContainer { display: none; flex-direction: column; gap: 20px; padding: 15px 5px; }
+        .slide-card {
+            background: #FFF;
+            border: 3px solid #000;
+            padding: 20px 15px 15px 15px;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
+            position: relative;
+            transform: rotate(0.5deg);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .slide-card:nth-child(even) { transform: rotate(-0.5deg); }
+        .slide-card:hover { transform: scale(1.01) rotate(0deg); box-shadow: 8px 8px 0px rgba(0,0,0,0.15); z-index: 10;}
+        
+        /* 卡片管理操作按鈕 (Hover時顯示) */
+        .card-actions {
+            position: absolute;
+            top: -15px; right: -10px;
+            display: flex; gap: 6px;
+            z-index: 15;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+        .slide-card:hover .card-actions { opacity: 1; }
+        
+        .mini-btn {
+            padding: 4px 8px; font-size: 14px; width: auto; border: 2px solid #000; 
+            background: #fff; color: #000; box-shadow: 2px 2px 0 #000; cursor: pointer;
+            font-family: 'Courier Prime', monospace; font-weight: 900;
+        }
+        .mini-btn:hover { background: var(--accent-yellow); transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000;}
+        .mini-btn.delete-btn:hover { background: var(--primary); color: #fff; }
+
+        /* 紙膠帶特效 */
+        .slide-card::before {
+            content: ''; position: absolute; top: -12px; left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 100px; height: 30px;
+            background: rgba(255, 255, 200, 0.7);
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            backdrop-filter: blur(2px); z-index: 5;
+        }
+
+        .slide-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px dashed #ccc; padding-bottom: 10px; }
+        .slide-header h3 { margin: 0; font-size: 16px; font-weight: 900; background: #000; color: #fff; padding: 2px 8px; display: inline-block;}
+        .slide-badge { font-size: 12px; font-family: 'Courier Prime', monospace; font-weight: bold; color: var(--accent); }
+        
+        .var-input-group { display: flex; flex-direction: column; margin-bottom: 12px; position: relative; }
+        .var-label-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .var-input-group label { font-size: 13px; color: #333; margin-bottom: 0; background: var(--accent-yellow); padding: 0 4px;}
+        
+        .ai-fill-badge { font-size: 11px; background: #000; color: var(--accent-yellow); padding: 2px 6px; font-weight: bold; border-radius: 0; }
+        .ai-fill-badge.hidden { display: none; }
+
+        .var-input-group input { margin-bottom: 0; border: 2px solid #ccc; background: #fdfdfd; box-shadow: none; font-family: 'Courier Prime', monospace; font-weight: bold;}
+        .var-input-group input:focus { border-color: #000; background: #fff; box-shadow: 3px 3px 0 #000; }
+        .var-input-group input.ai-filled { border-color: var(--primary); background: rgba(255, 20, 147, 0.05); }
+
+        .add-slide-btn { background: #fff; color: #000; border: 2px dashed #000; margin-top: 10px; margin-bottom: 20px; padding: 10px;}
+        .add-slide-btn:hover { background: #f0f0f0; border-style: solid; }
+
+        /* 右側：輸出區 */
+        .output-box {
+            flex: 1;
+            background: #FEFCE8; 
+            border: 2px dashed #000;
+            padding: 15px;
+            font-family: 'Courier Prime', 'Courier New', monospace;
+            font-size: 13px;
+            color: #000;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        /* 復古印章浮水印 */
+        .floating-stamp {
+            position: fixed; bottom: 40px; right: 40px;
+            width: 110px; height: 110px;
+            border: 4px double #D32F2F; border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #D32F2F;
+            font-family: 'Courier Prime', monospace; font-weight: 900; font-size: 16px;
+            text-transform: uppercase; transform: rotate(-15deg); cursor: pointer;
+            z-index: 1000; background: rgba(255, 255, 255, 0.85); box-shadow: 2px 2px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); user-select: none; line-height: 1.1;
+        }
+        .floating-stamp span { font-size: 11px; font-weight: bold; margin-top: 4px; border-top: 1px solid #D32F2F; padding-top: 2px;}
+        .floating-stamp:hover { transform: rotate(0deg) scale(1.1); background: #D32F2F; color: #FFF; border-color: #FFF; box-shadow: 5px 5px 15px rgba(211, 47, 47, 0.4); }
+        .floating-stamp:hover span { border-color: #FFF; }
+
+        /* Loading 遮罩 */
+        #loader { display: none; text-align: center; padding: 40px 0; color: #000; font-family: 'Courier Prime', monospace; font-weight: bold;}
+        .spinner { border: 4px solid #f3f3f3; border-radius: 50%; border-top: 4px solid #000; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 15px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Toast 提示 */
+        #toast { visibility: hidden; min-width: 250px; background-color: #000; color: var(--accent-yellow); text-align: center; border: 3px solid #000; padding: 12px; position: fixed; z-index: 2000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: 900; box-shadow: 6px 6px 0px rgba(0,0,0,0.2); font-family: 'Courier Prime', monospace;}
+        #toast.show { visibility: visible; animation: fadein 0.3s, fadeout 0.3s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* 彈出式指引 Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 3000; backdrop-filter: blur(2px); align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.show { display: flex; opacity: 1; }
+        .modal-content { background: var(--bg-paper); border: 4px solid #000; width: 90%; max-width: 650px; padding: 30px; position: relative; box-shadow: 15px 15px 0px rgba(0,0,0,1); transform: translateY(20px) rotate(-1deg); transition: transform 0.3s ease; max-height: 85vh; overflow-y: auto; }
+        .modal-overlay.show .modal-content { transform: translateY(0) rotate(0deg); }
+        .modal-close { position: absolute; top: 10px; right: 15px; font-size: 30px; font-weight: bold; color: #000; cursor: pointer; transition: 0.2s; }
+        .modal-close:hover { color: var(--primary); transform: scale(1.2); }
+        .modal-body h3 { font-family: 'Anton', sans-serif; font-size: 28px; color: #000; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; border-bottom: 4px solid #000; padding-bottom: 10px;}
+        .modal-body h4 { font-weight: 900; background: var(--accent-yellow); display: inline-block; padding: 4px 10px; border: 2px solid #000; margin-bottom: 8px; transform: rotate(-1deg);}
+        .modal-body p, .modal-body li { font-size: 15px; color: #111; line-height: 1.6; font-weight: 500;}
+        .modal-body ul { margin-top: 5px; padding-left: 20px; }
+        .success-box { background: #fff; border: 3px dashed #000; padding: 15px; margin: 20px 0; transform: rotate(1deg); box-shadow: 4px 4px 0 rgba(0,0,0,0.1);}
+
+        .footer { text-align: center; padding-top: 15px; font-size: 12px; color: #555; flex-shrink: 0; font-family: 'Courier Prime', monospace; font-weight: bold; }
+
+        ::-webkit-scrollbar { width: 12px; height: 12px; }
+        ::-webkit-scrollbar-track { background: var(--bg-paper); border-left: 2px solid #000; }
+        ::-webkit-scrollbar-thumb { background: #000; border: 2px solid var(--bg-paper); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+        @media (max-width: 1024px) {
+            .container { flex-direction: column; overflow-y: auto; height: auto; gap: 20px; }
+            body { height: auto; overflow: auto; }
+            .panel { min-height: 400px; box-shadow: 4px 4px 0px rgba(0,0,0,1); transform: none !important;}
+            .floating-stamp { bottom: 20px; right: 20px; width: 80px; height: 80px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>
+            <span class="title-part-1">Slide</span>
+            <span class="title-part-2">Craft</span>
+            <span class="title-part-3">AI</span>
+        </h1>
+        <div class="subtitle">PROMPT ARCHITECT</div>
+    </div>
+
+    <div class="container">
+        <!-- 左側：輸入與解析 -->
+        <div class="panel panel-left">
+            <h2>📥 1. 輸入與解析</h2>
+            
+            <label>設定簡報目標結構：</label>
+            <select id="deckObjective">
+                <option value="auto">🧠 智能分鏡 (Smart) - 依據素材原始邏輯自動切割</option>
+                <option value="standard">📑 萬用簡報 (Standard) - 涵蓋封面/痛點/觀念/案例等</option>
+                <option value="pitch">🚀 商業提案 (Pitch Deck) - 痛點/解法/市場/CTA</option>
+                <option value="edu">📚 知識萃取 (Educational) - 概念/拆解/案例/總結</option>
+                <option value="report">📊 數據匯報 (Data Report) - 總覽/亮點/分析/下一步</option>
+            </select>
+
+            <label>貼上長文草稿或大綱：</label>
+            <textarea id="sourceText" placeholder="貼上你想轉換為簡報的文章、報告、或會議逐字稿... 
+(例如: 公司今年營收成長150%，但傳統流程過於繁雜耗時...我們決定導入全新AI自動化引擎...)"></textarea>
+            
+            <label>🎨 上傳「風格參考」或簡報素材：</label>
+            <div class="upload-zone">
+                <span class="upload-icon">📁</span>
+                <span style="font-size: 14px; font-weight: 900; display: block; margin-bottom: 5px;">點擊或拖曳上傳 (可多選)</span>
+                <span style="font-size: 12px; color: var(--text-muted); font-family: 'Courier Prime', monospace;">支援：圖片截圖 (強烈建議) / .pptx 簡報解析</span>
+                <input type="file" id="imageUpload" accept="image/*,.pptx,.pdf" multiple onchange="handleFileUpload(event)">
+                <div id="imageFileName" class="file-name"></div>
+                <img id="imgPreview" src="" alt="預覽">
+            </div>
+
+            <button onclick="startReverseEngineering()" style="margin-top: 10px;">🧠 啟動 AI 反向解構與填寫</button>
+        </div>
+
+        <!-- 中間：動態分鏡編輯區 -->
+        <div class="panel panel-mid">
+            <h2>🧩 2. 分鏡骨架微調</h2>
+            
+            <div id="loader">
+                <div class="spinner"></div>
+                <p id="loaderText">🚀 正在呼叫 Gemini AI 分析語意並生成分鏡表...</p>
+            </div>
+
+            <div id="emptyState" style="text-align: center; color: #999; margin-top: 50px;">
+                <div style="font-size: 54px; margin-bottom: 15px; transform: rotate(-10deg); display: inline-block;">✂️</div>
+                <p style="font-family: 'Courier Prime', monospace; font-weight: bold; color: #000;">請先在左側輸入素材<br>並啟動解構</p>
+            </div>
+
+            <div id="slideEditorContainer">
+                <!-- 動態生成的 Slide 卡片會插在這裡 -->
+            </div>
+        </div>
+
+        <!-- 右側：指令生成與 YAML 規範 -->
+        <div class="panel panel-right">
+            <h2>⚙️ 3. 視覺與 Prompt 生成</h2>
+            
+            <label>目標 AI 平台：</label>
+            <select id="targetPlatform" onchange="updateMasterPrompt()">
+                <option value="gamma">🟣 Gamma (Markdown 卡片優化)</option>
+                <option value="canva">🔵 Canva (視覺元素描述優化)</option>
+                <option value="slidesgpt">🟢 SlidesGPT (標準簡報腳本優化)</option>
+                <option value="framer">⚫ Framer AI (網頁區塊佈局優化)</option>
+                <option value="nblm">📓 NotebookLM (簡報內容與講稿擴寫)</option>
+                <option value="universal">⚪ 通用指令 (Universal Prompt)</option>
+            </select>
+
+            <label>全域視覺風格 (Visual Style)：</label>
+            <select id="visualStyle" onchange="updateMasterPrompt()">
+                <option value="magazine_collage">✂️ 雜誌拼貼風格 (Magazine Collage) - 適合創意提案/個人品牌</option>
+                <option value="auto_clone">🤖 0. 智能仿作 (自動萃取上傳圖色票與排版) - 完美複製視覺</option>
+                <option value="glassmorphism">🪟 1. 毛玻璃科技 (Glassmorphism) - 適合科技業/軟體發表</option>
+                <option value="minimal_corp">🏢 2. 極簡企業 (Minimal Corporate) - 適合財報/正式商務會議</option>
+                <option value="clay_3d">🧸 3. 3D 黏土風 (Soft 3D Clay) - 適合SaaS產品/活潑新創</option>
+                <option value="brutalism">🔨 4. 粗獷主義 (Brutalism) - 適合潮流/前衛藝術展演</option>
+                <option value="vintage_botanical">📜 5. 復古圖鑑風格 (Vintage Botanical) - 適合人文/歷史/生活風格</option>
+                <option value="modern_fashion">✨ 7. 時尚現代品牌風 (Modern Fashion) - 適合精品/美妝/服飾型錄</option>
+                <option value="anime_style">🌸 11. 動漫風 (Anime Cel-shaded) - 適合ACG/遊戲/動漫活動</option>
+            </select>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; margin-top: 15px;">
+                <label style="margin-bottom: 0;">核心爆點呈現手法：</label>
+                <button class="suggest-btn" onclick="autoSuggestWowFactor()" title="根據左側長文自動分析">✨ AI 智能建議</button>
+            </div>
+            <select id="wowFactor" onchange="updateMasterPrompt()">
+                <option value="auto_decide">🤖 交給 AI 判斷 (Auto Decide)</option>
+                <option value="data_story">📈 數據視覺化敘事 (Data Storytelling)</option>
+                <option value="macro_micro">🔎 宏觀到微觀縮放 (Macro to Micro)</option>
+                <option value="before_after">⚖️ 強烈的前後對比切割 (Split Before/After)</option>
+                <option value="isometric_process">🧊 2.5D 等距視角流程圖 (Isometric Process)</option>
+            </select>
+
+            <label style="margin-top: 15px;">📜 Master Prompt：</label>
+            <div class="output-box" id="masterPromptOutput">/* 等待解構完成後生成... */</div>
+
+            <button class="action-btn" onclick="copyMasterPrompt()">📋 一鍵打包複製</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2026 SlideCraft AI <span style="background: #000; color:#fff; padding: 2px 5px; margin-right: 5px;">Powered by Gemini 2.5 Flash</span> 
+        <span style="background: var(--accent-yellow); color: #000; padding: 2px 8px; border: 2px solid #000; display: inline-block; transform: rotate(-1deg); font-family: 'Noto Sans TC', sans-serif;">💡 Concept & Design by 仙姑凱西</span><br>
+        <div style="margin-top: 10px; color: #D32F2F; line-height: 1.5; font-family: 'Noto Sans TC', sans-serif; letter-spacing: 0.5px;">
+            ⚠️ <b>智慧財產聲明 (IP Notice)：</b>本工具之核心動態分鏡架構、介面設計與底層 Prompt 演算邏輯，皆為<b>仙姑凱西</b>之原創心血。<br>
+            版權所有，本網頁僅供個人學習與日常效率提升使用。嚴禁任何未經授權之商業重製、程式碼抄襲、或打包轉售行為。
+        </div>
+    </div>
+
+    <div class="floating-stamp" onclick="openGuideModal()">
+        Guide
+        <span>使用指引</span>
+    </div>
+
+    <!-- 步驟指引彈出視窗 -->
+    <div class="modal-overlay" id="guideModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeGuideModal()">&times;</span>
+            <div class="modal-body">
+                <h3>SlideCraft AI Guide</h3>
+                <p>歡迎使用雜誌拼貼版簡報解構工具！請遵循以下步驟獲得最佳的 AI 生成結果。</p>
+                
+                <h4 style="margin-top: 25px;">🎯 最佳實踐：讓 AI「看見」你的簡報</h4>
+                <p>強烈建議您將現有的 <strong>.pptx 或 .pdf</strong> 匯出為<strong>圖片 (JPG/PNG)</strong> 後再多選上傳！<br>透過 Gemini 先進的多模態視覺辨識能力，AI 能直接「看懂」原簡報的排版架構、圖表數據與重點分布，解構精準度會比單純傳送文字好上 100 倍！</p>
+                
+                <h4 style="margin-top: 25px;">🧠 核心靈魂：智能分鏡 (Smart)</h4>
+                <p>不知道該把資料塞進哪一種死板的模板？直接在左上角選擇最頂端的「<strong>🧠 智能分鏡 (Smart)</strong>」！<br>這將徹底解開框架，放手讓 AI 根據您的草稿邏輯與上傳的圖片，全自動判斷這份簡報該切成幾頁、每頁該長什麼樣子，並自動為您生成最適合的客製化變數欄位！</p>
+
+                <h4 style="margin-top: 25px;">🏗️ 卡片管理操作</h4>
+                <ul>
+                    <li>游標懸浮於中欄生成的簡報卡片上方，即可看見 <strong>↑ ↓ ✖</strong> 操作按鈕。</li>
+                    <li>您可以自由<strong>重新排序</strong>、<strong>刪除多餘頁面</strong>，或在最下方點擊<strong>「新增自訂分鏡」</strong>。</li>
+                </ul>
+
+                <h4 style="margin-top: 25px;">🚀 匯出至目標 AI 平台</h4>
+                <ul>
+                    <li>選好您想要的「視覺風格」與「爆點手法」。</li>
+                    <li>在右側選擇您最後要使用的工具（Gamma, Canva 等）。</li>
+                    <li>點擊「一鍵打包複製」，貼入目標工具中即可。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast">✅ 狀態更新！</div>
+
+    <script>
+        // --- 核心 API 配置 ---
+        const apiKey = ""; // 執行環境會在 Runtime 自動注入
+        const MODEL_NAME = "gemini-2.5-flash-preview-09-2025";
+        
+        let currentSlidesData = [];
+        let extractedDesignSystem = null;
+
+        // --- 彈出視窗控制 ---
+        function openGuideModal() {
+            const modal = document.getElementById('guideModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+        function closeGuideModal() {
+            const modal = document.getElementById('guideModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+        window.onclick = function(event) {
+            const modal = document.getElementById('guideModal');
+            if (event.target == modal) closeGuideModal();
+        }
+
+        function escapeHTML(str) {
+            if (!str) return "";
+            return str.toString().replace(/[&<>'"]/g, match => {
+                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' };
+                return map[match];
+            });
+        }
+
+        // --- 模擬資料庫：不同目標的簡報模板架構 ---
+        const templates = {
+            standard: [
+                { id: 1, type: "Title", title: "封面", logic: "主標 + 副標 + 一張主視覺", vars: [{ key: "主標題", ph: "簡報核心主題" }, { key: "副標題", ph: "補充說明" }] },
+                { id: 2, type: "Problem", title: "問題/痛點", logic: "3 個 bullet", vars: [{ key: "痛點一", ph: "簡述痛點1" }, { key: "痛點二", ph: "簡述痛點2" }, { key: "痛點三", ph: "簡述痛點3" }] },
+                { id: 3, type: "Concept", title: "核心觀念", logic: "1 句定義 + 3 張小卡", vars: [{ key: "一句定義", ph: "核心理念" }, { key: "觀念重點", ph: "核心論述" }] },
+                { id: 4, type: "Process", title: "步驟流程", logic: "流程圖式", vars: [{ key: "步驟流程", ph: "執行步驟" }] },
+                { id: 5, type: "Data", title: "數據/證據", logic: "3 個大數字卡", vars: [{ key: "關鍵數據", ph: "例如：提升30%" }, { key: "數據註解", ph: "資料來源" }] },
+                { id: 6, type: "Case", title: "案例/示範", logic: "前後對照", vars: [{ key: "Before", ph: "改變前的狀況" }, { key: "After", ph: "改變後的結果" }] },
+                { id: 7, type: "CTA", title: "結尾 CTA", logic: "總結 + 行動呼籲", vars: [{ key: "總結", ph: "回顧重點" }, { key: "行動呼籲", ph: "下一步" }] }
+            ],
+            pitch: [
+                { id: 1, type: "Title", title: "首頁 (Hook)", logic: "吸引眼球的標題", vars: [{ key: "主標題", ph: "顛覆產業方案" }, { key: "一句話亮點", ph: "解決什麼問題" }] },
+                { id: 2, type: "Problem", title: "痛點分析", logic: "現狀問題", vars: [{ key: "目標客群", ph: "誰遇到問題" }, { key: "痛點影響", ph: "損失了什麼" }] },
+                { id: 3, type: "Solution", title: "解決方案", logic: "展示核心", vars: [{ key: "核心技術", ph: "產品/服務核心" }, { key: "效益轉換", ph: "帶來的價值" }] },
+                { id: 4, type: "CTA", title: "呼籲行動", logic: "下一步該做什麼", vars: [{ key: "行動指示", ph: "掃碼註冊" }] }
+            ],
+            edu: [
+                { id: 1, type: "Title", title: "課程主題", logic: "破題", vars: [{ key: "課程名稱", ph: "教什麼" }, { key: "預期收穫", ph: "得到什麼" }] },
+                { id: 2, type: "Concept", title: "核心概念拆解", logic: "步驟化說明", vars: [{ key: "知識點一", ph: "重點一" }, { key: "知識點二", ph: "重點二" }] },
+                { id: 3, type: "Case", title: "實戰案例", logic: "理論結合實際", vars: [{ key: "案例拆解", ph: "成功案例" }] },
+            ],
+            report: [
+                { id: 1, type: "Title", title: "報表總覽", logic: "時間與主題", vars: [{ key: "匯報週期", ph: "如: 2026 Q1" }, { key: "核心結論", ph: "一句話總結" }] },
+                { id: 2, type: "Highlight", title: "關鍵指標", logic: "大數據呈現", vars: [{ key: "亮點數據", ph: "達標率/增長率" }] },
+                { id: 3, type: "Action", title: "優化與下一步", logic: "策略調整", vars: [{ key: "洞察發現", ph: "發現什麼問題" }, { key: "行動計畫", ph: "下個月做什麼" }] }
+            ]
+        };
+
+        const styleYamlDict = {
+            magazine_collage: `design_system:\n  theme: "Magazine Collage / Mixed Media"\n  colors:\n    primary: "#FF1493"\n    accent: "#0000FF"\n    background: "#F4F0EA"\n  typography:\n    header: "Anton, sans-serif, bold, uppercase"\n    body: "Courier Prime, monospace, typewriter effect"\n  layout_rule: "Overlapping elements, brutalist solid black shadows, tilted paper textures, chaotic but balanced editorial grid."`,
+            glassmorphism: `design_system:\n  theme: "Dark Glassmorphism"\n  colors:\n    primary: "#3B82F6"\n    accent: "#8B5CF6"\n    background: "#0F172A"\n    surface: "rgba(255,255,255,0.05) with background blur"\n  typography:\n    header: "Inter, sans-serif, bold, glowing effect"\n    body: "Roboto, sans-serif, regular, opacity 80%"\n  layout_rule: "Floating cards with soft drop shadows and translucent panels"`,
+            minimal_corp: `design_system:\n  theme: "Minimal Corporate"\n  colors:\n    primary: "#0F4C81"\n    accent: "#F5F5F5"\n    background: "#FFFFFF"\n    text: "#333333"\n  typography:\n    header: "Helvetica Neue, sans-serif, bold"\n    body: "Arial, sans-serif, regular"\n  layout_rule: "Strict grid system, massive whitespace, highly structured columns"`,
+            clay_3d: `design_system:\n  theme: "Soft 3D Clay"\n  colors:\n    primary: "#FFB5A7"\n    accent: "#FCD5CE"\n    background: "#F8EDEB"\n  typography:\n    header: "Poppins, sans-serif, extra-bold, rounded"\n    body: "Nunito, sans-serif, medium"\n  layout_rule: "Organic shapes, pastel backgrounds, prominent central 3D isometric elements"`,
+            brutalism: `design_system:\n  theme: "Neo-Brutalism"\n  colors:\n    primary: "#FF4500"\n    accent: "#000000"\n    background: "#FFF8DC"\n  typography:\n    header: "Space Grotesk, black, uppercase"\n    body: "Courier New, monospace"\n  layout_rule: "Thick black borders, overlapping elements, high contrast, offset shadows"`,
+            vintage_botanical: `design_system:\n  theme: "Vintage Botanical"\n  colors:\n    primary: "#8B5A2B"\n    accent: "#556B2F"\n    background: "#F5DEB3"\n  typography:\n    header: "Playfair Display, serif, vintage style"\n    body: "Crimson Text, serif, highly readable"\n  layout_rule: "Parchment background textures, intricate hand-drawn borders"`,
+            modern_fashion: `design_system:\n  theme: "Modern Fashion Brand"\n  colors:\n    primary: "#111111"\n    accent: "#D4AF37"\n    background: "#FAFAFA"\n  typography:\n    header: "Didot, serif, high contrast"\n    body: "Montserrat, sans-serif"\n  layout_rule: "Bleed edge photography, extreme white space, minimalist thin lines"`,
+            anime_style: `design_system:\n  theme: "Anime / Cel-shaded"\n  colors:\n    primary: "#FF69B4"\n    accent: "#00CED1"\n    background: "#1A1A2E"\n  typography:\n    header: "Noto Sans TC, sans-serif, bold, dynamic"\n    body: "Noto Sans TC, rounded, clean"\n  layout_rule: "Manga panel divisions, speed lines in background, speech bubble callouts"`
+        };
+
+        const platformInstructions = {
+            gamma: `[Gamma.app Optimization]\n1. Output ONLY Markdown format optimized for Gamma text-to-deck import.\n2. Separate each slide/card strictly using '---'.\n3. Use '#' for Slide Titles and '##' or bullet points for content.\n4. Provide a specific image prompt in brackets [Image: ...] for each slide based on the visual style.`,
+            canva: `[Canva Magic Design Optimization]\n1. Provide a detailed visual description for each slide to guide Canva design.\n2. Clearly separate [Text Content], [Visual Elements], and [Suggested Layout].\n3. Emphasize the color palette and typography specified in the Design System.`,
+            slidesgpt: `[SlidesGPT Optimization]\n1. Format as a classic presentation outline.\n2. For each slide, provide: Title, Bullet Points, and [Speaker Notes].\n3. Ensure logical flow.`,
+            framer: `[Framer AI Optimization]\n1. Treat each slide as a scrollable website 'Section'.\n2. Use UI/UX terminology (e.g., Flexbox, Grid, Hero Section, Cards).\n3. Apply the Design System exactly using CSS-like properties.`,
+            nblm: `[NotebookLM Optimization]\n1. Act as an Expert Presentation Content Creator.\n2. Please expand the following presentation structure based on the provided framework.\n3. Generate comprehensive and persuasive text for each slide, and provide detailed [Speaker Notes].`,
+            universal: `[Action Request]\nBased on the above, please output the final presentation structure. If using Gamma/Canva, output markdown format optimized for their import.`
+        };
+
+        // --- 輔助：帶有 Exponential Backoff 的 Fetch ---
+        async function fetchWithRetry(url, options, retries = 5) {
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    return await response.json();
+                } catch (err) {
+                    if (i === retries - 1) throw err;
+                    await new Promise(res => setTimeout(res, delays[i]));
+                }
+            }
+        }
+
+        // --- 輔助：檔案轉 Base64 ---
+        async function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve({ mimeType: file.type, data: reader.result.split(',')[1] });
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // --- 核心：Gemini AI API 雙軌解構 (視覺 + 語意) ---
+        async function extractWithGemini(sourceText, templateObj, imageParts = []) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`;
+            
+            const promptText = templateObj ? `
+你是一位專業的「簡報架構師」與「視覺設計總監」。你的任務是閱讀以下「長文草稿」${imageParts.length > 0 ? '以及附上的圖片參考' : ''}，進行全面的解構。
+
+【嚴格指令】：
+1. 你必須回傳一個 JSON Object，包含 "design_system" 與 "slides" 兩個屬性，不要加上任何 Markdown 標籤 (如 \`\`\`json)。
+2. "design_system" 需包含你從圖片解析出的 "theme_name" (給予一個具體的設計主題名稱，例如 'Minimal Corporate' 或 'Dark Cyberpunk'), "primary_color" (Hex代碼), "accent_color", "background_color", "typography" (字體風格), "layout_rule" (排版規則)。若使用者未上傳圖片，請根據草稿語意自動設計一組符合氛圍的視覺系統。
+3. "slides" 是一個 Array，必須完全符合下方「簡報模板架構」的格式。
+4. 針對 "slides" 中每一個 'vars' 陣列裡面的物件，你需要根據草稿內容，生成最吸引人的短句填入 'value' 屬性中。如果使用者有上傳參考圖片，請務必強烈依賴圖片中的文字與排版重點來提煉內容！
+5. 將每一個修改過的 var 物件新增一個屬性 "isAI": true。
+
+【簡報模板架構】：
+${JSON.stringify(templateObj, null, 2)}
+
+【長文草稿】：
+${sourceText || "未提供文字草稿，請主要參考圖片內容或發揮創意生成。"}
+` : `
+你是一位專業的「簡報架構師」與「視覺設計總監」。你的任務是閱讀以下「長文草稿」${imageParts.length > 0 ? '以及附上的圖片參考' : ''}，並根據其原始邏輯與視覺，【完全自動設計】最適合的分鏡與架構。
+
+【嚴格指令】：
+1. 你必須回傳一個 JSON Object，包含 "design_system" 與 "slides" 兩個屬性，不要加上任何 Markdown 標籤 (如 \`\`\`json)。
+2. "design_system" 需包含你從圖片解析出的 "theme_name" (給予一個具體的設計主題名稱，例如 'Minimal Corporate' 或 'Dark Cyberpunk'), "primary_color" (Hex代碼), "accent_color", "background_color", "typography" (字體風格), "layout_rule" (排版規則)。若使用者未上傳圖片，請根據草稿語意自動設計一組符合氛圍的視覺系統。
+3. "slides" 是一個 Array，請自行判斷簡報要有幾頁，並為每一頁設計適當的屬性。
+4. 每一頁 (Object) 必須包含以下屬性：
+   - "id": 數字
+   - "type": 字串 (例如 Title, Problem, Concept 等)
+   - "title": 字串 (該頁標題)
+   - "logic": 字串 (排版邏輯)
+   - "vars": 陣列 (包含 key, ph, value, "isAI": true 屬性，value 填入真實萃取內容)
+
+【長文草稿】：
+${sourceText || "未提供文字草稿，請主要參考圖片內容或發揮創意生成。"}
+`;
+
+            const parts = [{ text: promptText }, ...imageParts];
+
+            const payload = {
+                contents: [{ role: "user", parts: parts }],
+                generationConfig: {
+                    responseMimeType: "application/json"
+                }
+            };
+
+            const data = await fetchWithRetry(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            let resultText = data.candidates[0].content.parts[0].text;
+            resultText = resultText.replace(/```json/gi, '').replace(/```/g, '').trim();
+            return JSON.parse(resultText); 
+        }
+
+        // --- 備用方案：本地模擬 ---
+        function simulateAIExtraction(sourceText, templateKey) {
+            let rawData;
+            
+            if (templateKey === 'auto') {
+                rawData = [
+                    { id: 1, type: "Title", title: "封面", logic: "主標 + 副標", vars: [{ key: "自動萃取標題", ph: "自動產生", value: "", isAI: true }, { key: "自動萃取副標", ph: "自動產生", value: "", isAI: true }] },
+                    { id: 2, type: "Content", title: "核心內容", logic: "重點論述", vars: [{ key: "關鍵重點", ph: "自動產生", value: "", isAI: true }] }
+                ];
+            } else {
+                rawData = JSON.parse(JSON.stringify(templates[templateKey]));
+            }
+
+            if (!sourceText || sourceText.trim() === "") {
+                rawData.forEach(slide => slide.vars.forEach(v => { v.value = v.ph; v.isAI = false; }));
+            } else {
+                let chunks = sourceText.replace(/[。！？\n]/g, '。|').split('|').map(s => s.trim()).filter(s => s.length > 3);
+                let chunkIdx = 0;
+                rawData.forEach(slide => {
+                    slide.vars.forEach(v => {
+                        let realText = (chunkIdx < chunks.length) ? chunks[chunkIdx].substring(0, 25) : v.ph;
+                        v.value = realText;
+                        v.isAI = true; 
+                        if (chunkIdx < chunks.length) chunkIdx++;
+                    });
+                });
+            }
+            
+            const fakeDesign = {
+                theme_name: "Brutalist Collage (粗獷主義拼貼風)",
+                primary_color: "#FF1493", accent_color: "#0044FF", background_color: "#F4F0EA",
+                typography: "預設粗獷字體", layout_rule: "大標題與強烈對比色"
+            };
+            
+            return { design_system: fakeDesign, slides: rawData };
+        }
+
+        // --- 主要控制流程 ---
+        async function startReverseEngineering() {
+            const text = document.getElementById('sourceText').value;
+            const objective = document.getElementById('deckObjective').value;
+            const fileInput = document.getElementById('imageUpload');
+            const files = fileInput.files;
+            
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('slideEditorContainer').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+
+            if (!text.trim() && files.length === 0) {
+                document.getElementById('loaderText').innerText = "未偵測到長文或圖片，載入純預設模板...";
+                setTimeout(() => {
+                    const sim = simulateAIExtraction("", objective);
+                    currentSlidesData = sim.slides;
+                    extractedDesignSystem = sim.design_system;
+                    finishExtraction();
+                }, 800);
+                return;
+            }
+
+            document.getElementById('loaderText').innerText = "🚀 正在呼叫 Gemini AI 同時解析語意與提取視覺色票...";
+            
+            try {
+                let imageParts = [];
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].type.startsWith('image/')) {
+                        const b64 = await getBase64(files[i]);
+                        imageParts.push({ inlineData: { mimeType: b64.mimeType, data: b64.data } });
+                    }
+                }
+
+                const resultObj = await extractWithGemini(text, templates[objective], imageParts);
+                if (resultObj && resultObj.slides && Array.isArray(resultObj.slides)) {
+                    currentSlidesData = resultObj.slides;
+                    extractedDesignSystem = resultObj.design_system; 
+                    
+                    // 🌟 核心優化：如果使用者有上傳圖片，自動幫他把右側風格切換到「智能仿作」
+                    if (imageParts.length > 0) {
+                        document.getElementById('visualStyle').value = 'auto_clone';
+                    }
+
+                    showToast("✨ Gemini AI 智慧解構(含視覺)成功！", true);
+                } else {
+                    throw new Error("Invalid format");
+                }
+            } catch (error) {
+                console.warn("Gemini API failed or key missing, falling back to local simulation:", error);
+                const sim = simulateAIExtraction(text, objective);
+                currentSlidesData = sim.slides;
+                extractedDesignSystem = sim.design_system;
+                showToast("⚠️ API無法使用，已啟動本地模擬解構器。", false);
+            }
+
+            finishExtraction();
+        }
+
+        function finishExtraction() {
+            document.getElementById('loader').style.display = 'none';
+            renderSlideEditors();
+            updateMasterPrompt(); 
+        }
+
+        // --- UI 渲染與卡片操作 ---
+        function renderSlideEditors() {
+            const container = document.getElementById('slideEditorContainer');
+            container.innerHTML = ''; 
+            container.style.display = 'flex';
+
+            currentSlidesData.forEach((slide, index) => {
+                const card = document.createElement('div');
+                card.className = 'slide-card';
+                
+                let html = `
+                    <div class="card-actions">
+                        <button class="mini-btn" onclick="moveSlide(${index}, -1)" title="向上移動">↑</button>
+                        <button class="mini-btn" onclick="moveSlide(${index}, 1)" title="向下移動">↓</button>
+                        <button class="mini-btn delete-btn" onclick="removeSlide(${index})" title="刪除此頁">✖</button>
+                    </div>
+                    <div class="slide-header">
+                        <h3>S${index + 1}: ${escapeHTML(slide.title)}</h3>
+                        <span class="slide-badge">${escapeHTML(slide.logic)}</span>
+                    </div>
+                `;
+
+                slide.vars.forEach((v, vIndex) => {
+                    const inputId = `slide_${index}_var_${vIndex}`;
+                    const safeValue = escapeHTML(v.value || "");
+                    const valAttr = safeValue ? `value="${safeValue}"` : ``;
+                    const aiClass = v.isAI ? "ai-filled" : "";
+                    const badgeClass = v.isAI ? "" : "hidden";
+
+                    html += `
+                        <div class="var-input-group">
+                            <div class="var-label-wrapper">
+                                <label>[${escapeHTML(v.key)}]</label>
+                                <span class="ai-fill-badge ${badgeClass}">★ AI 填寫</span>
+                            </div>
+                            <input type="text" id="${inputId}" class="${aiClass}" placeholder="${escapeHTML(v.ph)}" ${valAttr} oninput="handleInputChange(${index}, ${vIndex}, this.value)">
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+
+            const addBtn = document.createElement('button');
+            addBtn.className = 'add-slide-btn';
+            addBtn.innerHTML = '➕ 新增自訂分鏡頁面';
+            addBtn.onclick = addCustomSlide;
+            container.appendChild(addBtn);
+        }
+
+        function handleInputChange(slideIndex, varIndex, value) {
+            currentSlidesData[slideIndex].vars[varIndex].value = value;
+            const inputEl = document.getElementById(`slide_${slideIndex}_var_${varIndex}`);
+            if(inputEl) {
+                inputEl.classList.remove('ai-filled');
+                const badge = inputEl.parentElement.querySelector('.ai-fill-badge');
+                if(badge) badge.classList.add('hidden');
+                currentSlidesData[slideIndex].vars[varIndex].isAI = false;
+            }
+            updateMasterPrompt();
+        }
+
+        function moveSlide(index, direction) {
+            if (direction === -1 && index > 0) {
+                let temp = currentSlidesData[index];
+                currentSlidesData[index] = currentSlidesData[index - 1];
+                currentSlidesData[index - 1] = temp;
+            } else if (direction === 1 && index < currentSlidesData.length - 1) {
+                let temp = currentSlidesData[index];
+                currentSlidesData[index] = currentSlidesData[index + 1];
+                currentSlidesData[index + 1] = temp;
+            }
+            renderSlideEditors();
+            updateMasterPrompt();
+        }
+
+        function removeSlide(index) {
+            currentSlidesData.splice(index, 1);
+            renderSlideEditors();
+            updateMasterPrompt();
+        }
+
+        function addCustomSlide() {
+            currentSlidesData.push({
+                id: Date.now(), 
+                type: "Custom",
+                title: "自訂頁面",
+                logic: "自由佈局內容",
+                vars: [
+                    { key: "自訂重點標題", ph: "輸入標題...", value: "", isAI: false },
+                    { key: "自訂內文說明", ph: "輸入說明...", value: "", isAI: false }
+                ]
+            });
+            renderSlideEditors();
+            updateMasterPrompt();
+            
+            setTimeout(() => {
+                const container = document.getElementById('slideEditorContainer');
+                container.scrollTop = container.scrollHeight;
+            }, 100);
+        }
+
+        function autoSuggestWowFactor() {
+            const text = document.getElementById('sourceText').value;
+            if (!text.trim()) { showToast("⚠️ 請先貼上文章草稿！", false); return; }
+
+            const scores = {
+                data_story: (text.match(/\d+%|成長|數據|億|萬|千|增加|下降|指標|趨勢/g) || []).length,
+                before_after: (text.match(/過去|現在|之前|之後|VS|對比|痛點|解決|傳統|創新/g) || []).length,
+                isometric_process: (text.match(/步驟|流程|階段|step|首先|接著|最後|SOP|系統/gi) || []).length,
+                macro_micro: (text.match(/宏觀|微觀|細節|全貌|放大|縮小|生態系|結構/g) || []).length
+            };
+
+            let bestMatch = 'data_story', maxScore = -1;
+            for (const [key, score] of Object.entries(scores)) {
+                if (score > maxScore) { maxScore = score; bestMatch = key; }
+            }
+
+            if (maxScore === 0) {
+                bestMatch = 'auto_decide';
+                showToast("✨ 文章較為綜合，交給 AI 判斷！", true);
+            } else {
+                const reasoning = { data_story: "偵測到大量數字與指標", before_after: "偵測到情境對比與痛點", isometric_process: "偵測到步驟流程描述", macro_micro: "偵測到層級與細節描述" };
+                showToast(`✨ 因${reasoning[bestMatch]}，為您推薦對應手法！`, true);
+            }
+
+            document.getElementById('wowFactor').value = bestMatch;
+            updateMasterPrompt();
+            
+            const btn = document.querySelector('.suggest-btn');
+            btn.style.backgroundColor = 'var(--primary)'; btn.style.color = 'white';
+            setTimeout(() => { btn.style.backgroundColor = '#FFF'; btn.style.color = '#000'; }, 1000);
+        }
+
+        function handleFileUpload(event) {
+            const files = event.target.files;
+            if (files && files.length > 0) {
+                const preview = document.getElementById('imgPreview');
+                const fileNameDisplay = document.getElementById('imageFileName');
+                
+                let hasPptx = false;
+                for(let i=0; i<files.length; i++) {
+                    const fname = files[i].name.toLowerCase();
+                    if (fname.endsWith('.pptx') || fname.endsWith('.ppt') || fname.endsWith('.pdf')) hasPptx = true;
+                }
+
+                if (files.length === 1) {
+                    fileNameDisplay.innerText = "✅ " + files[0].name;
+                    if (files[0].type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'inline-block'; }
+                        reader.readAsDataURL(files[0]);
+                    } else {
+                        preview.style.display = 'none';
+                    }
+                } else {
+                    fileNameDisplay.innerText = `✅ 已選擇 ${files.length} 個檔案`;
+                    const firstImg = Array.from(files).find(f => f.type.startsWith('image/'));
+                    if (firstImg) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'inline-block'; }
+                        reader.readAsDataURL(firstImg);
+                    } else { preview.style.display = 'none'; }
+                }
+
+                if (hasPptx) {
+                    fileNameDisplay.innerHTML += `<br><span style="color: #D32F2F; margin-top: 10px; display: inline-block; font-size: 14px; padding: 4px; border: 2px dashed #D32F2F; background: #FFE0E0;">💡 強烈建議：請將簡報匯出為「圖片(JPG/PNG)」再多選上傳，AI 視覺辨識效果會好上 100 倍！</span>`;
+                    showToast("💡 提示：建議將 PPTX/PDF 匯出為圖片上傳！", false);
+                }
+            }
+        }
+
+        function updateMasterPrompt() {
+            if (currentSlidesData.length === 0) return;
+
+            const platformKey = document.getElementById('targetPlatform').value;
+            const styleKey = document.getElementById('visualStyle').value;
+            const wowFactorSelect = document.getElementById('wowFactor');
+            const wowFactorVal = wowFactorSelect.value;
+            
+            let yaml = styleYamlDict[styleKey];
+
+            // 🌟 核心修正：將「錯誤元指令」拔除，填入 AI 真正發明的主題名稱！
+            if (styleKey === 'auto_clone') {
+                if (extractedDesignSystem) {
+                    yaml = `design_system:\n  theme: "${extractedDesignSystem.theme_name || 'AI Extracted Vision Design'}"\n  colors:\n    primary: "${extractedDesignSystem.primary_color}"\n    accent: "${extractedDesignSystem.accent_color}"\n    background: "${extractedDesignSystem.background_color}"\n  typography: "${extractedDesignSystem.typography}"\n  layout_rule: "${extractedDesignSystem.layout_rule}"`;
+                } else {
+                    yaml = `design_system:\n  theme: "Auto-Clone"\n  instruction: "請依據您的視覺經驗設計符合主題的色系與排版。"`;
+                }
+            }
+
+            let masterPrompt = "";
+            let wowFactorInstruction = "";
+            
+            if(wowFactorVal === "auto_decide") {
+                wowFactorInstruction = "CRITICAL: Please act as an Art Director. Analyze the slide content below and automatically choose the MOST impactful presentation technique (e.g., Data Visualization, Before/After Split, Process Flow) for each specific slide.";
+            } else {
+                wowFactorInstruction = `The core technique to emphasize key points in this presentation is: ${wowFactorSelect.options[wowFactorSelect.selectedIndex].text}. Please ensure the generation tool heavily utilizes this technique for impact.`;
+            }
+
+            const platformTarget = platformInstructions[platformKey];
+
+            masterPrompt = `[System Role]\nYou are an Expert Presentation Designer & Developer. Your task is to generate a complete, highly structured presentation based on the following framework, visual rules, and content variables.\n\n[Target Platform Rules]\n${platformTarget}\n\n[Visual Design System (YAML)]\n${yaml}\n\n[Wow Factor & Presentation Technique]\n${wowFactorInstruction}\n\n[Slide Content Structure]\n`;
+
+            currentSlidesData.forEach((slide, index) => {
+                const realId = index + 1; 
+                if (platformKey === 'gamma') {
+                    masterPrompt += `\n---\n# Slide ${realId}: ${slide.title}\n`;
+                    masterPrompt += `*Layout Focus: ${slide.logic}*\n`;
+                } else if (platformKey === 'framer') {
+                    masterPrompt += `\n[Section ${realId}: ${slide.title}]\n`;
+                    masterPrompt += `- UI/UX Focus: ${slide.logic}\n`;
+                } else {
+                    masterPrompt += `\n--- Slide ${realId}: ${slide.title} ---\n`;
+                    masterPrompt += `- Layout Focus: ${slide.logic}\n`;
+                }
+                
+                slide.vars.forEach(v => {
+                    const val = v.value ? v.value : `[Needs AI generation based on context: ${v.key}]`;
+                    if (platformKey === 'gamma') {
+                        masterPrompt += `- **${v.key}**: ${val}\n`;
+                    } else {
+                        masterPrompt += `- ${v.key}: ${val}\n`;
+                    }
+                });
+            });
+
+            if (platformKey === 'universal' || platformKey === 'nblm') { masterPrompt += `\n${platformTarget}`; }
+
+            document.getElementById('masterPromptOutput').innerText = masterPrompt;
+        }
+
+        function copyMasterPrompt() {
+            const promptText = document.getElementById('masterPromptOutput').innerText;
+            if (promptText.includes("等待解構完成後生成")) {
+                alert("請先完成左側與中間的設定步驟！"); return;
+            }
+
+            navigator.clipboard.writeText(promptText).then(() => {
+                showToast("✅ 已複製指令！快去貼給 AI 吧！", true);
+            }).catch(err => {
+                const textArea = document.createElement("textarea");
+                textArea.value = promptText; document.body.appendChild(textArea);
+                textArea.select(); document.execCommand("Copy"); textArea.remove();
+                showToast("✅ 已複製指令！快去貼給 AI 吧！", true);
+            });
+        }
+
+        function showToast(msg, isSuccess = true) {
+            const toast = document.getElementById("toast");
+            toast.innerText = msg; toast.style.color = isSuccess ? "var(--accent-yellow)" : "white";
+            
+            toast.classList.remove("show");
+            void toast.offsetWidth; 
+            toast.classList.add("show");
+            
+            if(window.toastTimer) clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => { toast.classList.remove("show"); }, 3000);
+        }
+    </script>
+</body>
+</html>
+
+```
+
+
+## 🖼️ 相關參考圖片與文件
+![[7003-61d8ccd4c565400d.png]] ![[7003-85cc318439819f68.png]] ![[9000-b0d0d952ab8ef43b.jpg]] ![[10093408293917864137-4c73aabdd108e0ae.png]] ![[2555777530681031145-d3ce890839589fae.png]] [[New Note-d803819e815fe0e1]] (附件檔案) ![[17515777487485734111-4d19d2f783a97c67.png]] ![[8853-bacbb66149b221c8.jpg]] ![[275df4a0-ae4a-46ea-9126-b48e75f5d-c30abb3f08bcd74c.jpg]] ![[11115153720935177220-a1bb656f9a0201c9.png]] ![[11115964493857153023-394aa8182dc1f747.png]] ![[111690bc-573a-46bc-b887-6b6507a76-f947852e272157a4.jpg]] ![[image_5bd301-a2e77f6c827bfe5a.png]] ![[image_db3f9f-6b6329d1c4cb4e92.png]] ![[IMG20260405202251-d26edf580f6611b8.jpg]] ![[IMG_0016-1381311bbb20b6d0.jpg]] ![[IMG_0020-259844b3aec492b8.png]] ![[IMG_0021-259844b3aec492b8.png]] ![[IMG_0022-259844b3aec492b8.jpg]] ![[IMG_0024-259844b3aec492b8.jpg]] ![[IMG_0025-259844b3aec492b8.png]] ![[IMG_0025-63235577b267a9cf.png]] ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]] [[2026烘豆機選購指南-acd668a8e22d7335.pdf]] (附件檔案) ![[800212608471928293-153057063c8c793c.png]] [[index (6)-4cccc038d5b1e1e1.html]] (附件檔案)
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-03-26_Tank_200_專屬校正與直火實戰_812]] (共用特徵: `ror, tp, fc`)
+- [[2026-03-01_SlideCraft_AI_1139]] (共用特徵: `ror, tp, fc`)
+- [[Tank_200_專屬校正與直火實戰]] (共用特徵: `ror, tp, fc`)
+- [[2026-05-26_我想整合原有的兩個gem，一個是sca咖啡專業證照考官，一個是金成淬咖啡烘焙成品的標籤與固定風格單一跨平台網頁生成，我希_54]] (共用特徵: `ror, tp, fc`)
+- [[2026-01-26_Roaster_AI_Brewing_1482]] (共用特徵: `ror, tp, fc`)

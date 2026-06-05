@@ -1,0 +1,192 @@
+---
+type: sca_theory
+title: "Tank-200 肯亞AA 195g 去煙特調"
+date: 2026-05-10
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：Tank-200 肯亞AA 195g 去煙特調
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tank-200 肯亞 AA 195g 去煙除苦特調</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            margin: 0;
+            padding-bottom: 2rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background-color: #1e293b; 
+            border: 1px solid #dc2626; 
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.15);
+        }
+
+        .step-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px dashed #334155;
+        }
+        .step-row:last-child {
+            border-bottom: none;
+        }
+
+        .badge-temp {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .badge-fire {
+            background-color: #dc2626;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .badge-wind {
+            background-color: #0ea5e9;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border: 1px solid #38bdf8;
+        }
+    </style>
+</head>
+<body class="p-5">
+
+    <header class="mb-5 border-b border-slate-700 pb-4">
+        <div class="text-xs text-red-400 font-bold tracking-wider mb-1 flex items-center">
+            <i class="fa-solid fa-wrench mr-2"></i> TROUBLESHOOTING PLAN
+        </div>
+        <h1 class="text-2xl font-black gradient-text mb-2">肯亞 AA 195g 修正面板</h1>
+        <p class="text-sm text-gray-400">核心任務：拔除煙燻味，避免苦味，釋放黑醋栗酸甜。</p>
+    </header>
+
+    <main>
+        <!-- 診斷與對策 -->
+        <div class="bg-slate-800 border border-slate-600 rounded-xl p-4 mb-6 text-sm">
+            <h3 class="text-white font-bold mb-3 flex items-center">
+                <i class="fa-solid fa-pills text-blue-400 mr-2"></i> 兩大修正對策
+            </h3>
+            <ul class="space-y-3 text-gray-300">
+                <li>
+                    <strong class="text-red-400">1. 下豆溫度調降：</strong><br>
+                    放棄 220°C！這次在 <span class="text-white font-bold bg-slate-700 px-1 rounded">216°C - 217°C</span> 就要果斷下豆，切斷焦糖碳化，保留水果酸甜。
+                </li>
+                <li>
+                    <strong class="text-blue-400">2. 提前啟動排煙：</strong><br>
+                    195g 豆量一爆煙量極大。在 195°C 就要開始微開風門，一爆瞬間 <span class="text-white font-bold bg-slate-700 px-1 rounded">開大風門</span> 把煙抽乾淨！
+                </li>
+            </ul>
+        </div>
+
+        <!-- SOP -->
+        <h2 class="text-lg font-bold text-white mb-3 flex items-center">
+            <i class="fa-solid fa-list-check text-red-500 mr-2"></i> 實戰操作流程
+        </h2>
+        
+        <div class="card">
+            <div class="step-row">
+                <div>
+                    <div class="font-bold text-white">入豆 Charge</div>
+                    <div class="text-xs text-gray-400 mt-1">維持高動能破風 (滿載)</div>
+                </div>
+                <div class="text-right">
+                    <span class="badge-temp mb-1 inline-block">205°C</span><br>
+                    <span class="badge-fire">85% 火</span>
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div>
+                    <div class="font-bold text-yellow-500">轉黃 Ye (約 160°C)</div>
+                    <div class="text-xs text-gray-400 mt-1">進入梅納反應</div>
+                </div>
+                <div class="text-right">
+                    <span class="badge-fire" style="background:#ea580c">降 75%</span>
+                </div>
+            </div>
+
+            <div class="step-row bg-slate-900/50 -mx-5 px-5 py-3 border-y border-slate-700">
+                <div>
+                    <div class="font-bold text-orange-400">梅納中段 190°C</div>
+                    <div class="text-xs text-blue-300 font-bold mt-1">★ 預抽煙燻味準備</div>
+                </div>
+                <div class="text-right">
+                    <span class="badge-fire mb-1 inline-block">守 65%</span><br>
+                    <span class="badge-wind"><i class="fa-solid fa-fan"></i> 微開風門</span>
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div>
+                    <div class="font-bold text-red-400">一爆 FCr (約 208°C)</div>
+                    <div class="text-xs text-blue-300 font-bold mt-1">★ 大量排煙！</div>
+                </div>
+                <div class="text-right">
+                    <span class="badge-fire mb-1 inline-block" style="background:#475569">持平 65%</span><br>
+                    <span class="badge-wind"><i class="fa-solid fa-wind"></i> 風門開大</span>
+                </div>
+            </div>
+
+            <div class="step-row border-none">
+                <div>
+                    <div class="font-bold text-xl text-green-400">下豆 Drop</div>
+                    <div class="text-sm text-gray-400 mt-1">發展 50-60秒 <br>絕不拖延！</div>
+                </div>
+                <div class="text-right">
+                    <div class="font-black text-3xl text-white">216°C</div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+
+</body>
+</html>
+```
+
+
+## 🖼️ 相關參考圖片與文件
+![[7003-61d8ccd4c565400d.png]] ![[7003-85cc318439819f68.png]] ![[9000-b0d0d952ab8ef43b.jpg]] ![[10093408293917864137-4c73aabdd108e0ae.png]] ![[16009922497231620712-d01b1744e5213582.png]] ![[16010747200615915129-2c475562cbf29816.png]] ![[16057140004588957782-013a416dbc8e89ed.jpg]] ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]]
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-05-10_Tank-200_肯亞AA_195g_去煙特調_244]] (共用特徵: `肯亞, 梅納反應, tp`)
+- [[2026-02-16_好的_1292]] (共用特徵: `肯亞, 梅納反應, tp`)
+- [[2026-03-25_當然需要_823]] (共用特徵: `肯亞, 梅納反應, tp`)
+- [[2026-03-25_請更新_821]] (共用特徵: `肯亞, 梅納反應, tp`)
+- [[2026-03-26_Tank_200_專屬校正與直火實戰_812]] (共用特徵: `肯亞, 梅納反應, tp`)

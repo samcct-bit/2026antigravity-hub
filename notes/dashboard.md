@@ -2,7 +2,8 @@
 
 > 專案：2026antigravity-hub
 > 位置：`d:\2026antigravity\notes\dashboard.md`
-> 本日記錄：2026-06-01
+> 本日記錄：2026-06-04
+
 
 ---
 
@@ -81,7 +82,19 @@
 
 ## 📅 每日日誌
 
-- **2026-06-03**：🟢 **小王子分鏡細節修正與 25 分鏡全部完成，1080p 超高清影片順利產出**。
+- **2026-06-04**：🟢 **完成 `gem-to-agent-kit` 部署，並成功將 HTML 資料檔內的所有 11 個 Gem 完整升級並整合為 6 大 Agent 自訂工作流與技能**。
+  - **環境與依賴配置**：自動定位 `H:\我的雲端硬碟\Gemini Gems` 目錄並安裝 `python-docx`、`openpyxl`、`python-pptx` 與 `yt-dlp` 全套依賴套件。
+  - **Gem 分析與合併遷移**：
+    *   **雙語翻譯**：將「多語言翻譯特助」升級為 [translation_assistant](file:///d:/2026antigravity/translation_assistant) 專案與 `13-translation-assistant` 全域技能，內建 Word/Excel 雙欄格式匯出器。
+    *   **教案規劃**：將「108課綱教案架構師」升級為 [curriculum_architect](file:///d:/2026antigravity/curriculum_architect) 專案與 `14-curriculum-architect` 全域技能。
+    *   **教育溝通與朗讀**：將「親師溝通的GEMs」與「國台英朗讀文本生成師」整合為 [edu_helpers](file:///d:/2026antigravity/edu_helpers) 專案，並分別註冊為 `15-edu-communication-helper` 與 `16-trilingual-speech-generator` 全域技能。
+    *   **視覺設計**：將「宗教哲學海報設計大師」、「專業角色設定圖繪製大師」與「極簡影像生成專員」合併升級為 [visual_design_expert](file:///d:/2026antigravity/visual_design_expert) 專案與 `17-visual-design-expert` 全域技能（支援多視角排版與安全術語轉譯）。
+    *   **指令工程**：將「專業對話機器人指令架構師」升級為 [prompt_architect](file:///d:/2026antigravity/prompt_architect) 專案與 `18-prompt-architect` 全域技能（支援 YAML 指令完整繼承與版本遞增）。
+  - **全域技能註冊與索引同步**：將所有新技能於 `C:\Users\USER\.gemini\antigravity\skills` 部署完畢，同步更新 `00-install-all.md`、`antigravity-lazy-packs.md`、`notes/workflows_index.md` 與狀態追蹤 `migration_state.json`。
+
+
+- **2026-06-03**：
+🟢 **小王子分鏡細節修正與 25 分鏡全部完成，1080p 超高清影片順利產出**。
   - **精細細節優化與連貫性**：接獲對接反饋，對中後段（Scene 18~25）進行更為嚴格的畫面一致性與邏輯優化：
     1. **箱子細節一致性**：統一將箱子 Prompt 描述升級為「**完全密封、無蓋且無縫隙的長方形木箱，外觀如同淺褐色松木實心木塊。側面水平均勻排列三個圓形呼吸孔。**」以徹底保證其長寬高比例與孔洞位置在各分鏡高度統一。
     2. **修正看圖紙邏輯 (Scene 21)**：修正小王子從畫紙背面透視圓孔的邏輯缺陷，將 Prompt 改為小王子雙手捧著畫紙，從**正面**低頭注視、湊近圖中箱子圓孔來張望，保證畫面合乎透視邏輯。

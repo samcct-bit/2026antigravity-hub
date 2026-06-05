@@ -1,0 +1,266 @@
+---
+type: sca_theory
+title: "Tank-200 肯亞AA 195g 轉換面板"
+date: 2026-05-10
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：Tank-200 肯亞AA 195g 轉換面板
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tank-200 肯亞 AA 195g 轉換面板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            margin: 0;
+            padding-bottom: 3rem;
+            overscroll-behavior: none;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); /* Red for Kenya */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background-color: #1e293b; 
+            border: 1px solid #ef4444; 
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .param-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed #475569;
+        }
+        .param-row:last-child { border-bottom: none; }
+
+        .badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+        
+        .bg-temp { background-color: #2563eb; color: white; }
+        .bg-fire { background-color: #dc2626; color: white; }
+        .bg-wind { background-color: #0ea5e9; border: 1px solid #38bdf8; color: white;}
+        .bg-alert { border: 2px solid #fbbf24; color: #fbbf24; background-color: rgba(251, 191, 36, 0.1); }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        .tab-pane.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #0f172a;
+            border-top: 1px solid #334155;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+            z-index: 50;
+        }
+
+        .nav-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #64748b;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+            background: none;
+            border: none;
+        }
+        .nav-btn i {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+        .nav-btn.active { color: #ef4444; }
+        .nav-btn.active i { transform: scale(1.15); }
+    </style>
+</head>
+<body class="p-5">
+
+    <header class="pt-2 pb-4 border-b border-[#334155] mb-5">
+        <div class="text-xs text-red-500 font-bold tracking-wider mb-1 flex items-center">
+            <i class="fa-solid fa-shuffle mr-2"></i> BEAN TRANSITION
+        </div>
+        <h1 class="text-2xl font-black gold-gradient">肯亞 AA 195g 實戰</h1>
+        <p class="text-sm text-gray-400 mt-1">洗刷苦味，釋放黑醋栗與蔗糖甜感</p>
+    </header>
+
+    <main>
+
+        <!-- Tab 1: 戰術微調核心 -->
+        <div id="tab-strategy" class="tab-pane active">
+            <div class="bg-slate-800 border border-slate-600 rounded-xl p-4 mb-4">
+                <h3 class="text-white font-bold mb-3 flex items-center">
+                    <i class="fa-solid fa-wrench text-red-400 mr-2"></i> 從藝伎到肯亞的 3 大微調
+                </h3>
+                <ul class="space-y-4 text-sm text-gray-300">
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-1 text-blue-400 mt-1 mr-2"></i>
+                        <div>
+                            <strong class="text-white">入豆溫提升 (200°C -> 205°C)：</strong><br>
+                            雖然機器很熱，但肯亞太硬了！我們需要 205°C 的初始動能來撞破它的細胞壁，否則酸味會展不開。起步火力一樣 <strong class="text-red-400">85% 滿火</strong>。
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-2 text-yellow-500 mt-1 mr-2"></i>
+                        <div>
+                            <strong class="text-white">提早排煙與強代償：</strong><br>
+                            肯亞煙量極大！請在 <strong class="text-yellow-400">195°C</strong> 就拉開抽屜並用風扇往外抽。為了彌補這時候流失的熱能，火力要短暫從 65% <strong class="text-red-400">拉高到 70% 甚至 75%</strong>。
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa-solid fa-3 text-emerald-400 mt-1 mr-2"></i>
+                        <div>
+                            <strong class="text-white">下豆點延長 (216°C -> 217-218°C)：</strong><br>
+                            藝伎我們在 216°C (41秒) 下豆。但肯亞需要多一點焦糖化來轉化甜感，目標設定在 <strong class="text-emerald-400">217°C ~ 218°C (發展約 1分 ~ 1分10秒)</strong>。<br>
+                            <span class="text-xs text-red-400 bg-red-900/20 px-1 rounded">絕對不能拖到 220°C，那是苦味的深淵！</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tab 2: 烘焙 SOP -->
+        <div id="tab-sop" class="tab-pane">
+            <div class="card">
+                <i class="fa-solid fa-fire-flame-curved absolute -right-4 -top-4 text-8xl text-red-500/10"></i>
+                <h2 class="text-xl font-bold text-red-400 mb-3 border-b border-red-900 pb-2">
+                    <i class="fa-solid fa-list-check mr-2"></i> 肯亞 AA 195g 參數表
+                </h2>
+                
+                <div class="param-row">
+                    <div>
+                        <div class="font-bold text-gray-300">入豆 Charge</div>
+                        <div class="text-xs text-gray-400">高溫破風，對付極硬豆</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="badge bg-temp mb-1">205°C</span><br>
+                        <span class="badge bg-fire animate-pulse">85% 火</span>
+                    </div>
+                </div>
+
+                <div class="param-row">
+                    <div>
+                        <div class="font-bold text-gray-300">轉黃 Ye (約 160°C)</div>
+                        <div class="text-xs text-gray-400">順利進入梅納反應</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="badge" style="background:#ea580c; color:white;">降至 75%</span>
+                    </div>
+                </div>
+
+                <div class="param-row bg-slate-900/80 -mx-5 px-5 border-y border-red-900/50">
+                    <div>
+                        <div class="font-bold text-orange-400">195°C ~ 200°C (一爆前)</div>
+                        <div class="text-xs text-yellow-300 font-bold mt-1">★ 防煙燻：拔抽屜 & 火力代償</div>
+                    </div>
+                    <div class="text-right mt-1">
+                        <span class="badge bg-fire mb-1 shadow-[0_0_8px_rgba(239,68,68,0.5)]">拉升 75%</span><br>
+                        <span class="badge bg-wind"><i class="fa-solid fa-fan"></i> 抽屜微開 3cm</span>
+                    </div>
+                </div>
+
+                <div class="param-row bg-slate-900/80 -mx-5 px-5 border-b border-red-900/50 pb-3">
+                    <div>
+                        <div class="font-bold text-red-400">一爆 FCr (約 208°C)</div>
+                        <div class="text-xs text-gray-400 mt-1">狂暴放熱開始，必須急煞！</div>
+                    </div>
+                    <div class="text-right mt-2">
+                        <span class="badge" style="background:#475569; color:white;">降回 60-65%</span><br>
+                        <span class="text-xs text-gray-400">抽屜維持，風扇續抽</span>
+                    </div>
+                </div>
+
+                <div class="param-row border-none pt-3">
+                    <div>
+                        <div class="font-bold text-green-400">下豆 Drop</div>
+                        <div class="text-xs text-gray-400 mt-1">發展 1:00 - 1:10<br>逼出黑醋栗與蔗糖</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-black text-2xl text-white">217-218°C</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="switchTab('strategy', this)">
+            <i class="fa-solid fa-wrench text-blue-400"></i>
+            <span class="text-blue-400">微調核心</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('sop', this)">
+            <i class="fa-solid fa-fire text-red-400"></i>
+            <span class="text-red-400">肯亞 SOP</span>
+        </button>
+    </nav>
+
+    <script>
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-pane').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btnElement.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
+```
+
+
+## 🖼️ 相關參考圖片與文件
+![[7003-61d8ccd4c565400d.png]] ![[7003-85cc318439819f68.png]] ![[9000-b0d0d952ab8ef43b.jpg]] ![[10093408293917864137-4c73aabdd108e0ae.png]] ![[2189dc4f-4ef1-4e97-85c6-f82cb1006-eeb045030994d3db.jpg]] ![[16009922497231620712-d01b1744e5213582.png]] ![[16010747200615915129-2c475562cbf29816.png]] ![[16057140004588957782-013a416dbc8e89ed.jpg]] ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]]
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-05-10_Tank-200_肯亞AA_195g_轉換面板_226]] (共用特徵: `藝伎, 肯亞, 梅納反應`)
+- [[2026-03-26_請同時給我這一支豆子在同一台機器上詳細的烘焙計畫_800]] (共用特徵: `藝伎, 肯亞, 梅納反應`)
+- [[2026-05-03_Tank-200_實戰風火配置面板_334]] (共用特徵: `藝伎, 肯亞, tp`)
+- [[2026-05-08_附上之前成功在Tank200上的烘豆紀錄，我還有幾支生豆要請你幫我評估哪些較適合在Tank200烘，可以和水洗藝伎及日曬_265]] (共用特徵: `藝伎, 肯亞, 梅納反應`)
+- [[2026-05-10_Tank-200_195g滿載全線指南_242]] (共用特徵: `藝伎, 肯亞, 焦糖化`)

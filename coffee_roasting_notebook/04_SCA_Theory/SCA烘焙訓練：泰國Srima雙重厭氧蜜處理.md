@@ -1,0 +1,348 @@
+---
+type: sca_theory
+title: "SCA烘焙訓練：泰國Srima雙重厭氧蜜處理"
+date: 2026-04-22
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：SCA烘焙訓練：泰國Srima雙重厭氧蜜處理
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCA 專業烘焙訓練：泰國 Srima 雙重厭氧蜜處理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background-color: #1a1a1a;
+            color: #f3f4f6;
+        }
+        .slide-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide {
+            position: absolute;
+            width: 90%;
+            max-width: 1000px;
+            height: 80%;
+            background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 3rem;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(100%) scale(0.9);
+            display: flex;
+            flex-direction: column;
+            pointer-events: none;
+            border: 1px solid #3f3f3f;
+        }
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: auto;
+            z-index: 10;
+        }
+        .slide.prev {
+            transform: translateX(-100%) scale(0.9);
+            opacity: 0;
+        }
+        .controls {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 20;
+        }
+        button {
+            background-color: #d4af37; /* SCA Gold/Bronze feel */
+            color: #111;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 999px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        button:hover {
+            background-color: #f1c40f;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background-color: #d4af37;
+            transition: width 0.3s ease;
+            z-index: 30;
+        }
+        .highlight {
+            color: #d4af37;
+            font-weight: bold;
+        }
+        /* Custom Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #3f3f3f;
+        }
+        th {
+            background-color: rgba(212, 175, 55, 0.1);
+            color: #d4af37;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progress"></div>
+
+    <div class="slide-container" id="slider">
+        <!-- Slide 1 -->
+        <div class="slide active">
+            <div class="flex-1 flex flex-col justify-center">
+                <p class="text-sm tracking-widest text-gray-400 mb-2 uppercase">SCA Professional Roasting Module</p>
+                <h1 class="text-5xl font-bold mb-6 leading-tight">單品烘焙計畫：<br><span class="highlight">泰國 清萊 Srima 雙重厭氧蜜處理</span></h1>
+                <p class="text-xl text-gray-300 mb-8 border-l-4 border-yellow-600 pl-4">
+                    基於楊家 0.5kg 半熱風烘豆機，以「莫札特曲線」為基礎的客製化微調策略。
+                </p>
+                <div class="flex gap-4">
+                    <span class="px-4 py-2 bg-gray-800 rounded-full text-sm">品種：Caturra</span>
+                    <span class="px-4 py-2 bg-gray-800 rounded-full text-sm">目標風味：橙花、蜂蜜、茉莉、柚子</span>
+                </div>
+            </div>
+            <div class="text-right text-gray-500 text-sm">Slide 1 / 5</div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide">
+            <h2 class="text-3xl font-bold mb-6 highlight border-b border-gray-700 pb-2">生豆物理特性分析 (對比莫札特)</h2>
+            <div class="flex-1">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>物理參數</th>
+                            <th>數值</th>
+                            <th>考官解析與烘焙影響</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-bold">密度</td>
+                            <td>839 g/L</td>
+                            <td><span class="text-red-400">中等密度</span>。比莫札特(高海拔)鬆軟。<b>入豆溫需降低 5-10°C</b>，避免表層燙傷，初期火力不宜過猛。</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">水份</td>
+                            <td>10.1%</td>
+                            <td><span class="text-blue-400">適中偏低</span>。吸熱後脫水速度快，進入梅納反應的時間會提早，需注意控火節奏。</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">處理法</td>
+                            <td>雙重厭氧蜜</td>
+                            <td>極高表面糖分與果膠。梅納與焦糖化反應劇烈，<b>一爆前極易產生煙燻味與焦苦味</b>，風門控制是關鍵。</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold">海拔</td>
+                            <td>1400-1600m</td>
+                            <td>結構適中，不需要極端的傳導熱來穿透。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-right text-gray-500 text-sm">Slide 2 / 5</div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide">
+            <h2 class="text-3xl font-bold mb-6 highlight border-b border-gray-700 pb-2">機台特性：楊家 0.5kg 半熱風</h2>
+            <div class="flex-1 flex flex-col justify-center space-y-6">
+                <div class="p-6 bg-gray-800 rounded-lg border-l-4 border-red-500">
+                    <h3 class="text-xl font-bold mb-2 text-white flex items-center">
+                        <span class="mr-2">🔥</span> 傳導熱比例高 (鑄鐵鍋)
+                    </h3>
+                    <p class="text-gray-300">楊家機台的鑄鐵鍋蓄熱性極佳。對於密度僅 839 g/L 且帶有果膠的蜜處理豆，若按照莫札特的高密度打火方式，容易在貼鍋壁時造成豆表燒焦(Tipping/Scorching)。<b>策略：以較小的初始火力起步，善用鍋體蓄熱。</b></p>
+                </div>
+                <div class="p-6 bg-gray-800 rounded-lg border-l-4 border-blue-500">
+                    <h3 class="text-xl font-bold mb-2 text-white flex items-center">
+                        <span class="mr-2">💨</span> 風門的抽風效應
+                    </h3>
+                    <p class="text-gray-300">半熱風機的風門不僅帶走水氣，更主導「對流熱」的比例與「排煙」。雙重厭氧蜜處理在一爆前會產生大量煙霧。<b>策略：一爆前 1 分鐘務必稍微開大風門，保持風味乾淨（凸顯橙花與茉莉），避免煙燻味附著。</b></p>
+                </div>
+            </div>
+            <div class="text-right text-gray-500 text-sm">Slide 3 / 5</div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide">
+            <h2 class="text-3xl font-bold mb-6 highlight border-b border-gray-700 pb-2">烘焙曲線設計 (Roast Profile Design)</h2>
+            <div class="flex-1 flex flex-col justify-center space-y-4">
+                <div class="grid grid-cols-4 gap-4 text-center">
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <div class="text-sm text-gray-400">階段</div>
+                        <div class="font-bold text-lg text-white">1. 入豆 (Charge)</div>
+                    </div>
+                    <div class="col-span-3 bg-gray-800 p-4 rounded-lg text-left">
+                        <span class="text-yellow-500 font-bold">170°C - 175°C</span> (視感溫棒而定)。較莫札特低。風門關閉或微開(1)，火力中等偏小，讓豆子溫和吸收鍋體熱量。
+                    </div>
+
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <div class="text-sm text-gray-400">階段</div>
+                        <div class="font-bold text-lg text-white">2. 脫水至轉黃</div>
+                    </div>
+                    <div class="col-span-3 bg-gray-800 p-4 rounded-lg text-left">
+                        回溫點後火力推至中高，但<span class="text-red-400">注意 RoR 不宜超過 15°C/min</span>。約 150°C 轉黃，此時風門可開至 2.5，帶走水氣。
+                    </div>
+
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <div class="text-sm text-gray-400">階段</div>
+                        <div class="font-bold text-lg text-white">3. 梅納至一爆</div>
+                    </div>
+                    <div class="col-span-3 bg-gray-800 p-4 rounded-lg text-left">
+                        重點區間！175°C 後豆表會快速轉褐。<b>185°C 左右準備降火並將風門加大至 3~3.5</b>，排煙並降低高溫對表面糖分的衝擊，迎接一爆。
+                    </div>
+
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <div class="text-sm text-gray-400">階段</div>
+                        <div class="font-bold text-lg text-white">4. 發展期 (DTR)</div>
+                    </div>
+                    <div class="col-span-3 bg-gray-800 p-4 rounded-lg text-left">
+                        預計 190-195°C 密集一爆。為了保留「橙花、柚子」，<b>DTR 抓 10%~12% (約 1分~1分15秒)</b>。失溫率平緩下降(不Crash)，約 202-205°C 下豆。
+                    </div>
+                </div>
+            </div>
+            <div class="text-right text-gray-500 text-sm">Slide 4 / 5</div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide">
+            <h2 class="text-3xl font-bold mb-6 highlight border-b border-gray-700 pb-2">感官目標與考官總結</h2>
+            <div class="flex-1 flex flex-col items-center justify-center text-center">
+                <div class="w-24 h-24 rounded-full bg-yellow-600 flex items-center justify-center text-4xl mb-6 shadow-lg shadow-yellow-600/20">
+                    🌸
+                </div>
+                <h3 class="text-2xl font-bold mb-4">目標焙度：淺焙 (Agtron 85-95)</h3>
+                <p class="text-xl text-gray-300 max-w-2xl leading-relaxed mb-8">
+                    「不要害怕火力稍弱會讓豆子發展不全，這支豆子<span class="text-white font-bold">10.1%的水份與中等密度</span>足夠讓它輕鬆熟透。你的挑戰是如何在不燒焦果膠的前提下，用最乾淨的熱風帶出明亮的柚子酸值與奔放的茉莉花香。」
+                </p>
+                <div class="bg-gray-800 p-4 rounded-lg inline-block text-left w-full max-w-md">
+                    <p class="text-sm text-gray-400 uppercase tracking-wide mb-2">杯測風味檢核點</p>
+                    <ul class="list-disc list-inside text-gray-200">
+                        <li>乾香：是否具備乾淨的橙花與蜂蜜甜香？(若有焦味代表前期火太大)</li>
+                        <li>酸質：柚子的明亮感是否清晰？(若平淡代表發展時間過長)</li>
+                        <li>餘韻：茉莉花香是否持久？(排煙是否做好)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-right text-gray-500 text-sm">Slide 5 / 5</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="prevBtn" onclick="prevSlide()">&#8592; 上一頁</button>
+        <button id="nextBtn" onclick="nextSlide()">下一頁 &#8594;</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const progressBar = document.getElementById('progress');
+
+        function updateSlider() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
+
+            // Update Progress bar
+            const progressPercentage = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = progressPercentage + '%';
+
+            // Button states
+            document.getElementById('prevBtn').style.opacity = currentSlide === 0 ? '0.5' : '1';
+            document.getElementById('prevBtn').style.cursor = currentSlide === 0 ? 'not-allowed' : 'pointer';
+            
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentSlide === totalSlides - 1) {
+                nextBtn.innerHTML = '訓練完成 &#10003;';
+                nextBtn.style.backgroundColor = '#27ae60';
+                nextBtn.style.color = '#fff';
+            } else {
+                nextBtn.innerHTML = '下一頁 &#8594;';
+                nextBtn.style.backgroundColor = '#d4af37';
+                nextBtn.style.color = '#111';
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlider();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlider();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Space') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Initialize
+        updateSlider();
+    </script>
+</body>
+</html>
+```
+
+
+## 🖼️ 相關參考圖片與文件
+![[10093408293917864137-4c73aabdd108e0ae.png]] [[GoldenBatch - Roast_History-63235577b267a9cf.pdf]] (附件檔案) ![[11115153720935177220-a1bb656f9a0201c9.png]] ![[11115964493857153023-394aa8182dc1f747.png]] ![[111690bc-573a-46bc-b887-6b6507a76-f947852e272157a4.jpg]] ![[17515777487485734111-4d19d2f783a97c67.png]] [[Roasting_Intermediate_ProfileLog_-37207be7c8cf4ed8.pdf]] (附件檔案) ![[8391798086592890640-1381311bbb20b6d0.png]] ![[14008462579978004516-578406f068f1819c.png]] ![[17081737008978786326-f7c5f3e4a0bc49f0.png]] ![[2020-42bd1200ba8b3586.jpg]] ![[2021-42bd1200ba8b3586.jpg]] ![[2022-42bd1200ba8b3586.jpg]] ![[2023-42bd1200ba8b3586.jpg]] ![[2024-42bd1200ba8b3586.jpg]] [[2026烘豆機選購指南-acd668a8e22d7335.pdf]] (附件檔案) [[index (6)-4cccc038d5b1e1e1.html]] (附件檔案) ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]]
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-04-22_SCA烘焙訓練：泰國Srima雙重厭氧蜜處理_457]] (共用特徵: `莫札特, 橙花, srima`)
+- [[2026-03-26_請同時給我這一支豆子在同一台機器上詳細的烘焙計畫_800]] (共用特徵: `莫札特, 橙花, srima`)
+- [[2026-02-27_請先幫我調整成楊家半熱風500公克機器適用的，並可以拿來記錄烘焙果丁丁村日曬豆的參考數據_1183]] (共用特徵: `莫札特, srima, 厭氧`)
+- [[2026-03-25_當然_829]] (共用特徵: `莫札特, srima, 厭氧`)
+- [[2026-04-05_我想要一樣175度入豆，回溫點後使用火力1.3，風門維持2.5，梅納反應開始時降火至1.2風門不變，一爆前降火至0.9風_665]] (共用特徵: `莫札特, srima, 厭氧`)

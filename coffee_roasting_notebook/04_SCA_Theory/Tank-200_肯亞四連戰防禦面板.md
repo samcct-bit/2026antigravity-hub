@@ -1,0 +1,302 @@
+---
+type: sca_theory
+title: "Tank-200 肯亞四連戰防禦面板"
+date: 2026-05-10
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：Tank-200 肯亞四連戰防禦面板
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tank-200 肯亞四連戰防禦面板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            margin: 0;
+            padding-bottom: 4rem;
+            overscroll-behavior: none;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #ef4444 0%, #991b1b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background-color: #1e293b; 
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .border-red { border: 1px solid #ef4444; }
+        .border-yellow { border: 1px solid #eab308; }
+
+        .param-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed #334155;
+        }
+        .param-row:last-child { border-bottom: none; }
+
+        .badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+        
+        .bg-temp { background-color: #2563eb; color: white; }
+        .bg-fire { background-color: #dc2626; color: white; }
+        .bg-wind { background-color: #0ea5e9; border: 1px solid #38bdf8; color: white;}
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        .tab-pane.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #0f172a;
+            border-top: 1px solid #334155;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+            z-index: 50;
+        }
+
+        .nav-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #64748b;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+            background: none;
+            border: none;
+        }
+        .nav-btn i {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+        .nav-btn.active { color: #ef4444; }
+        .nav-btn.active i { transform: scale(1.15); }
+    </style>
+</head>
+<body class="p-5">
+
+    <header class="pt-2 pb-4 border-b border-[#334155] mb-5">
+        <div class="text-xs text-red-500 font-bold tracking-wider mb-1 flex items-center">
+            <i class="fa-solid fa-fire-flame-curved mr-2"></i> BATCH 2-5 STRATEGY
+        </div>
+        <h1 class="text-2xl font-black gold-gradient">肯亞四連戰 防禦指引</h1>
+        <p class="text-sm text-gray-400 mt-1">維持 4分05秒 轉黃點的極致複製</p>
+    </header>
+
+    <main>
+
+        <!-- Tab 1: 神之參數 (絕對不變) -->
+        <div id="tab-golden" class="tab-pane active">
+            <div class="card border-red">
+                <i class="fa-solid fa-lock absolute -right-4 -top-4 text-8xl text-red-500/10"></i>
+                <h2 class="text-xl font-bold text-red-400 mb-3 border-b border-red-900 pb-2">
+                    <i class="fa-solid fa-star mr-2"></i> 神級連段 (無論哪鍋都不變)
+                </h2>
+                <p class="text-sm text-gray-300 mb-4">這三招是您第一鍋封神的關鍵，請將其化為肌肉記憶，<strong class="text-white">接下來四鍋完全照做！</strong></p>
+                
+                <div class="param-row bg-slate-900/80 -mx-5 px-5 border-y border-slate-700">
+                    <div>
+                        <div class="font-bold text-orange-400">195°C 拔抽屜救援</div>
+                        <div class="text-xs text-red-300 font-bold mt-1">代償流失的熱能</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="badge bg-fire mb-1 shadow-[0_0_8px_rgba(239,68,68,0.5)]">猛推至 80%</span><br>
+                        <span class="badge bg-wind"><i class="fa-solid fa-fan"></i> 微開 3cm 抽煙</span>
+                    </div>
+                </div>
+
+                <div class="param-row bg-slate-900/80 -mx-5 px-5 border-b border-slate-700 pb-3">
+                    <div>
+                        <div class="font-bold text-red-400">204°C 一爆排煙急煞</div>
+                        <div class="text-xs text-gray-400 mt-1">大量銀皮，狂暴放熱開始</div>
+                    </div>
+                    <div class="text-right mt-2">
+                        <span class="badge" style="background:#475569; color:white;">降回 60%</span><br>
+                        <span class="badge bg-wind"><i class="fa-solid fa-wind"></i> 抽屜開一半</span>
+                    </div>
+                </div>
+
+                <div class="param-row border-none pt-3">
+                    <div>
+                        <div class="font-bold text-green-400">215°C 完美下豆</div>
+                        <div class="text-xs text-gray-400 mt-1">發展約 1分02秒</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-black text-2xl text-white">果斷 Drop!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: 肯亞 #2 & #3 -->
+        <div id="tab-batch23" class="tab-pane">
+            <div class="card border-yellow">
+                <h2 class="text-xl font-bold text-yellow-500 mb-3 border-b border-yellow-900 pb-2">
+                    <i class="fa-solid fa-temperature-arrow-down mr-2"></i> 肯亞 #2 與 #3
+                </h2>
+                <div class="bg-yellow-900/20 p-3 rounded-lg mb-4 text-sm text-yellow-200">
+                    機器已經達到熱飽和。如果繼續用 205°C 入豆，轉黃點會跌破 4 分鐘！我們必須踩第一下煞車。
+                </div>
+                
+                <div class="param-row">
+                    <div>
+                        <div class="font-bold text-white">1. 入豆溫 (Charge)</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-gray-500 line-through mr-1">205°C</span>
+                        <i class="fa-solid fa-arrow-right text-gray-500 mr-1"></i>
+                        <span class="badge bg-temp">降至 200°C</span>
+                    </div>
+                </div>
+                <div class="param-row">
+                    <div>
+                        <div class="font-bold text-white">2. 起步火力</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="badge bg-fire">維持 85%</span>
+                    </div>
+                </div>
+                <div class="param-row border-none">
+                    <div>
+                        <div class="font-bold text-yellow-500">3. 轉黃點 (Ye 160°C)</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="badge" style="background:#ea580c; color:white;">降至 75%</span>
+                    </div>
+                </div>
+                <div class="mt-4 text-center text-xs text-gray-400">
+                    <i class="fa-solid fa-arrow-down mb-1"></i><br>後續請銜接「神級連段」
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: 肯亞 #4 & #5 -->
+        <div id="tab-batch45" class="tab-pane">
+            <div class="card border-red">
+                <h2 class="text-xl font-bold text-red-500 mb-3 border-b border-red-900 pb-2">
+                    <i class="fa-solid fa-fire-burner mr-2"></i> 肯亞 #4 與 #5 (極限)
+                </h2>
+                <div class="bg-red-900/20 p-3 rounded-lg mb-4 text-sm text-red-200">
+                    這是一天烘焙中最燙的時刻。鑄鐵鍋的潛熱會強烈推動脫水期，我們必須再削弱一次起步的動能！
+                </div>
+                
+                <div class="param-row">
+                    <div>
+                        <div class="font-bold text-white">1. 入豆溫 (Charge)</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="badge bg-temp">降至 195°C</span>
+                    </div>
+                </div>
+                <div class="param-row">
+                    <div>
+                        <div class="font-bold text-red-400">2. 起步火力 <i class="fa-solid fa-triangle-exclamation animate-pulse ml-1"></i></div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-gray-500 line-through mr-1">85%</span>
+                        <i class="fa-solid fa-arrow-right text-gray-500 mr-1"></i>
+                        <span class="badge bg-fire">降至 80%</span>
+                    </div>
+                </div>
+                <div class="param-row border-none">
+                    <div>
+                        <div class="font-bold text-yellow-500">3. 轉黃點 (Ye 160°C)</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="badge" style="background:#ea580c; color:white;">降至 75%</span>
+                    </div>
+                </div>
+                <div class="mt-4 text-center text-xs text-gray-400">
+                    <i class="fa-solid fa-arrow-down mb-1"></i><br>後續請銜接「神級連段」
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="switchTab('golden', this)">
+            <i class="fa-solid fa-star text-red-400"></i>
+            <span class="text-red-400">絕對不變</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('batch23', this)">
+            <i class="fa-solid fa-2 text-yellow-500"></i>
+            <span class="text-yellow-500">肯亞 #2 #3</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('batch45', this)">
+            <i class="fa-solid fa-fire text-red-500"></i>
+            <span class="text-red-500">肯亞 #4 #5</span>
+        </button>
+    </nav>
+
+    <script>
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-pane').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btnElement.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
+```
+
+
+## 🖼️ 相關參考圖片與文件
+![[7003-61d8ccd4c565400d.png]] ![[7003-85cc318439819f68.png]] ![[9000-b0d0d952ab8ef43b.jpg]] ![[10093408293917864137-4c73aabdd108e0ae.png]] ![[16009922497231620712-d01b1744e5213582.png]] ![[16010747200615915129-2c475562cbf29816.png]] ![[16057140004588957782-013a416dbc8e89ed.jpg]] [[GoldenBatch - Roast_History-63235577b267a9cf.pdf]] (附件檔案) ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]]
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-05-10_Tank-200_肯亞四連戰防禦面板_220]] (共用特徵: `肯亞, tp, 一爆`)
+- [[2026-05-10_Tank-200_肯亞第二鍋戰報與定調_218]] (共用特徵: `肯亞, tp, 一爆`)
+- [[Tank-200_肯亞第二鍋戰報與定調]] (共用特徵: `肯亞, tp, 一爆`)
+- [[2026-02-16_好的_1292]] (共用特徵: `肯亞, tp, 一爆`)
+- [[2026-03-25_請更新_821]] (共用特徵: `肯亞, tp, 一爆`)

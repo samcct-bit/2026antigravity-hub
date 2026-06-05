@@ -1,0 +1,1166 @@
+---
+type: sca_theory
+title: "教師AI作文批改工具"
+date: 2026-03-23
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：教師AI作文批改工具
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 智能作文批改系統</title>
+    <!-- Google Fonts: Noto Sans TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- QR Code Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Noto Sans TC"', 'sans-serif'] },
+                    colors: {
+                        primary: '#9333ea', // 改為淡紫色 Purple 600
+                        secondary: '#db2777', // 輔助色改為粉色 Pink 600
+                        surface: '#ffffff',
+                        background: '#faf5ff', // 帶點極淡紫的背景色
+                    },
+                    boxShadow: {
+                        'material': '0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12)',
+                        'material-hover': '0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f5f5f6; }
+        .modal-overlay { background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); }
+        .toast-enter { transform: translateY(100%); opacity: 0; }
+        .toast-enter-active { transform: translateY(0); opacity: 1; transition: all 0.3s ease-out; }
+        .toast-leave { transform: translateY(0); opacity: 1; }
+        .toast-leave-active { transform: translateY(100%); opacity: 0; transition: all 0.3s ease-in; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #9333ea; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="font-sans text-gray-800 h-screen flex flex-col relative">
+
+    <script>
+        // 【開發者設定區】
+        // 預設的 GAS 網址 (若留空，系統會優先檢查網址參數 ?config= 或 LocalStorage)
+        const DEFAULT_GAS_URL = "在這裡貼上GAS網址"; 
+    </script>
+
+    <!-- Navbar -->
+    <nav class="bg-primary text-white shadow-material z-10 sticky top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center cursor-pointer" onclick="app.switchView('student')">
+                    <span class="material-icons mr-2">edit_note</span>
+                    <span class="font-bold text-xl tracking-wider">AI 作文批改系統</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="ui.showHelp()" class="hover:bg-purple-600 p-2 rounded-full transition flex items-center" title="說明與 GAS 部署">
+                        <span class="material-icons">help_outline</span>
+                    </button>
+                    <button onclick="ui.showSettings()" class="hover:bg-purple-600 p-2 rounded-full transition flex items-center" title="連線設定">
+                        <span class="material-icons">settings</span>
+                    </button>
+                    <button onclick="app.requestTeacherAccess()" class="bg-white text-primary px-4 py-2 rounded-lg font-medium shadow hover:bg-gray-100 transition flex items-center">
+                        <span class="material-icons mr-1 text-sm">school</span> 教師入口
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow overflow-auto p-4 sm:p-6 lg:p-8 relative" id="main-container">
+        
+        <!-- View: 未設定引導畫面 -->
+        <div id="view-setup-guide" class="hidden h-full flex flex-col items-center justify-center max-w-2xl mx-auto text-center">
+            <span class="material-icons text-7xl text-gray-400 mb-4">cloud_off</span>
+            <h2 class="text-3xl font-bold text-gray-700 mb-2">尚未連結資料庫</h2>
+            <p class="text-gray-500 mb-8">本系統以 Google Sheets 作為資料庫，請先進行 GAS 連線設定。</p>
+            <div class="flex space-x-4">
+                <button onclick="ui.showHelp()" class="flex items-center bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition shadow-material">
+                    <span class="material-icons mr-2">menu_book</span> 教學與程式碼
+                </button>
+                <button onclick="ui.showSettings()" class="flex items-center bg-primary text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition shadow-material">
+                    <span class="material-icons mr-2">build</span> 立即設定
+                </button>
+            </div>
+        </div>
+
+        <!-- View: 學生入口 -->
+        <div id="view-student" class="hidden max-w-3xl mx-auto pb-10">
+            <div class="bg-white rounded-xl shadow-material overflow-hidden">
+                <div class="flex border-b bg-gray-50">
+                    <button onclick="app.switchStudentTab('submit')" id="tab-submit" class="w-1/2 py-4 text-center font-bold text-primary border-b-2 border-primary bg-white transition">📝 繳交作業</button>
+                    <button onclick="app.switchStudentTab('query')" id="tab-query" class="w-1/2 py-4 text-center font-bold text-gray-500 hover:text-primary transition">🔍 查詢成績</button>
+                </div>
+
+                <!-- 繳交作業 -->
+                <div id="student-submit-section" class="p-6 sm:p-8">
+                    <div class="mb-6 flex items-center justify-between">
+                        <label class="block text-sm font-medium text-gray-700">選擇寫作題目</label>
+                        <button onclick="app.loadInitialData()" class="text-xs text-purple-600 hover:underline flex items-center"><span class="material-icons text-sm mr-1">refresh</span>重新整理題目</button>
+                    </div>
+                    <select id="student-topic-select" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none transition mb-2" onchange="app.updateTopicDescription()">
+                        <option value="">載入中...</option>
+                    </select>
+                    <div id="student-topic-desc" class="p-3 bg-purple-50 border border-purple-100 rounded-lg text-sm text-purple-800 hidden whitespace-pre-wrap mb-6"></div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">您的姓名</label>
+                        <input type="text" id="student-name" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none transition" placeholder="請輸入真實姓名">
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">繳交方式</label>
+                        <div class="flex space-x-4">
+                            <label class="flex items-center"><input type="radio" name="submit-type" value="text" checked class="mr-2 text-primary" onchange="app.toggleSubmitType()"> 文字輸入</label>
+                            <label class="flex items-center"><input type="radio" name="submit-type" value="file" class="mr-2 text-primary" onchange="app.toggleSubmitType()"> 上傳圖片</label>
+                        </div>
+                    </div>
+
+                    <div id="submit-text-area" class="mb-6">
+                        <textarea id="student-text" rows="8" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none transition" placeholder="請在此輸入您的作文..."></textarea>
+                    </div>
+
+                    <div id="submit-file-area" class="mb-6 hidden">
+                        <input type="file" id="student-file" accept="image/*" class="w-full border border-gray-300 rounded-lg p-2 text-gray-700 bg-gray-50 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-purple-700 transition">
+                        <p class="text-xs text-red-500 mt-2">提示：由於資料庫限制，圖片將於前端自動壓縮至寬度 800px。</p>
+                        <img id="img-preview" src="" class="mt-4 max-w-full h-auto rounded shadow max-h-64 object-contain hidden">
+                    </div>
+
+                    <button onclick="app.submitEssay()" class="w-full bg-primary text-white font-bold py-3 rounded-lg shadow-material hover:bg-purple-700 transition flex justify-center items-center">
+                        <span class="material-icons mr-2">send</span> 送出作業
+                    </button>
+                </div>
+
+                <!-- 查詢成績 -->
+                <div id="student-query-section" class="hidden p-6 sm:p-8">
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">選擇查詢的題目</label>
+                        <select id="query-topic-select" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none transition mb-2">
+                            <option value="">載入中...</option>
+                        </select>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">您的姓名</label>
+                        <input type="text" id="query-name" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none" placeholder="輸入繳交時的姓名">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">查看密碼 (若無則免填)</label>
+                        <input type="password" id="query-pwd" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary outline-none">
+                    </div>
+                    <button onclick="app.queryResult()" class="w-full bg-secondary text-white font-bold py-3 rounded-lg shadow-material hover:bg-red-700 transition flex justify-center items-center mb-6">
+                        <span class="material-icons mr-2">search</span> 查詢結果
+                    </button>
+                    <div id="query-result-area" class="hidden border-t-4 border-secondary pt-6">
+                        <div id="query-result-content" class="space-y-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: 教師入口 -->
+        <div id="view-teacher" class="hidden max-w-6xl mx-auto pb-10">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 flex items-center"><span class="material-icons mr-2 text-primary">admin_panel_settings</span> 教師控制台</h2>
+                <button onclick="app.switchView('student')" class="text-gray-600 hover:text-gray-900 flex items-center bg-white px-3 py-1 rounded shadow-sm border border-gray-200">
+                    <span class="material-icons text-sm mr-1">logout</span> 返回學生端
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 左側：題目與設定 -->
+                <div class="lg:col-span-1 flex flex-col gap-6">
+                    <div class="bg-white rounded-xl shadow-material p-6">
+                        <h3 class="text-lg font-bold mb-4 border-b pb-2 flex justify-between items-center text-gray-800">
+                            <span class="flex items-center"><span class="material-icons mr-2 text-primary">add_circle</span>發布新題目</span>
+                            <button onclick="ui.showModal('modal-criteria')" class="text-xs text-purple-600 bg-purple-50 px-2 py-1.5 rounded border border-purple-200 transition">批改項目</button>
+                        </h3>
+                        <input type="text" id="topic-title" placeholder="題目標題" class="w-full mb-3 border rounded p-2 focus:border-primary outline-none">
+                        <textarea id="topic-content" rows="4" placeholder="題目說明..." class="w-full mb-3 border rounded p-2 focus:border-primary outline-none"></textarea>
+                        <button onclick="app.publishTopic()" class="w-full bg-green-600 text-white font-bold py-2 rounded shadow hover:bg-green-700 transition">建立題目</button>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-material p-6">
+                        <h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-800 flex items-center">
+                            <span class="material-icons mr-2 text-primary">list_alt</span>所有作文題目
+                        </h3>
+                        <select id="teacher-topic-select" class="w-full border rounded-lg p-3 focus:ring-primary outline-none mb-4" onchange="app.renderTeacherTopicDetail()">
+                            <option value="">載入中...</option>
+                        </select>
+                        <div id="teacher-topic-detail" class="hidden p-4 rounded border bg-gray-50 flex-col space-y-3"></div>
+                    </div>
+                </div>
+
+                <!-- 右側：名單與批改 -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-material p-6 h-full flex flex-col">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                                <span class="material-icons mr-2 text-primary">groups</span> 繳交清單 
+                                <span id="current-view-topic-title" class="ml-2 text-sm text-purple-600 font-normal hidden"></span>
+                            </h3>
+                            <div class="flex space-x-2">
+                                <button onclick="app.exportSubmissionsToTxt()" class="bg-gray-600 text-white px-3 py-1.5 rounded text-sm shadow hover:bg-gray-700 transition flex items-center">
+                                    <span class="material-icons text-sm mr-1">download</span> 匯出成績
+                                </button>
+                                <button onclick="app.batchAIGrade()" class="bg-purple-600 text-white px-3 py-1.5 rounded text-sm shadow hover:bg-purple-700 transition flex items-center">
+                                    <span class="material-icons text-sm mr-1">auto_awesome</span> 批次批改
+                                </button>
+                                <button onclick="app.fetchSubmissionsAndRender()" class="text-gray-500 hover:text-primary flex items-center text-sm border px-2 py-1.5 rounded bg-white">
+                                    <span class="material-icons text-sm mr-1">refresh</span>重整
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto flex-grow">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">時間</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">姓名</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">狀態</th>
+                                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="submissions-list" class="bg-white divide-y divide-gray-200">
+                                    <tr><td colspan="4" class="text-center text-gray-500 py-12">請先選擇題目並查看名單</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 浮動版權宣告 Footer -->
+    <footer class="fixed bottom-4 right-4 z-40 bg-white/90 backdrop-blur border border-gray-200 p-3 rounded-lg shadow-lg text-right text-xs text-gray-500 hover:bg-white transition-colors">
+        <p class="font-medium text-gray-700">Made by <a href="https://kentxchang.blogspot.tw" target="_blank" class="text-purple-600 hover:underline">阿剛老師</a></p>
+        <p class="mt-1 scale-90 origin-right">採 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" target="_blank" class="text-purple-500 hover:underline">CC BY-NC-SA 4.0</a> 授權</p>
+    </footer>
+
+    <!-- ================= Modals ================= -->
+    
+    <!-- 全域提示框 (取代 alert/confirm) -->
+    <div id="modal-alert" class="fixed inset-0 modal-overlay hidden z-[200] flex justify-center items-center opacity-0 transition-opacity">
+        <div class="bg-white w-11/12 max-w-sm rounded-xl shadow-2xl p-6 transform scale-95 transition-transform text-center relative">
+            <div id="alert-icon" class="mb-3 text-4xl"></div>
+            <h2 id="alert-title" class="text-xl font-bold mb-2 text-gray-800">提示</h2>
+            <p id="alert-msg" class="text-sm text-gray-600 mb-6 whitespace-pre-wrap"></p>
+            <div class="flex justify-center space-x-3" id="alert-buttons">
+                <button onclick="ui.closeAlert()" class="bg-primary text-white px-6 py-2 rounded shadow hover:bg-purple-700">確定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 設定 Modal -->
+    <div id="modal-settings" class="fixed inset-0 modal-overlay hidden z-50 flex justify-center items-center opacity-0 transition-opacity">
+        <div class="bg-white w-11/12 max-w-lg rounded-xl shadow-2xl p-6 relative max-h-[90vh] overflow-y-auto no-scrollbar">
+            <button onclick="ui.closeModal('modal-settings')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700"><span class="material-icons">close</span></button>
+            <h2 class="text-2xl font-bold mb-4 flex items-center text-gray-800"><span class="material-icons mr-2">settings</span> 連線設定</h2>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-bold text-gray-700 mb-1">1. GAS Web App 網址</label>
+                <input type="password" id="gas-url-input" class="w-full border border-gray-300 rounded p-2 focus:border-primary outline-none" placeholder="https://script.google.com/macros/s/.../exec">
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-bold text-gray-700 mb-1">2. Gemini API Key (選填)</label>
+                <!-- 修改：加入 oninput 即時更新事件，並調整說明文字 -->
+                <input type="password" id="gemini-key-input" class="w-full border border-gray-300 rounded p-2 focus:border-primary outline-none" placeholder="AIza..." oninput="app.updateGeminiKeyLive(this.value)">
+                <p class="text-xs text-gray-500 mt-1">留空將嘗試使用預覽環境系統金鑰。<span class="text-purple-600 font-bold">輸入後即時自動套用，無需按儲存。</span></p>
+            </div>
+
+            <div class="flex justify-between items-center mb-6 pt-4 border-t">
+                <button onclick="app.saveConfig()" class="bg-primary text-white px-6 py-2 rounded shadow hover:bg-purple-700">儲存</button>
+                <button onclick="app.clearConfig()" class="text-red-600 border border-red-600 px-4 py-2 rounded hover:bg-red-50">清除/重置設定</button>
+            </div>
+
+            <div class="border-t pt-4 mt-4">
+                <h3 class="text-sm font-bold text-gray-700 mb-2">產生分享連結 (自動帶入設定)</h3>
+                <button onclick="app.generateShareLink()" class="w-full bg-gray-100 border py-2 rounded hover:bg-gray-200 mb-4 flex justify-center items-center">
+                    <span class="material-icons text-sm mr-2">qr_code_2</span> 產生網址與 QR Code
+                </button>
+                <div id="share-area" class="hidden flex flex-col items-center">
+                    <input type="text" id="share-url" readonly class="w-full text-xs bg-gray-50 border p-2 rounded mb-2 text-center" onclick="this.select()">
+                    <div id="qrcode" class="mt-2 p-2 bg-white rounded shadow-sm border"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 說明與教學 Modal -->
+    <div id="modal-help" class="fixed inset-0 modal-overlay hidden z-50 flex justify-center items-center opacity-0 transition-opacity">
+        <div class="bg-white w-11/12 max-w-2xl rounded-xl shadow-2xl p-6 relative max-h-[90vh] overflow-hidden flex flex-col">
+            <button onclick="ui.closeModal('modal-help')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700"><span class="material-icons">close</span></button>
+            <h2 class="text-2xl font-bold mb-4 flex items-center text-gray-800"><span class="material-icons mr-2">integration_instructions</span> 系統架構與 GAS 部署</h2>
+            <div class="overflow-y-auto pr-2 text-sm text-gray-700 flex-grow space-y-4">
+                <p>本系統不依賴外部資料庫，完全免費將資料儲存於您個人的 <b>Google 試算表</b>。</p>
+                <ol class="list-decimal list-inside space-y-1 bg-purple-50 p-3 rounded border border-purple-100">
+                    <li>開啟空白 Google 試算表。</li>
+                    <li>點擊選單「擴充功能」>「Apps Script」。</li>
+                    <li>清除預設程式碼，貼上以下代碼並存檔。</li>
+                    <li>點選右上角「部署」>「新增部署作業」。</li>
+                    <li>類型選「網頁應用程式」，執行身分選「我」，存取權限選「<strong class="text-red-600">所有人</strong>」。</li>
+                    <li>部署並授權後，複製「網頁應用程式網址」填入本系統設定即可。系統會自動建立欄位！</li>
+                </ol>
+                <div class="relative mt-2">
+                    <div class="flex justify-between items-center bg-gray-800 text-gray-300 px-3 py-1 rounded-t">
+                        <span>Code.gs</span>
+                        <button onclick="app.copyGasCode()" class="text-white hover:text-purple-300 flex items-center bg-gray-700 px-2 py-1 rounded"><span class="material-icons text-sm mr-1">content_copy</span>複製</button>
+                    </div>
+                    <pre class="bg-gray-900 text-green-400 p-3 rounded-b text-xs overflow-x-auto h-48" id="gas-code-block"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自訂批改項目 Modal -->
+    <div id="modal-criteria" class="fixed inset-0 modal-overlay hidden z-50 flex justify-center items-center opacity-0 transition-opacity">
+        <div class="bg-white w-11/12 max-w-md rounded-xl shadow-2xl p-6 relative">
+            <button onclick="ui.closeModal('modal-criteria')" class="absolute top-4 right-4"><span class="material-icons">close</span></button>
+            <h2 class="text-xl font-bold mb-4 flex items-center text-gray-800"><span class="material-icons mr-2">settings_suggest</span>設定批改項目</h2>
+            <div class="text-sm text-gray-600 mb-4 bg-purple-50 p-3 rounded">您可以新增/修改評分向度，系統自動附加「建議分數」。</div>
+            <div id="criteria-list" class="space-y-2 mb-4 max-h-48 overflow-y-auto no-scrollbar"></div>
+            <button onclick="app.addCriteriaInput()" class="w-full bg-gray-50 border border-dashed py-2 rounded mb-4 text-sm font-bold flex justify-center items-center hover:bg-gray-100">
+                <span class="material-icons text-sm mr-1">add</span>新增項目
+            </button>
+            <button onclick="app.saveCriteria()" class="w-full bg-green-600 text-white rounded py-2 shadow hover:bg-green-700">儲存設定</button>
+        </div>
+    </div>
+
+    <!-- 教師登入 Modal -->
+    <div id="modal-teacher-login" class="fixed inset-0 modal-overlay hidden z-[60] flex justify-center items-center opacity-0 transition-opacity">
+        <div class="bg-white w-11/12 max-w-sm rounded-xl shadow-2xl p-6 relative">
+            <button onclick="ui.closeModal('modal-teacher-login')" class="absolute top-4 right-4"><span class="material-icons">close</span></button>
+            <h2 class="text-xl font-bold mb-4 text-gray-800 flex items-center"><span class="material-icons mr-2">lock</span> 教師入口</h2>
+            <input type="password" id="teacher-pwd" class="w-full border rounded p-3 mb-4 focus:ring-primary outline-none" placeholder="請輸入密碼(blog上有)">
+            <button onclick="app.verifyTeacher()" class="w-full bg-primary text-white font-bold py-2 rounded shadow hover:bg-purple-700">進入</button>
+        </div>
+    </div>
+
+    <!-- 評閱作業 Modal -->
+    <div id="modal-review" class="fixed inset-0 modal-overlay hidden z-[60] flex justify-center items-center opacity-0 transition-opacity">
+        <div class="bg-white w-11/12 max-w-5xl rounded-xl shadow-2xl p-6 h-[90vh] flex flex-col relative">
+            <button onclick="ui.closeModal('modal-review')" class="absolute top-4 right-4"><span class="material-icons">close</span></button>
+            <h2 class="text-2xl font-bold mb-4 text-gray-800 flex items-center border-b pb-2" id="review-title">批改作文</h2>
+            <div class="flex-grow overflow-hidden flex flex-col md:flex-row gap-4">
+                <div class="w-full md:w-1/2 flex flex-col bg-gray-50 rounded border p-4 overflow-y-auto">
+                    <h3 class="font-bold text-gray-700 mb-2 border-b pb-1">學生原文</h3>
+                    <div id="review-content" class="flex-grow whitespace-pre-wrap text-sm text-gray-800"></div>
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col overflow-y-auto pr-2 space-y-4">
+                    <div class="bg-purple-50 p-4 rounded border border-purple-100">
+                        <div class="flex justify-between items-center mb-2 border-b border-purple-200 pb-2">
+                            <h3 class="font-bold text-purple-800">AI 分析</h3>
+                            <button onclick="app.runAIGrading()" class="bg-purple-600 text-white text-xs px-2 py-1.5 rounded hover:bg-purple-700">執行 AI 批改</button>
+                        </div>
+                        <div id="ai-result-box" class="text-sm text-gray-700">尚未執行 AI 批改。</div>
+                    </div>
+                    <div class="bg-white p-4 rounded border shadow-sm">
+                        <h3 class="font-bold text-gray-700 mb-2 border-b pb-1">教師總評</h3>
+                        <input type="text" id="manual-score" placeholder="分數 (如: 五級分)" class="w-full border rounded p-2 mb-2 text-sm">
+                        <textarea id="manual-comment" rows="3" placeholder="教師評語..." class="w-full border rounded p-2 text-sm mb-2"></textarea>
+                        <input type="text" id="review-password" placeholder="查看密碼 (選填)" class="w-full border rounded p-2 text-sm">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 pt-4 border-t flex justify-end">
+                <button onclick="app.saveReview()" class="px-6 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700">儲存發布</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 圖片放大檢視 Modal (新增) -->
+    <div id="modal-image-viewer" class="fixed inset-0 modal-overlay hidden z-[350] flex justify-center items-center opacity-0 transition-opacity p-4" onclick="ui.closeModal('modal-image-viewer')">
+        <div class="relative max-w-5xl w-full flex justify-center items-center" onclick="event.stopPropagation()">
+            <button onclick="ui.closeModal('modal-image-viewer')" class="absolute -top-10 right-0 md:-right-10 text-white hover:text-gray-300 transition">
+                <span class="material-icons text-4xl shadow-sm rounded-full">cancel</span>
+            </button>
+            <img id="viewer-img" src="" class="max-w-full max-h-[85vh] object-contain rounded shadow-2xl bg-white">
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div id="modal-loading" class="fixed inset-0 modal-overlay hidden z-[250] flex justify-center items-center">
+        <div class="bg-white px-8 py-6 rounded-xl shadow-2xl flex flex-col items-center">
+            <div class="loader mb-4"></div>
+            <h3 class="font-bold text-gray-800" id="loading-text">處理中...</h3>
+        </div>
+    </div>
+    
+    <div id="toast-container" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-[300] flex flex-col space-y-2"></div>
+
+    <script>
+        // === GAS 原始碼內嵌 (用於說明區顯示與複製) ===
+        const RAW_GAS_CODE = `function doPost(e) {
+  try {
+    var params = JSON.parse(e.postData.contents);
+    var action = params.action; var data = params.data; var result = {};
+    initSheets();
+    if (action === "getTopics") result = getTopics();
+    else if (action === "addTopic") result = addTopic(data);
+    else if (action === "updateTopicStatus") result = updateTopicStatus(data.id, data.isActive);
+    else if (action === "getSubmissions") result = getSubmissions();
+    else if (action === "addSubmission") result = addSubmission(data);
+    else if (action === "updateSubmission") result = updateSubmission(data);
+    else if (action === "getSettings") result = getSettings();
+    else if (action === "updateSettings") result = updateSettings(data);
+    else throw new Error("Unknown action");
+    return ContentService.createTextOutput(JSON.stringify({ success: true, data: result })).setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ success: false, error: err.toString() })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+function doGet(e) { return ContentService.createTextOutput("OK").setMimeType(ContentService.MimeType.TEXT); }
+function initSheets() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss.getSheetByName("系統設定")) { var s = ss.insertSheet("系統設定"); s.appendRow(["設定鍵", "設定值", "更新時間"]); s.appendRow(["criteria", JSON.stringify(["立意取材", "結構組織", "遣詞造句", "總結建議"]), new Date().toISOString()]); }
+  if (!ss.getSheetByName("題目清單")) { ss.insertSheet("題目清單").appendRow(["題目ID", "標題", "內容", "狀態", "建立時間"]); }
+  if (!ss.getSheetByName("繳交紀錄")) { ss.insertSheet("繳交紀錄").appendRow(["繳交ID", "題目ID", "學生姓名", "類型", "檔案類型", "內容", "狀態", "AI批改結果", "教師評分", "教師評語", "查看密碼", "建立時間"]); }
+}
+function getSettings() { var d = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("系統設定").getDataRange().getValues(); var s = {}; for (var i=1; i<d.length; i++) s[d[i][0]] = d[i][1]; return s; }
+function updateSettings(data) { var s = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("系統設定"); var v = s.getDataRange().getValues(); for (var i=1; i<v.length; i++) { if (v[i][0] === data.key) { s.getRange(i+1, 2).setValue(data.value); return true; } } s.appendRow([data.key, data.value, new Date().toISOString()]); return true; }
+function getTopics() { var d = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("題目清單").getDataRange().getValues(); var t = []; for (var i=1; i<d.length; i++) t.push({id: d[i][0], title: d[i][1], content: d[i][2], isActive: d[i][3]===true||d[i][3]==="true"}); return t; }
+function addTopic(data) { var id = "T_"+new Date().getTime(); SpreadsheetApp.getActiveSpreadsheet().getSheetByName("題目清單").appendRow([id, data.title, data.content, true, new Date().toISOString()]); return {id: id}; }
+function updateTopicStatus(id, active) { var s = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("題目清單"); var d = s.getDataRange().getValues(); for (var i=1; i<d.length; i++) { if (d[i][0] === id) { s.getRange(i+1, 4).setValue(active); return true; } } }
+function getSubmissions() { var d = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("繳交紀錄").getDataRange().getValues(); var r = []; for (var i=1; i<d.length; i++) r.push({id: d[i][0], topicId: d[i][1], studentName: d[i][2], type: d[i][3], mimeType: d[i][4], content: d[i][5], status: d[i][6], aiGrading: d[i][7]?JSON.parse(d[i][7]):null, manualScore: d[i][8], manualComment: d[i][9], viewPassword: d[i][10], createdAt: d[i][11]}); return r; }
+function addSubmission(data) { var id = "S_"+new Date().getTime(); SpreadsheetApp.getActiveSpreadsheet().getSheetByName("繳交紀錄").appendRow([id, data.topicId, data.studentName, data.type, data.mimeType, data.content, "pending", "", "", "", "", new Date().toISOString()]); return {id: id}; }
+function updateSubmission(data) { var s = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("繳交紀錄"); var v = s.getDataRange().getValues(); for (var i=1; i<v.length; i++) { if (v[i][0] === data.id) { if(data.aiGrading!==undefined) s.getRange(i+1, 8).setValue(JSON.stringify(data.aiGrading)); if(data.status!==undefined) s.getRange(i+1, 7).setValue(data.status); if(data.manualScore!==undefined) s.getRange(i+1, 9).setValue(data.manualScore); if(data.manualComment!==undefined) s.getRange(i+1, 10).setValue(data.manualComment); if(data.viewPassword!==undefined) s.getRange(i+1, 11).setValue(data.viewPassword); return true; } } }`;
+        document.getElementById('gas-code-block').textContent = RAW_GAS_CODE;
+
+        // === 狀態與 API 工具 ===
+        const appState = {
+            gasUrl: "",
+            geminiKey: "",
+            teacherMode: false,
+            criteria: ["立意取材", "結構組織", "遣詞造句", "總結建議"],
+            draggedCriteriaIndex: null, // 新增：用於記錄目前拖曳的項目
+            topicsMap: {},
+            submissionsMap: {},
+            currentReviewId: null,
+            selectedTopicIdForView: null
+        };
+
+        const ui = {
+            showToast: (msg, type = 'info') => {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = `px-6 py-3 rounded-lg shadow-lg flex items-center toast-enter text-sm font-medium text-white ${type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-gray-800'}`;
+                toast.innerHTML = `<span class="material-icons mr-2 text-sm">${type === 'success' ? 'check_circle' : 'info'}</span> ${msg}`;
+                container.appendChild(toast);
+                requestAnimationFrame(() => { toast.classList.remove('toast-enter'); toast.classList.add('toast-enter-active'); });
+                setTimeout(() => { toast.classList.remove('toast-enter-active'); toast.classList.add('toast-leave-active'); setTimeout(() => toast.remove(), 300); }, 3000);
+            },
+            showModal: (id) => {
+                const el = document.getElementById(id);
+                el.classList.remove('hidden');
+                setTimeout(() => el.classList.remove('opacity-0'), 10);
+                const inner = el.firstElementChild;
+                if(inner && inner.classList.contains('scale-95')) { inner.classList.remove('scale-95'); inner.classList.add('scale-100'); }
+            },
+            closeModal: (id) => {
+                const el = document.getElementById(id);
+                el.classList.add('opacity-0');
+                const inner = el.firstElementChild;
+                if(inner && inner.classList.contains('scale-100')) { inner.classList.remove('scale-100'); inner.classList.add('scale-95'); }
+                setTimeout(() => el.classList.add('hidden'), 300);
+            },
+            showLoading: (text = '處理中...') => { document.getElementById('loading-text').innerText = text; document.getElementById('modal-loading').classList.remove('hidden'); },
+            hideLoading: () => document.getElementById('modal-loading').classList.add('hidden'),
+            showSettings: () => ui.showModal('modal-settings'),
+            showHelp: () => ui.showModal('modal-help'),
+            alert: (title, msg, type = 'info', callback = null) => {
+                document.getElementById('alert-title').innerText = title;
+                document.getElementById('alert-msg').innerText = msg;
+                const iconBox = document.getElementById('alert-icon');
+                iconBox.innerHTML = type === 'success' ? '<span class="material-icons text-green-500 text-5xl">check_circle</span>' : type === 'error' ? '<span class="material-icons text-red-500 text-5xl">error</span>' : '<span class="material-icons text-purple-500 text-5xl">info</span>';
+                
+                const btnBox = document.getElementById('alert-buttons');
+                btnBox.innerHTML = `<button id="alert-btn-ok" class="bg-primary text-white px-6 py-2 rounded shadow hover:bg-purple-700 w-full font-bold">確定</button>`;
+                
+                ui.showModal('modal-alert');
+                document.getElementById('alert-btn-ok').onclick = () => { ui.closeModal('modal-alert'); if(callback) callback(); };
+            },
+            showImageViewer: (src) => {
+                document.getElementById('viewer-img').src = src;
+                ui.showModal('modal-image-viewer');
+            }
+        };
+        ui.closeAlert = () => ui.closeModal('modal-alert');
+
+        const api = {
+            callGAS: async (action, data = {}) => {
+                if(!appState.gasUrl) throw new Error("尚未設定 GAS 網址！");
+                const response = await fetch(appState.gasUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // 避免 CORS Preflight
+                    body: JSON.stringify({ action: action, data: data })
+                });
+                const resText = await response.text();
+                const resJson = JSON.parse(resText);
+                if (!resJson.success) throw new Error(resJson.error);
+                return resJson.data;
+            },
+            callGemini: async (promptText, base64Data = null, mimeType = null) => {
+                const finalKey = appState.geminiKey || "";
+                const model = finalKey === "" ? "gemini-2.5-flash-preview-09-2025" : "gemini-2.5-flash";
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${finalKey}`;
+
+                let dynamicPrompt = `你是一個專業的作文批改老師。請以嚴格的 JSON 格式輸出，必須完全符合以下結構：\n{\n  "建議分數": "X級分"`;
+                appState.criteria.forEach(c => dynamicPrompt += `,\n  "${c}": "具體說明"`);
+                dynamicPrompt += `,\n  "辨識原文": "若學生上傳圖片，請完整精準辨識並打字輸出圖片中的作文文字。若無法辨識或為純文字繳交則輸出空字串。"\n}`;
+
+                const parts = [{ text: dynamicPrompt }, { text: promptText }];
+                if (base64Data && mimeType) {
+                    const base64Str = base64Data.split(',')[1];
+                    parts.push({ inlineData: { mimeType: mimeType, data: base64Str } });
+                }
+
+                const payload = { contents: [{ parts: parts }], generationConfig: { responseMimeType: "application/json" } };
+                
+                const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const result = await response.json();
+                if (result.error) throw new Error(result.error.message);
+                let text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                if(!text) throw new Error("無回傳內容");
+                text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
+                return JSON.parse(text);
+            }
+        };
+
+        const imageUtils = {
+            compress: (file) => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            let width = img.width, height = img.height;
+                            const MAX_WIDTH = 800;
+                            if (width > MAX_WIDTH) { height = Math.round((height * MAX_WIDTH) / width); width = MAX_WIDTH; }
+                            canvas.width = width; canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            resolve(canvas.toDataURL('image/jpeg', 0.6)); // 降低品質確保可存入試算表
+                        };
+                        img.onerror = reject; img.src = event.target.result;
+                    };
+                    reader.onerror = reject; reader.readAsDataURL(file);
+                });
+            }
+        };
+
+        const renderAIGrading = (aiData) => {
+            if(!aiData) return '';
+            
+            // 0. 正規化 AI 回傳的資料鍵值 (去除頭尾空白，避免因空白導致比對失敗)
+            const normalizedAiData = {};
+            for (const k in aiData) {
+                normalizedAiData[k.trim()] = aiData[k];
+            }
+
+            let html = `<div class="mb-3 bg-white p-2 rounded shadow-sm border border-purple-100"><span class="font-bold text-purple-700">建議分數：</span><span class="font-bold text-gray-800 text-lg">${normalizedAiData['建議分數'] || '無'}</span></div>`;
+            
+            // 1. 強制依照目前「最新設定」的批改項目與順序呈現 (確保一定出現所有自訂項目)
+            appState.criteria.forEach(key => {
+                const content = normalizedAiData[key] || "（無相關評語）";
+                html += `<div class="mb-3"><div class="font-bold bg-purple-100 text-purple-900 px-2 py-1 rounded inline-block mb-1 text-xs">${key}</div><div class="text-gray-800 text-sm bg-white p-2 rounded border border-gray-100 whitespace-pre-wrap">${content}</div></div>`;
+            });
+
+            // 2. 補上 AI 回傳但不在目前設定中的欄位 (例如：老師中途刪除的舊項目、或 AI 額外的備註)
+            for (const key in normalizedAiData) {
+                if (key !== '建議分數' && key !== '辨識原文' && !appState.criteria.includes(key)) {
+                    html += `<div class="mb-3"><div class="font-bold bg-gray-100 text-gray-700 px-2 py-1 rounded inline-block mb-1 text-xs">${key}</div><div class="text-gray-800 text-sm bg-white p-2 rounded border border-gray-100 whitespace-pre-wrap">${normalizedAiData[key]}</div></div>`;
+                }
+            }
+            
+            return html;
+        };
+
+        // === 主要邏輯 ===
+        window.app = {
+            init: () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const configB64 = urlParams.get('config');
+                if (configB64) {
+                    try {
+                        const decoded = JSON.parse(atob(configB64));
+                        localStorage.setItem('tpetGasUrl', decoded.url);
+                        if(decoded.key) localStorage.setItem('tpetGeminiKey', decoded.key);
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        ui.showToast('已匯入設定', 'success');
+                    } catch(e) {}
+                }
+
+                appState.gasUrl = localStorage.getItem('tpetGasUrl') || DEFAULT_GAS_URL;
+                appState.geminiKey = localStorage.getItem('tpetGeminiKey') || "";
+                document.getElementById('gas-url-input').value = appState.gasUrl;
+                document.getElementById('gemini-key-input').value = appState.geminiKey;
+
+                if (!appState.gasUrl) {
+                    document.getElementById('view-setup-guide').classList.remove('hidden');
+                } else {
+                    app.switchView('student');
+                    app.loadInitialData();
+                }
+            },
+            
+            switchView: (view) => {
+                if(!appState.gasUrl) return ui.alert("尚未設定", "請先完成 GAS 連線設定。", "error");
+                document.getElementById('view-student').classList.add('hidden');
+                document.getElementById('view-teacher').classList.add('hidden');
+                document.getElementById('view-setup-guide').classList.add('hidden');
+                document.getElementById('view-' + view).classList.remove('hidden');
+            },
+
+            switchStudentTab: (tab) => {
+                document.getElementById('student-submit-section').classList.add('hidden');
+                document.getElementById('student-query-section').classList.add('hidden');
+                document.getElementById('tab-submit').className = "w-1/2 py-4 text-center font-bold text-gray-500 hover:text-primary bg-gray-50 border-b transition";
+                document.getElementById('tab-query').className = "w-1/2 py-4 text-center font-bold text-gray-500 hover:text-primary bg-gray-50 border-b transition";
+                
+                if(tab === 'submit') {
+                    document.getElementById('student-submit-section').classList.remove('hidden');
+                    document.getElementById('tab-submit').className = "w-1/2 py-4 text-center font-bold text-primary border-b-2 border-primary bg-white transition";
+                } else {
+                    document.getElementById('student-query-section').classList.remove('hidden');
+                    document.getElementById('tab-query').className = "w-1/2 py-4 text-center font-bold text-primary border-b-2 border-primary bg-white transition";
+                }
+            },
+
+            toggleSubmitType: () => {
+                const type = document.querySelector('input[name="submit-type"]:checked').value;
+                document.getElementById('submit-text-area').classList.toggle('hidden', type !== 'text');
+                document.getElementById('submit-file-area').classList.toggle('hidden', type === 'text');
+            },
+
+            // --- 設定區 ---
+            // 新增：即時更新 API Key 函式
+            updateGeminiKeyLive: (val) => {
+                const key = val.trim();
+                appState.geminiKey = key;
+                localStorage.setItem('tpetGeminiKey', key);
+                // 若分享區塊正顯示中，即時更新 QR Code 與網址
+                if (!document.getElementById('share-area').classList.contains('hidden')) {
+                    app.generateShareLink();
+                }
+            },
+            saveConfig: () => {
+                const url = document.getElementById('gas-url-input').value.trim();
+                const key = document.getElementById('gemini-key-input').value.trim();
+                if(!url && !DEFAULT_GAS_URL) return ui.alert("錯誤", "必須輸入 GAS 網址", "error");
+                
+                // 判斷 GAS 網址是否有實質改變
+                const isGasUrlChanged = url !== appState.gasUrl;
+                
+                appState.gasUrl = url;
+                appState.geminiKey = key;
+                localStorage.setItem('tpetGasUrl', url);
+                localStorage.setItem('tpetGeminiKey', key);
+                
+                // 只有更改了 GAS 網址才需要重新載入網頁
+                if (isGasUrlChanged) {
+                    ui.alert("成功", "GAS 網址已更新，將重新載入以套用設定。", "success", () => location.reload());
+                } else {
+                    ui.showToast('設定已儲存', 'success');
+                    ui.closeModal('modal-settings');
+                }
+            },
+            clearConfig: () => {
+                localStorage.removeItem('tpetGasUrl');
+                localStorage.removeItem('tpetGeminiKey');
+                ui.alert("重置完成", "連線設定已清除。", "info", () => location.reload());
+            },
+            generateShareLink: () => {
+                if(!appState.gasUrl) return ui.showToast('無設定可分享', 'error');
+                const b64 = btoa(JSON.stringify({ url: appState.gasUrl, key: appState.geminiKey }));
+                const fullUrl = new URL(window.location.pathname + '?config=' + b64, window.location.href).toString();
+                
+                document.getElementById('share-area').classList.remove('hidden');
+                document.getElementById('share-url').value = fullUrl;
+                document.getElementById('qrcode').innerHTML = "";
+                new QRCode(document.getElementById('qrcode'), { text: fullUrl, width: 128, height: 128 });
+            },
+            copyGasCode: () => {
+                const textArea = document.createElement("textarea");
+                textArea.value = RAW_GAS_CODE;
+                textArea.style.position = "absolute";
+                textArea.style.left = "-999999px";
+                document.body.prepend(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    ui.showToast('已複製 GAS 程式碼', 'success');
+                } catch (error) {
+                    ui.showToast('複製失敗，請手動複製', 'error');
+                } finally {
+                    textArea.remove();
+                }
+            },
+
+            // --- 資料加載 ---
+            loadInitialData: async () => {
+                if(!appState.gasUrl) return;
+                ui.showLoading("載入題目與設定中...");
+                try {
+                    const settings = await api.callGAS('getSettings');
+                    if(settings.criteria) appState.criteria = JSON.parse(settings.criteria);
+                    
+                    const topics = await api.callGAS('getTopics');
+                    appState.topicsMap = {};
+                    topics.forEach(t => appState.topicsMap[t.id] = t);
+                    
+                    app.renderTopicSelects();
+                    app.renderCriteriaList();
+                } catch(e) { ui.alert("連線錯誤", "無法讀取資料庫，請檢查 GAS 網址是否正確及部署權限是否設為所有人。\n" + e.message, "error"); }
+                finally { ui.hideLoading(); }
+            },
+            
+            renderTopicSelects: () => {
+                const sSelect = document.getElementById('student-topic-select');
+                const qSelect = document.getElementById('query-topic-select');
+                const tSelect = document.getElementById('teacher-topic-select');
+                
+                const activeHtml = '<option value="">請選擇題目...</option>' + Object.values(appState.topicsMap).filter(t => t.isActive).map(t => `<option value="${t.id}">${t.title}</option>`).join('');
+                const allHtml = '<option value="">請選擇題目進行管理...</option>' + Object.values(appState.topicsMap).map(t => `<option value="${t.id}">${t.title} ${t.isActive ? '' : '(已停用)'}</option>`).join('');
+                
+                sSelect.innerHTML = activeHtml; qSelect.innerHTML = activeHtml;
+                if(tSelect) tSelect.innerHTML = allHtml;
+                app.updateTopicDescription();
+            },
+
+            updateTopicDescription: () => {
+                const id = document.getElementById('student-topic-select').value;
+                const desc = document.getElementById('student-topic-desc');
+                if(id && appState.topicsMap[id]) { desc.innerText = appState.topicsMap[id].content; desc.classList.remove('hidden'); }
+                else desc.classList.add('hidden');
+            },
+
+            // --- 學生繳交與查詢 ---
+            submitEssay: async () => {
+                const topicId = document.getElementById('student-topic-select').value;
+                const name = document.getElementById('student-name').value.trim();
+                const type = document.querySelector('input[name="submit-type"]:checked').value;
+                if(!topicId) return ui.alert("提示", "請先選擇題目", "error");
+                if(!name) return ui.alert("提示", "請輸入姓名", "error");
+
+                let content = "", mimeType = "";
+                ui.showLoading("處理與傳送中...");
+                try {
+                    if(type === 'text') {
+                        content = document.getElementById('student-text').value.trim();
+                        if(!content) throw new Error("請輸入內容");
+                        mimeType = "text/plain";
+                    } else {
+                        const file = document.getElementById('student-file').files[0];
+                        if(!file) throw new Error("請選擇圖片檔案");
+                        content = await imageUtils.compress(file);
+                        mimeType = "image/jpeg";
+                    }
+
+                    await api.callGAS('addSubmission', { topicId, studentName: name, type, mimeType, content });
+                    ui.alert("成功", "作業送出成功！您可以隨時透過查詢頁面查看批改結果。", "success");
+                    document.getElementById('student-text').value = '';
+                    document.getElementById('student-file').value = '';
+                    document.getElementById('img-preview').classList.add('hidden');
+                } catch(e) { ui.alert("送出失敗", e.message, "error"); }
+                finally { ui.hideLoading(); }
+            },
+
+            queryResult: async () => {
+                const topicId = document.getElementById('query-topic-select').value;
+                const name = document.getElementById('query-name').value.trim();
+                const pwd = document.getElementById('query-pwd').value;
+                if(!topicId || !name) return ui.alert("提示", "請選擇題目並輸入姓名", "error");
+
+                ui.showLoading("查詢中...");
+                try {
+                    const list = await api.callGAS('getSubmissions');
+                    // 優化：去除所有空白字元與大小寫差異，提升比對容錯率
+                    const targetName = name.replace(/\s+/g, '').toLowerCase();
+                    const match = list.filter(d => 
+                        String(d.topicId) === String(topicId) && 
+                        String(d.studentName).replace(/\s+/g, '').toLowerCase() === targetName
+                    ).sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+                    
+                    if(!match) return ui.alert("查詢失敗", "找不到繳交紀錄，請確認「選擇的題目」與「姓名」是否完全正確。", "error");
+                    
+                    // 修正：將試算表抓下來的密碼強制轉為字串 (String)，避免純數字被試算表轉型導致比對失敗
+                    if(match.viewPassword && String(match.viewPassword) !== pwd) return ui.alert("錯誤", "查看密碼錯誤", "error");
+
+                    let html = '';
+                    
+                    // 新增：顯示學生原文與 AI 辨識文字 (讓學生也能看見)
+                    html += `<div class="bg-white p-4 rounded-lg border shadow-sm mb-4"><h3 class="font-bold text-gray-700 mb-2 border-b pb-1"><span class="material-icons text-sm">description</span> 您的繳交內容</h3>`;
+                    if (match.type === 'text') {
+                        html += `<div class="text-gray-800 text-sm whitespace-pre-wrap">${match.content}</div>`;
+                    } else {
+                        // 加入點擊放大功能與游標樣式
+                        html += `<img src="${match.content}" class="max-w-full rounded shadow max-h-48 object-contain mb-3 cursor-pointer hover:opacity-90 transition-opacity" title="點擊放大圖片" onclick="ui.showImageViewer(this.src)">`;
+                        if (match.aiGrading && match.aiGrading['辨識原文']) {
+                            html += `<div class="bg-yellow-50 p-3 rounded border border-yellow-200"><h4 class="font-bold text-yellow-800 text-xs mb-1 flex items-center"><span class="material-icons text-xs mr-1">document_scanner</span>AI 辨識文字</h4><div class="text-sm text-gray-800 whitespace-pre-wrap">${match.aiGrading['辨識原文']}</div></div>`;
+                        }
+                    }
+                    html += `</div>`;
+
+                    // 若尚未批改完成，明確顯示等待中畫面
+                    if(match.status !== 'graded') {
+                        html += `
+                        <div class="bg-purple-50 p-6 rounded-lg border border-purple-200 shadow-sm text-center">
+                            <span class="material-icons text-purple-500 text-5xl mb-2">hourglass_empty</span>
+                            <h3 class="font-bold text-purple-800 text-xl mb-2">作業已收到，尚未批改</h3>
+                            <p class="text-gray-600 text-sm">系統已成功找到您的繳交紀錄！<br>目前老師（或 AI）尚未完成批改，請稍後再回來查看成績。</p>
+                        </div>`;
+                    } else {
+                        if(match.aiGrading) html += `<div class="bg-purple-50 p-4 rounded-lg border shadow-sm mb-4"><h3 class="font-bold text-purple-800 mb-2 border-b pb-1"><span class="material-icons text-sm">auto_awesome</span> AI 分析</h3>${renderAIGrading(match.aiGrading)}</div>`;
+                        if(match.manualScore || match.manualComment) html += `<div class="bg-green-50 p-4 rounded-lg border shadow-sm"><h3 class="font-bold text-green-800 mb-2 border-b pb-1">教師評語</h3>${match.manualScore?`<div><b>給分：</b><span class="text-red-600 font-bold">${match.manualScore}</span></div>`:''}${match.manualComment?`<div class="mt-2 text-gray-800 whitespace-pre-wrap">${match.manualComment}</div>`:''}</div>`;
+                    }
+                    
+                    document.getElementById('query-result-content').innerHTML = html;
+                    document.getElementById('query-result-area').classList.remove('hidden');
+                } catch(e) { ui.alert("錯誤", e.message, "error"); }
+                finally { ui.hideLoading(); }
+            },
+
+            // --- 教師專區 ---
+            requestTeacherAccess: () => {
+                if(appState.teacherMode) return app.switchView('teacher');
+                document.getElementById('teacher-pwd').value = '';
+                ui.showModal('modal-teacher-login');
+            },
+            verifyTeacher: () => {
+                if(document.getElementById('teacher-pwd').value === 'tpet') {
+                    appState.teacherMode = true;
+                    ui.closeModal('modal-teacher-login');
+                    app.switchView('teacher');
+                } else ui.showToast('密碼錯誤', 'error');
+            },
+
+            publishTopic: async () => {
+                const title = document.getElementById('topic-title').value.trim();
+                const content = document.getElementById('topic-content').value.trim();
+                if(!title || !content) return ui.showToast('請填寫完整', 'error');
+                ui.showLoading("建立中...");
+                try {
+                    await api.callGAS('addTopic', { title, content });
+                    await app.loadInitialData(); // 重整清單
+                    ui.showToast('建立成功', 'success');
+                    document.getElementById('topic-title').value = ''; document.getElementById('topic-content').value = '';
+                } catch(e) { ui.alert("建立失敗", e.message, "error"); }
+                finally { ui.hideLoading(); }
+            },
+
+            renderTeacherTopicDetail: () => {
+                const id = document.getElementById('teacher-topic-select').value;
+                const div = document.getElementById('teacher-topic-detail');
+                if(!id || !appState.topicsMap[id]) { div.classList.add('hidden'); return; }
+                const t = appState.topicsMap[id];
+                div.classList.remove('hidden'); div.classList.add('flex');
+                div.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <strong class="text-gray-800">${t.title}</strong>
+                        <button onclick="app.toggleTopicStatus('${t.id}', ${!t.isActive})" class="text-xs px-2 py-1 rounded shadow-sm ${t.isActive?'bg-red-100 text-red-700':'bg-green-100 text-green-700'}">${t.isActive?'停用':'啟用'}</button>
+                    </div>
+                    <p class="text-xs text-gray-600 bg-white p-2 rounded border line-clamp-2">${t.content}</p>
+                    <button onclick="app.selectTopic('${t.id}')" class="w-full bg-primary text-white py-1.5 rounded shadow text-sm">查看繳交名單</button>
+                `;
+            },
+
+            toggleTopicStatus: async (id, isActive) => {
+                ui.showLoading("變更中...");
+                try {
+                    await api.callGAS('updateTopicStatus', { id, isActive });
+                    await app.loadInitialData();
+                    app.renderTeacherTopicDetail();
+                    ui.showToast('狀態已更新', 'success');
+                } catch(e) { ui.alert("錯誤", e.message, "error"); }
+                finally { ui.hideLoading(); }
+            },
+
+            selectTopic: (id) => {
+                appState.selectedTopicIdForView = id;
+                document.getElementById('current-view-topic-title').innerText = `(${appState.topicsMap[id].title})`;
+                document.getElementById('current-view-topic-title').classList.remove('hidden');
+                app.fetchSubmissionsAndRender();
+            },
+
+            fetchSubmissionsAndRender: async () => {
+                if(!appState.selectedTopicIdForView) return;
+                ui.showLoading("讀取名單中...");
+                try {
+                    const list = await api.callGAS('getSubmissions');
+                    appState.submissionsMap = {};
+                    list.forEach(s => appState.submissionsMap[s.id] = s);
+                    
+                    const tbody = document.getElementById('submissions-list');
+                    const filtered = list.filter(d => d.topicId === appState.selectedTopicIdForView);
+                    
+                    if(filtered.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="4" class="text-center text-gray-500 py-8 bg-gray-50">此題目尚無作業</td></tr>`;
+                    } else {
+                        tbody.innerHTML = filtered.map(d => `
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-2 text-xs text-gray-500">${new Date(d.createdAt).toLocaleString()}</td>
+                                <td class="px-4 py-2 text-sm font-bold">${d.studentName}</td>
+                                <td class="px-4 py-2 text-xs">${d.status==='graded'?'<span class="text-green-600">已批</span>':'<span class="text-yellow-600">未批</span>'}</td>
+                                <td class="px-4 py-2 text-center"><button onclick="app.openReview('${d.id}')" class="text-primary text-xs border border-primary px-3 py-1 rounded hover:bg-primary hover:text-white transition">評閱</button></td>
+                            </tr>
+                        `).join('');
+                    }
+                } catch(e) { ui.alert("讀取失敗", e.message, "error"); }
+                finally { ui.hideLoading(); }
+            },
+
+            openReview: (id) => {
+                appState.currentReviewId = id;
+                const d = appState.submissionsMap[id];
+                document.getElementById('review-title').innerHTML = `評閱：${d.studentName}`;
+                
+                const cb = document.getElementById('review-content');
+                if(d.type === 'text') {
+                    cb.innerHTML = `<div class="bg-white p-3 rounded border">${d.content.replace(/\n/g, '<br>')}</div>`;
+                } else {
+                    // 加入點擊放大功能與游標樣式
+                    let htmlStr = `<img src="${d.content}" class="max-w-full rounded shadow mb-4 cursor-pointer hover:opacity-90 transition-opacity" title="點擊放大圖片" onclick="ui.showImageViewer(this.src)">`;
+                    // 新增：如果有辨識出文字，直接顯示在圖片下方
+                    if(d.aiGrading && d.aiGrading['辨識原文']) {
+                        htmlStr += `<div class="bg-yellow-50 p-3 rounded border border-yellow-200"><h4 class="font-bold text-yellow-800 text-sm mb-1 flex items-center"><span class="material-icons text-sm mr-1">document_scanner</span>AI 辨識原文</h4><div class="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">${d.aiGrading['辨識原文']}</div></div>`;
+                    }
+                    cb.innerHTML = htmlStr;
+                }
+
+                document.getElementById('manual-score').value = d.manualScore || '';
+                document.getElementById('manual-comment').value = d.manualComment || '';
+                document.getElementById('review-password').value = d.viewPassword || '';
+                
+                const ab = document.getElementById('ai-result-box');
+                if(d.aiGrading) ab.innerHTML = renderAIGrading(d.aiGrading);
+                else ab.innerHTML = '<div class="text-gray-500 text-center py-4">點擊上方按鈕執行 AI 批改</div>';
+                
+                ui.showModal('modal-review');
+            },
+
+            runAIGrading: async () => {
+                const id = appState.currentReviewId;
+                const d = appState.submissionsMap[id];
+                ui.showLoading("AI 批改中...");
+                try {
+                    let res;
+                    if(d.type === 'text') res = await api.callGemini("請批改以下作文內容：\n\n" + d.content);
+                    else res = await api.callGemini("請閱讀附帶影像並辨識文字進行批改。", d.content, d.mimeType);
+                    
+                    await api.callGAS('updateSubmission', { id, aiGrading: res, status: 'graded' });
+                    d.aiGrading = res; d.status = 'graded';
+                    
+                    // 重新呼叫 openReview，以便即時渲染出 AI 辨識出的原文
+                    app.openReview(id);
+                    ui.showToast('AI 批改完成', 'success');
+                } catch(e) { ui.alert("AI 批改失敗", e.message, "error"); }
+                finally { ui.hideLoading(); }
+            },
+
+            batchAIGrade: async () => {
+                const targetTopicId = appState.selectedTopicIdForView;
+                if (!targetTopicId) return ui.alert('提示', '請先選擇一個題目', 'error');
+
+                const pending = Object.values(appState.submissionsMap).filter(d => d.topicId === targetTopicId && d.status !== 'graded');
+                if(pending.length === 0) return ui.alert('提示', '該題目目前沒有需要批改的作業', 'info');
+                
+                ui.showLoading(`批次處理中 (共 ${pending.length} 筆)...`);
+                let successCount = 0;
+                
+                for(let i=0; i<pending.length; i++) {
+                    const data = pending[i];
+                    document.getElementById('loading-text').innerText = `處理中 (${i+1}/${pending.length}): ${data.studentName}...`;
+                    try {
+                        let res;
+                        if (data.type === 'text') res = await api.callGemini("請批改以下作文內容：\n\n" + data.content);
+                        else res = await api.callGemini("請閱讀附帶影像進行批改。", data.content, data.mimeType);
+                        
+                        await api.callGAS('updateSubmission', { id: data.id, aiGrading: res, status: 'graded' });
+                        data.aiGrading = res;
+                        data.status = 'graded';
+                        successCount++;
+                    } catch(e) { console.error(`Error on ${data.studentName}:`, e); }
+                }
+                
+                ui.hideLoading();
+                ui.alert('完成', `批次完成，成功 ${successCount}/${pending.length} 筆`, 'success');
+                app.fetchSubmissionsAndRender();
+            },
+
+            exportSubmissionsToTxt: () => {
+                const targetTopicId = appState.selectedTopicIdForView;
+                if (!targetTopicId) return ui.alert('提示', '請先選擇一個題目', 'error');
+
+                const filtered = Object.values(appState.submissionsMap).filter(d => d.topicId === targetTopicId);
+                if (filtered.length === 0) return ui.alert('提示', '此題目尚無學生繳交作業', 'info');
+
+                const topicTitle = appState.topicsMap[targetTopicId]?.title || '未知題目';
+                let txtContent = `【作文批改成績匯出】\n題目：${topicTitle}\n匯出時間：${new Date().toLocaleString()}\n總件數：${filtered.length}\n`;
+                txtContent += `=========================================\n\n`;
+
+                filtered.forEach((data, index) => {
+                    const time = new Date(data.createdAt).toLocaleString();
+                    const status = data.status === 'graded' ? '已批改' : '未批改';
+                    
+                    txtContent += `[${index + 1}] 學生姓名：${data.studentName}\n`;
+                    txtContent += `繳交時間：${time}\n`;
+                    txtContent += `狀態：${status}\n`;
+                    txtContent += `-----------------------------------------\n`;
+                    
+                    if (data.type === 'text') txtContent += `【作文內容】\n${data.content}\n`;
+                    else txtContent += `【作文內容】\n(學生以圖片格式繳交，非純文字)\n`;
+                    
+                    txtContent += `-----------------------------------------\n`;
+
+                    if (data.aiGrading) {
+                        txtContent += `【AI 批改分析】\n建議分數：${data.aiGrading['建議分數'] || '無'}\n`;
+                        appState.criteria.forEach(key => { if (data.aiGrading[key] !== undefined) txtContent += `${key}：${data.aiGrading[key]}\n`; });
+                        for (const key in data.aiGrading) { if (key !== '建議分數' && !appState.criteria.includes(key)) txtContent += `${key}：${data.aiGrading[key]}\n`; }
+                    } else txtContent += `【AI 批改分析】\n(尚未執行 AI 批改)\n`;
+
+                    if (data.manualScore || data.manualComment) {
+                        txtContent += `-----------------------------------------\n【教師手動評語】\n`;
+                        if (data.manualScore) txtContent += `給分：${data.manualScore}\n`;
+                        if (data.manualComment) txtContent += `評語：${data.manualComment}\n`;
+                    }
+                    txtContent += `\n=========================================\n\n`;
+                });
+
+                const blob = new Blob([txtContent], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `作文成績匯出_${topicTitle.replace(/[\\/:*?"<>|]/g, "_")}_${new Date().getTime()}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                ui.showToast('成績匯出成功！', 'success');
+            },
+
+            saveReview: async () => {
+                const id = appState.currentReviewId;
+                const manualScore = document.getElementById('manual-score').value.trim();
+                const manualComment = document.getElementById('manual-comment').value.trim();
+                const viewPassword = document.getElementById('review-password').value.trim();
+                
+                ui.showLoading("儲存中...");
+                try {
+                    await api.callGAS('updateSubmission', { id, manualScore, manualComment, viewPassword, status: 'graded' });
+                    ui.showToast('儲存發布成功', 'success');
+                    ui.closeModal('modal-review');
+                    app.fetchSubmissionsAndRender();
+                } catch(e) { ui.alert("儲存失敗", e.message, "error"); }
+                finally { ui.hideLoading(); }
+            },
+
+            // --- 自訂批改項目 (支援拖曳排序) ---
+            syncCriteriaInputs: () => {
+                // 同步輸入框內容，避免拖曳時尚未觸發 onchange 的文字遺失
+                const inputs = document.querySelectorAll('.criteria-input');
+                inputs.forEach((inp, idx) => { if(appState.criteria[idx] !== undefined) appState.criteria[idx] = inp.value; });
+            },
+            handleDragStart: (e, i) => {
+                app.syncCriteriaInputs();
+                appState.draggedCriteriaIndex = i;
+                e.dataTransfer.effectAllowed = 'move';
+            },
+            handleDrop: (e, targetIndex) => {
+                e.preventDefault();
+                const sourceIndex = appState.draggedCriteriaIndex;
+                if (sourceIndex === null || sourceIndex === targetIndex) return;
+                
+                app.syncCriteriaInputs();
+                const item = appState.criteria.splice(sourceIndex, 1)[0];
+                appState.criteria.splice(targetIndex, 0, item);
+                
+                app.renderCriteriaList();
+                appState.draggedCriteriaIndex = null;
+            },
+            renderCriteriaList: () => {
+                document.getElementById('criteria-list').innerHTML = appState.criteria.map((c, i) => `
+                    <div class="flex items-center space-x-2 bg-white p-2 border rounded transition-colors duration-200"
+                         draggable="true"
+                         ondragstart="app.handleDragStart(event, ${i})"
+                         ondragover="event.preventDefault(); this.classList.add('border-primary', 'bg-purple-50');"
+                         ondragleave="this.classList.remove('border-primary', 'bg-purple-50');"
+                         ondrop="app.handleDrop(event, ${i}); this.classList.remove('border-primary', 'bg-purple-50');">
+                        <span class="material-icons text-gray-400 cursor-grab hover:text-gray-600 active:cursor-grabbing text-sm">drag_indicator</span>
+                        <input type="text" value="${c}" onchange="appState.criteria[${i}]=this.value" class="criteria-input w-full text-sm outline-none bg-transparent">
+                        <button onclick="app.removeCriteria(${i})" class="text-red-400 hover:text-red-600 p-1"><span class="material-icons text-sm">delete</span></button>
+                    </div>
+                `).join('');
+            },
+            addCriteriaInput: () => { app.syncCriteriaInputs(); appState.criteria.push("新項目"); app.renderCriteriaList(); },
+            removeCriteria: (i) => { 
+                app.syncCriteriaInputs();
+                if(appState.criteria.length>1) { appState.criteria.splice(i, 1); app.renderCriteriaList(); } 
+                else ui.showToast('至少保留一項', 'error'); 
+            },
+            saveCriteria: async () => {
+                app.syncCriteriaInputs();
+                const newC = appState.criteria.map(v=>v.trim()).filter(v=>v);
+                ui.showLoading("儲存設定...");
+                try {
+                    await api.callGAS('updateSettings', { key: 'criteria', value: JSON.stringify(newC) });
+                    appState.criteria = newC;
+                    ui.closeModal('modal-criteria');
+                    ui.showToast('批改項目已儲存', 'success');
+                } catch(e) { ui.alert("儲存失敗", e.message, "error"); }
+                finally { ui.hideLoading(); }
+            }
+        };
+
+        // UI 事件
+        document.getElementById('student-file').addEventListener('change', (e) => {
+            const f = e.target.files[0];
+            if(f && f.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = e => { document.getElementById('img-preview').src = e.target.result; document.getElementById('img-preview').classList.remove('hidden'); };
+                reader.readAsDataURL(f);
+            }
+        });
+
+        window.onload = app.init;
+    </script>
+</body>
+</html>```
+
+
+## 🖼️ 相關參考圖片與文件
+![[7003-61d8ccd4c565400d.png]] ![[7003-85cc318439819f68.png]] ![[10093408293917864137-4c73aabdd108e0ae.png]] ![[image_5bd301-a2e77f6c827bfe5a.png]] ![[image_db3f9f-6b6329d1c4cb4e92.png]] ![[IMG20260405202251-d26edf580f6611b8.jpg]] ![[IMG_0016-1381311bbb20b6d0.jpg]] ![[IMG_0020-259844b3aec492b8.png]] ![[IMG_0021-259844b3aec492b8.png]] ![[IMG_0022-259844b3aec492b8.jpg]] ![[IMG_0024-259844b3aec492b8.jpg]] ![[IMG_0025-259844b3aec492b8.png]] ![[IMG_0025-63235577b267a9cf.png]] ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]] [[New Note-d803819e815fe0e1]] (附件檔案) ![[800212608471928293-153057063c8c793c.png]] ![[1280317880438885853-55e4bd152ce255b3.png]] ![[12806941390431538787-70f9e4e86b7e40c4.png]] ![[12841382599885516255-d910a702d0a2f5e3.png]] [[index (6)-4cccc038d5b1e1e1.html]] (附件檔案)
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-04-13_肯亞AA_完整版_530]] (共用特徵: `肯亞, ror, tp`)
+- [[2026-04-13_請幫我更新提示詞，以將網頁中固定會出現的logo更正為下方logo連結：_https___drive.google.co_518]] (共用特徵: `肯亞, ror, tp`)
+- [[2026-04-13_金成淬專屬提示詞_513]] (共用特徵: `肯亞, ror, tp`)
+- [[肯亞AA_完整版]] (共用特徵: `肯亞, ror, tp`)
+- [[金成淬專屬提示詞]] (共用特徵: `肯亞, ror, tp`)

@@ -1,0 +1,175 @@
+---
+type: sca_theory
+title: "Tank-200 第三鍋戰報與熱極限對策"
+date: 2026-05-10
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：Tank-200 第三鍋戰報與熱極限對策
+
+## 📋 對話理論紀錄
+```html
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tank-200 第三鍋戰報與熱極限對策</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0f172a; 
+            color: #f8fafc;
+            margin: 0;
+            padding-bottom: 3rem;
+            overscroll-behavior: none;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); /* Purple for peak heat */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background-color: #1e293b; 
+            border: 1px solid #334155; 
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .border-alert { border: 1px solid #a855f7; }
+        .border-action { border: 1px solid #ef4444; }
+
+        .stat-box {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 0.8rem;
+            text-align: center;
+            flex: 1;
+            margin: 0 0.3rem;
+        }
+    </style>
+</head>
+<body class="p-5">
+
+    <header class="pt-2 pb-4 border-b border-[#334155] mb-5">
+        <div class="text-xs text-purple-400 font-bold tracking-wider mb-1 flex items-center">
+            <i class="fa-solid fa-fire-burner mr-2 animate-pulse"></i> BATCH #3 THERMAL PEAK
+        </div>
+        <h1 class="text-2xl font-black gold-gradient">第三鍋：狂暴熱極限</h1>
+        <p class="text-sm text-gray-400 mt-1">機器蓄熱達頂峰 / 極速脫水現象</p>
+    </header>
+
+    <main>
+        <!-- 狂暴數據解析 -->
+        <div class="card border-alert">
+            <i class="fa-solid fa-gauge-high absolute -right-4 -top-4 text-8xl text-purple-500/10"></i>
+            <h2 class="text-lg font-bold text-purple-400 mb-3 flex items-center">
+                <i class="fa-solid fa-bolt mr-2"></i> 脫水期大幅縮短警報
+            </h2>
+            
+            <div class="flex justify-between mb-4">
+                <div class="stat-box">
+                    <div class="text-xs text-gray-400 mb-1">Batch 2 (熱機)</div>
+                    <div class="font-bold text-white text-lg">Ye 4:55</div>
+                    <div class="text-sm text-gray-500">Tp: 85°C</div>
+                </div>
+                <div class="stat-box border-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+                    <div class="text-xs text-purple-300 mb-1">Batch 3 (極限)</div>
+                    <div class="font-bold text-white text-lg">Ye 4:10</div>
+                    <div class="text-sm text-purple-400">Tp: 91°C</div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 rounded-lg p-3 text-sm text-gray-300 space-y-3">
+                <p>
+                    <strong class="text-red-400">考官解析：</strong> 您注意到了嗎？回溫點 (Tp) 飆高到了 91°C，而且抵達轉黃點 (Ye) 的時間<strong class="text-white bg-red-900 px-1 rounded">快了整整 45 秒！</strong>
+                </p>
+                <p>
+                    這代表鍋爐的鑄鐵已經吸飽了熱量，正在瘋狂地把熱能灌進這 195g 的豆子裡。脫水期被極度壓縮！
+                </p>
+                <p>
+                    <strong class="text-emerald-400">神救援操作：</strong> 儘管脫水期狂飆，但您在一爆後成功踩住了煞車，將發展時間拉長到了 <strong class="text-white">42秒</strong>，並且完美停在 216°C 下豆。這展現了您極強的收火與拔抽屜排煙的微操能力！這鍋會是一支香氣極度奔放的爆炸型淺焙。
+                </p>
+            </div>
+        </div>
+
+        <!-- 4 & 5 鍋 防禦戰術 -->
+        <div class="card border-action mt-6">
+            <div class="flex items-center mb-3 border-b border-slate-700 pb-2">
+                <i class="fa-solid fa-shield-halved text-red-500 text-xl mr-2"></i>
+                <h2 class="text-lg font-bold text-red-400">第 4、5 鍋：防禦性降火戰術</h2>
+            </div>
+            
+            <p class="text-sm text-gray-300 mb-4 leading-relaxed">
+                機器的熱能已經見頂。如果我們繼續用 85% 火力開局，下一鍋的轉黃點可能會跌破 4 分鐘，這會導致「外表熟、豆芯生」的夾生風險。
+                <strong class="text-white">我們必須削減前段動能！</strong>
+            </p>
+            
+            <div class="space-y-4">
+                <!-- 戰術 1 -->
+                <div class="flex items-center justify-between bg-slate-900 p-3 rounded-lg border border-slate-700">
+                    <div>
+                        <div class="font-bold text-white text-sm">1. 入豆溫微降</div>
+                        <div class="text-xs text-gray-400 mt-1">減少初始衝擊</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="badge" style="background:#3b82f6; color:white;">降至 195°C</span>
+                    </div>
+                </div>
+                
+                <!-- 戰術 2 -->
+                <div class="flex items-center justify-between bg-slate-900 p-3 rounded-lg border border-red-900/50 shadow-[0_0_10px_rgba(239,68,68,0.1)]">
+                    <div>
+                        <div class="font-bold text-red-400 text-sm">2. 起步火力下修 <i class="fa-solid fa-star text-yellow-500 text-xs"></i></div>
+                        <div class="text-xs text-gray-400 mt-1">把脫水期拉回 4分半</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-gray-500 line-through mr-1">85%</span>
+                        <i class="fa-solid fa-arrow-right text-gray-600 mr-1"></i>
+                        <span class="badge bg-red-600">降至 80%</span>
+                    </div>
+                </div>
+
+                <!-- 戰術 3 -->
+                <div class="flex items-center justify-between bg-slate-900 p-3 rounded-lg border border-slate-700">
+                    <div>
+                        <div class="font-bold text-yellow-500 text-sm">3. 轉黃後操作 (不變)</div>
+                        <div class="text-xs text-gray-400 mt-1">一爆後發展控制極佳</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-sm text-gray-300 font-bold">維持 #3 節奏</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+
+</body>
+</html>
+```
+
+
+## 🖼️ 相關參考圖片與文件
+![[7003-61d8ccd4c565400d.png]] ![[7003-85cc318439819f68.png]] ![[9000-b0d0d952ab8ef43b.jpg]] ![[10093408293917864137-4c73aabdd108e0ae.png]] ![[16840647073640564182-4d19d2f783a97c67.png]] ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]]
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-05-10_Tank-200_第三鍋戰報與熱極限對策_232]] (共用特徵: `莫札特, 回溫點, tp`)
+- [[2026-01-27_如果我的訓練講師希望我回溫點到一爆前，火力維持在1.3kPa，風門維持在2.5，一爆火力降為1，風門都不變，如果在這樣限_1473]] (共用特徵: `莫札特, 回溫點, tp`)
+- [[2026-04-05_下方是楊家0.5公斤半熱風的烘豆成功案例風火配置，請幫我依據先前的經驗值，為我分析接下來在這台機器上烘焙莫札特建議的入豆_667]] (共用特徵: `莫札特, 回溫點, tp`)
+- [[2026-01-27_請幫我規劃西達磨日曬獅子王g2，200公克，楊家500公克瓦斯半熱風烘豆機，sca_roasting認證考試，建議烘焙計_1477]] (共用特徵: `莫札特, 回溫點, tp`)
+- [[2026-02-26_以往都是回溫點才開火至1.2，獅子王大部分入豆170度，但回溫點都在115-120之間，請問一樣建議入豆就開火維持1.3_1189]] (共用特徵: `莫札特, 回溫點, tp`)

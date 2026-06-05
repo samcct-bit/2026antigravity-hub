@@ -1,0 +1,311 @@
+---
+type: sca_theory
+title: "SCA 咖啡生豆假密度專業測驗"
+date: 2026-02-11
+tags: [coffee/sca_theory, imported/takeout]
+---
+
+# 📚 SCA 考官理論：SCA 咖啡生豆假密度專業測驗
+
+## 📋 對話理論紀錄
+```quiz
+{
+  "questions": [
+    {
+      "questionNumber": 1,
+      "question": "在 SCA 標準中，測量「假密度」（Bulk Density）與「真實密度」（Absolute Density）的主要區別為何？",
+      "answerOptions": [
+        {
+          "text": "假密度包含生豆間的空隙體積，而真實密度僅計算生豆本體體積。",
+          "rationale": "假密度測量的是單位容積下的堆疊質量，因此包含了豆子之間的空氣間隙。",
+          "isCorrect": true
+        },
+        {
+          "text": "假密度是透過位移法測量，真實密度是透過量筒直接測量。",
+          "rationale": "通常位移法更常用於測量體積而不包含空隙，與假密度的定義相反。",
+          "isCorrect": false
+        },
+        {
+          "text": "假密度受含水率影響較大，真實密度則完全不受影響。",
+          "rationale": "兩者都會受到生豆內部含水率變化的物理性質影響。",
+          "isCorrect": false
+        },
+        {
+          "text": "假密度是用於評估生豆風味，真實密度用於評估重量。",
+          "rationale": "密度測量主要屬於物理性質評估，並非直接針對風味描述。",
+          "isCorrect": false
+        }
+      ],
+      "hint": "請思考生豆在量筒中自然堆疊時，除了豆子以外還存在什麼？"
+    },
+    {
+      "questionNumber": 2,
+      "question": "在進行假密度測量的 SOP 流程中，下列哪一個行為是絕對禁止的？",
+      "answerOptions": [
+        {
+          "text": "使用漏斗輔助填充生豆。",
+          "rationale": "使用漏斗有助於保持填充速度的一致性，是正確的做法。",
+          "isCorrect": false
+        },
+        {
+          "text": "輕敲或搖晃量筒以使表面平整。",
+          "rationale": "震動會導致生豆排列變緊密，人為壓縮空隙會導致測得的假密度偏高。",
+          "isCorrect": true
+        },
+        {
+          "text": "使用刮板將頂部多餘生豆刮除。",
+          "rationale": "這是標準操作，確保測量體積與容器容積完全一致。",
+          "isCorrect": false
+        },
+        {
+          "text": "在測量前先將電子秤歸零扣重。",
+          "rationale": "這是獲得準確生豆淨重的基礎步驟。",
+          "isCorrect": false
+        }
+      ],
+      "hint": "想一想什麼動作會改變生豆在容器中的「自然堆疊狀態」？"
+    },
+    {
+      "questionNumber": 3,
+      "question": "若使用 $250ml$ 的量筒測得生豆淨重為 $180g$，則該批生豆的假密度為何？",
+      "answerOptions": [
+        {
+          "text": "$180g/L$",
+          "rationale": "這只是單次測量的重量，未換算為每公升單位。",
+          "isCorrect": false
+        },
+        {
+          "text": "$450g/L$",
+          "rationale": "計算錯誤，應將重量乘以 4 換算為一公升的量。",
+          "isCorrect": false
+        },
+        {
+          "text": "$720g/L$",
+          "rationale": "$180g \\div 0.25L = 720g/L$，這是標準的假密度計算方式。",
+          "isCorrect": true
+        },
+        {
+          "text": "$900g/L$",
+          "rationale": "計算邏輯錯誤，這超出了正常生豆的密度範疇。",
+          "isCorrect": false
+        }
+      ],
+      "hint": "假密度的標準單位通常是克/公升 (g/L)，請將 $250ml$ 的測量結果放大到一公升。"
+    },
+    {
+      "questionNumber": 4,
+      "question": "通常情況下，高海拔的硬豆（如 SHB）與低海拔豆相比，其假密度表現為何？",
+      "answerOptions": [
+        {
+          "text": "高海拔豆假密度通常較高。",
+          "rationale": "高海拔生長緩慢，細胞結構緻密，通常具有較高的假密度。",
+          "isCorrect": true
+        },
+        {
+          "text": "低海拔豆假密度通常較高。",
+          "rationale": "低海拔豆生長快速，內部結構較鬆散，密度通常較低。",
+          "isCorrect": false
+        },
+        {
+          "text": "兩者假密度在統計上沒有差異。",
+          "rationale": "海拔與豆質密度有強烈的正相關性。",
+          "isCorrect": false
+        },
+        {
+          "text": "假密度僅取決於含水率，與海拔無關。",
+          "rationale": "海拔是決定豆子初始細胞結構緊密度的關鍵因素。",
+          "isCorrect": false
+        }
+      ],
+      "hint": "海拔高度如何影響咖啡櫻桃的成熟速度與果實硬度？"
+    },
+    {
+      "questionNumber": 5,
+      "question": "一批測得假密度為 $620g/L$ 的生豆，在烘焙策略上最可能需要注意什麼？",
+      "answerOptions": [
+        {
+          "text": "應使用較高的入豆溫，因為它耐熱性強。",
+          "rationale": "低密度豆耐熱性差，高入豆溫容易導致表面焦灼。",
+          "isCorrect": false
+        },
+        {
+          "text": "應調低初始火力與入豆溫，避免熱傳導過快導致燒焦。",
+          "rationale": "低密度代表內部空隙多，熱傳導阻力小，若火力太強內部結構容易受損。",
+          "isCorrect": true
+        },
+        {
+          "text": "不需調整火力，因為假密度不影響烘焙。",
+          "rationale": "假密度是決定烘焙熱穿透效率的重要指標。",
+          "isCorrect": false
+        },
+        {
+          "text": "應大幅增加風門，因為低密度豆需要更多對流熱。",
+          "rationale": "過大風門可能導致熱能流失，並非低密度豆的首要調整方向。",
+          "isCorrect": false
+        }
+      ],
+      "hint": "密度較低的豆子內部結構較為鬆散，其「熱傳導」速度是快還是慢？"
+    },
+    {
+      "questionNumber": 6,
+      "question": "為什麼陳年豆（Old Crop）的假密度通常會比新產季豆（New Crop）低？",
+      "answerOptions": [
+        {
+          "text": "因為陳年豆含水率升高，體積層大。",
+          "rationale": "陳年豆通常是含水率降低，體積不會因此變大。",
+          "isCorrect": false
+        },
+        {
+          "text": "因為有機物質與水分隨時間流失，導致質量減輕但外觀體積不變。",
+          "rationale": "水分流失導致總重量減輕，在相同體積下密度自然下降。",
+          "isCorrect": true
+        },
+        {
+          "text": "陳年豆的假密度反而會升高。",
+          "rationale": "除非發生極度吸濕，否則老化通常伴隨著密度下降。",
+          "isCorrect": false
+        },
+        {
+          "text": "因為陳年豆的油脂含量增加。",
+          "rationale": "油脂含量不會因為存放而顯著增加至影響密度。",
+          "isCorrect": false
+        }
+      ],
+      "hint": "隨著存放時間拉長，生豆內部的含水率與化學物質會發生什麼變化？"
+    },
+    {
+      "questionNumber": 7,
+      "question": "如果兩批生豆的重量相同，但 A 批次的假密度高於 B 批次，則：",
+      "answerOptions": [
+        {
+          "text": "A 批次所需的倉儲空間較小。",
+          "rationale": "高密度代表單位重量佔據的體積較小，因此更節省空間。",
+          "isCorrect": true
+        },
+        {
+          "text": "B 批次所需的倉儲空間較小。",
+          "rationale": "密度較低代表相同重量下佔據體積較大。",
+          "isCorrect": false
+        },
+        {
+          "text": "兩批次所需的空間完全相同。",
+          "rationale": "密度不同，體積必然不同。",
+          "isCorrect": false
+        },
+        {
+          "text": "A 批次的烘焙時間一定比較長。",
+          "rationale": "烘焙時間取決於多種因素，不單看密度。",
+          "isCorrect": false
+        }
+      ],
+      "hint": "想像 1 公斤的鐵球與 1 公斤的棉花，誰佔的空間比較大？"
+    },
+    {
+      "questionNumber": 8,
+      "question": "在進行 SCA 生豆物理檢測時，假密度測量通常建議重複進行幾次以求取平均值？",
+      "answerOptions": [
+        {
+          "text": "1 次即可。",
+          "rationale": "單次測量容易產生偶然誤差，不符合科學實驗精神。",
+          "isCorrect": false
+        },
+        {
+          "text": "至少 3 次。",
+          "rationale": "多次測量取平均值是 SCA 認可的標準操作，能有效降低操作誤差。",
+          "isCorrect": true
+        },
+        {
+          "text": "必須測量 10 次。",
+          "rationale": "10 次在標準檢測中過於繁瑣且邊際效益不高。",
+          "isCorrect": false
+        },
+        {
+          "text": "根據當天心情決定。",
+          "rationale": "認證考試要求標準化的操作程序。",
+          "isCorrect": false
+        }
+      ],
+      "hint": "為了確保數據的再現性與精準度，科學實驗通常有什麼要求？"
+    },
+    {
+      "questionNumber": 9,
+      "question": "測量假密度時，環境濕度過高可能會對測量結果產生什麼潛在影響？",
+      "answerOptions": [
+        {
+          "text": "生豆吸濕導致重量增加，密度數值可能偏高。",
+          "rationale": "吸濕會直接增加生豆質量，若體積變化不明顯，密度數值會上升。",
+          "isCorrect": true
+        },
+        {
+          "text": "生豆會變輕，密度降低。",
+          "rationale": "吸濕不會讓生豆變輕，除非發生發霉分解。",
+          "isCorrect": false
+        },
+        {
+          "text": "完全沒有任何影響。",
+          "rationale": "生豆是具有吸濕性的物質，環境會影響其物理狀態。",
+          "isCorrect": false
+        },
+        {
+          "text": "會導致量筒體積縮小。",
+          "rationale": "標準量筒通常不受一般濕度影響體積。",
+          "isCorrect": false
+        }
+      ],
+      "hint": "生豆具備「吸濕性」，當環境水分很多時，生豆會發生什麼事？"
+    },
+    {
+      "questionNumber": 10,
+      "question": "關於假密度 (g/L) 的數據記錄，SCA 專業測量的精確度通常要求到小數點幾位？",
+      "answerOptions": [
+        {
+          "text": "不記錄小數，取整數即可。",
+          "rationale": "取整數會導致精度流失，不利於細微品質追蹤。",
+          "isCorrect": false
+        },
+        {
+          "text": "精確至小數點後第一位 (0.1)。",
+          "rationale": "這是大多數 SCA 實驗記錄的標準精度要求。",
+          "isCorrect": true
+        },
+        {
+          "text": "精確至小數點後五位。",
+          "rationale": "過高的精度在生豆物理測量中並無實際意義。",
+          "isCorrect": false
+        },
+        {
+          "text": "隨機記錄。",
+          "rationale": "專業檢測需嚴格遵守數據記錄規範。",
+          "isCorrect": false
+        }
+      ],
+      "hint": "思考一般的專業電子秤與 SCA 記錄表單通常提供的位數。"
+    }
+  ]
+}
+
+
+
+
+
+
+
+
+
+
+```
+
+
+
+## 🖼️ 相關參考圖片與文件
+[[New Note-d803819e815fe0e1]] (附件檔案) ![[Gemini_Generated_Image_8ggri88ggr-44a8442c4e958641.jpg]] ![[Gemini_Generated_Image_htsu2ahtsu-e11f6500ada5b266.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-96a4cef5cc1008b1.jpg]] ![[Gemini_Generated_Image_k0hcak0hca-be202b15b4d41e70.jpg]] ![[Gemini_Generated_Image_q59snqq59s-d7376f45389320a6.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-153057063c8c793c.jpg]] ![[Gemini_Generated_Image_ykv67oykv6-758609cfa28db9a7.jpg]]
+
+## 🔬 科學物理觀點解析
+- *此理論卡片由 Gemini Takeout 匯出對話分析自動生成。*
+
+## 🔗 相關理論與對話推薦
+- [[2026-02-05_SCA_Roasting_Intermediate_烘豆中級模擬試題_1386]] (共用特徵: `風門, 火力, 熱能`)
+- [[2026-02-11_SCA_咖啡生豆假密度專業測驗_1352]] (共用特徵: `風門, 火力, 熱能`)
+- [[2026-03-17_請再多介紹AI_導向的實驗型取樣機_(如_ROEST)_976]] (共用特徵: `風門, 火力, 熱能`)
+- [[2026-03-25_【技術解析】直火烘豆機的「低火或關火入豆」邏輯：為什麼它與熱風機有所不同？___【技術解析】直火機的「關火入豆」邏輯：為_819]] (共用特徵: `風門, 火力, 熱能`)
+- [[2026-03-26_如果只能用Tank200烘，還是建議只烘紫風鈴和寶貝藝妓嗎？_804]] (共用特徵: `風門, 火力, 熱能`)
