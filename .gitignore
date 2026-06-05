@@ -56,3 +56,7 @@ html_artifacts/
 __pycache__/
 *.pyc
 
+# Exam Skills repository
+teaching-exam-skills/
+
+
