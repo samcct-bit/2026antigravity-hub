@@ -110,6 +110,32 @@
         // === 遊戲卡片配置 ===
         const GAMES = [
             {
+                id: 'game4',
+                title: "冰河大冒險",
+                unit: "單元五：小數",
+                desc: "遭遇暴風雪，冰川防線告急！快運用一位小數的讀寫、十分位大小比較、長度毫米公分換算與加減法程序，協助護衛隊度過危機！",
+                path: "mathgame3-2-5/index.html",
+                collection: "math_game_scores_5",
+                bgGradient: "from-sky-600/20 via-blue-600/10 to-slate-900/80 border-sky-500/30 hover:border-sky-400/60 shadow-[0_0_30px_rgba(14,165,233,0.1)]",
+                btnStyle: "bg-sky-600 hover:bg-sky-500 shadow-[0_0_15px_rgba(14,165,233,0.3)] text-slate-950 font-black",
+                iconBg: "bg-sky-500/10 border-sky-500/30 text-sky-400",
+                icon: "🧊",
+                badge: "一位小數"
+            },
+            {
+                id: 'game5',
+                title: "圓規森林的符文",
+                unit: "單元六：圓",
+                desc: "圓規之森的封印陣受損！魔法使，請熟記圓心、圓周、半徑與直徑的奧秘，並正確設定圓規間距繪製法陣，解除森林的危機！",
+                path: "mathgame3-2-6/index.html",
+                collection: "math_game_scores_6",
+                bgGradient: "from-emerald-600/20 via-lime-600/10 to-slate-900/80 border-emerald-500/30 hover:border-emerald-400/60 shadow-[0_0_30px_rgba(16,185,129,0.1)]",
+                btnStyle: "bg-emerald-600 hover:bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)] text-slate-950 font-black",
+                iconBg: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400",
+                icon: "🌲",
+                badge: "半徑與直徑"
+            },
+            {
                 id: 'game1',
                 title: "星際數學救援行動",
                 unit: "單元七：乘與除",
@@ -167,9 +193,9 @@
             const [showLoginModal, setShowLoginModal] = useState(false);
 
             // 排行榜狀態
-            const [activeTab, setActiveTab] = useState('game1');
-            const [leaderboards, setLeaderboards] = useState({ game1: [], game2: [], game3: [] });
-            const [loading, setLoading] = useState({ game1: false, game2: false, game3: false });
+            const [activeTab, setActiveTab] = useState('game4'); // 預設單元五小數
+            const [leaderboards, setLeaderboards] = useState({ game1: [], game2: [], game3: [], game4: [], game5: [] });
+            const [loading, setLoading] = useState({ game1: false, game2: false, game3: false, game4: false, game5: false });
 
             // 確保有班級座號
             useEffect(() => {
@@ -222,6 +248,8 @@
 
             // 載入所有排行榜
             useEffect(() => {
+                fetchLeaderboard('game4');
+                fetchLeaderboard('game5');
                 fetchLeaderboard('game1');
                 fetchLeaderboard('game2');
                 fetchLeaderboard('game3');
@@ -300,7 +328,7 @@
                     </header>
 
                     {/* 遊戲卡片區域 */}
-                    <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16 md:mb-24">
+                    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16 md:mb-24">
                         {GAMES.map((game, idx) => (
                             <div 
                                 key={game.id} 
@@ -366,12 +394,12 @@
                         </div>
 
                         {/* 排行榜分頁標籤 */}
-                        <div className="flex gap-2 mb-6 p-1.5 bg-slate-950/80 rounded-2xl border border-slate-800">
+                        <div className="flex flex-wrap gap-2 mb-6 p-1.5 bg-slate-950/80 rounded-2xl border border-slate-800">
                             {GAMES.map(g => (
                                 <button
                                     key={g.id}
                                     onClick={() => setActiveTab(g.id)}
-                                    className={`flex-1 py-3 text-xs md:text-sm font-bold rounded-xl transition-all ${activeTab === g.id ? 'bg-slate-800 text-white border border-slate-700/50 shadow-md' : 'text-slate-500 hover:text-slate-300'}`}
+                                    className={`flex-1 min-w-[120px] py-3 text-xs md:text-sm font-bold rounded-xl transition-all ${activeTab === g.id ? 'bg-slate-800 text-white border border-slate-700/50 shadow-md' : 'text-slate-500 hover:text-slate-300'}`}
                                 >
                                     <span className="mr-1.5">{g.icon}</span>
                                     {g.title.split('的')[0]}
@@ -472,7 +500,7 @@
                                             max="100"
                                             value={studentSeat} 
                                             onChange={(e) => setStudentSeat(e.target.value)}
-                                            placeholder="例如：12" 
+                                            placeholder="example: 12" 
                                             className="w-full bg-slate-950 border border-slate-700 focus:border-indigo-500 rounded-xl px-4 py-3 text-white outline-none transition-colors text-sm font-mono"
                                         />
                                     </div>
