@@ -56,7 +56,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 selection:bg-sky-500/30 font-sans relative overflow-x-hidden min-h-screen">
     
-    {/* 背景雪花裝飾 */}
+    <!-- 背景雪花裝飾 -->
     <div id="snow-container" class="absolute inset-0 pointer-events-none overflow-hidden z-0"></div>
 
     <div id="root" class="relative z-10"></div>
@@ -84,20 +84,28 @@
             console.error("Firebase initialization failed:", err);
         }
 
-        // === 題庫資料 (每個關卡共8題) ===
+        // === 題庫資料 ===
         const GAME_DATA = {
             1: {
                 title: "第一關：冰封密碼讀寫",
                 subtitle: "活動 1 & 2：小數的讀寫與十分位數值",
                 pool: [
                     { text: "小數『9.4』正確的讀法寫作什麼？", correctOption: "九點四", wrongOptions: ["九四", "九點十四", "九加零點四"], hint: "💡 提示：小數點『.』讀作『點』，小數點左邊讀作九，右邊讀作四，所以讀作『九點四』。" },
-                    { text: "小數『2.5』是由幾個 1 和幾個 0.1 合起來的？", correctOption: "2 個 1 和 5 個 0.1", wrongOptions: ["5 個 1 和 2 個 0.1", "25 個 1", "2 個 1 和 5 個 1"], hint: "💡 提示：小數點左邊的 2 是個位（代表2個1），小數點右邊的 5 是十分位（代表5個0.1）。" },
+                    { text: "小數『2.5』是由幾個 1 和幾個 0.1 合起來的？", correctOption: "2 個 1 和 5 個 0.1", wrongOptions: ["5 個 1 和 2 個 0.1", "25 個 1", "2 個 1 和 5 個 1"], hint: "💡 提示：小數點左邊 the 2 是個位（代表2個1），小數點右邊 the 5 是十分位（代表5個0.1）。" },
                     { text: "10 個 0.1 合起來是多少？", correctOption: "1", wrongOptions: ["0.1", "10", "1.1"], hint: "💡 提示：0.1 累加十次：0.1, 0.2 ... 0.9，再多 0.1 就會滿 10 個，進位變成 1 喔！" },
                     { text: "25 個 0.1 合起來是多少？", correctOption: "2.5", wrongOptions: ["25", "0.25", "2.05"], hint: "💡 提示：10 個 0.1 是 1，20 個 0.1 是 2，剩下的 5 個 0.1 是 0.5，合起來就是 2.5。" },
                     { text: "小數『0.8』是由幾個 0.1 合起來的？", correctOption: "8 個 0.1", wrongOptions: ["80 個 0.1", "8 個 1", "18 個 0.1"], hint: "💡 提示：十分位數字是 8，代表有 8 個十分之一（即 8 個 0.1）。" },
                     { text: "在定位板上，小數『5.2』的『5』代表什麼？", correctOption: "5 個 1", wrongOptions: ["5 個 0.1", "50 個 1", "5 個 10"], hint: "💡 提示：『5』在小數點左邊第一位，是個位，表示有 5 個 1。" },
                     { text: "在定位板上，小數『1.7』的『7』代表什麼？", correctOption: "7 個 0.1", wrongOptions: ["7 個 1", "70 個 0.1", "0.07"], hint: "💡 提示：『7』在小數點右邊第一位，是十分位，表示有 7 個 0.1。" },
-                    { text: "30 個 0.1 合起來是多少？", correctOption: "3", wrongOptions: ["30", "0.3", "3.3"], hint: "💡 提示：每 10 個 0.1 是 1，所以 30 個 0.1 就是 3。" }
+                    { text: "30 個 0.1 合起來是多少？", correctOption: "3", wrongOptions: ["30", "0.3", "3.3"], hint: "💡 提示：每 10 個 0.1 是 1，所以 30 個 0.1 就是 3。" },
+                    { text: "小數『8.3』正確的讀法寫作什麼？", correctOption: "八點三", wrongOptions: ["八三", "八點十三", "八加零點三"], hint: "💡 提示：小數點『.』讀作『點』，小數點左邊讀作八，右邊讀作三，所以讀作『八點三』。" },
+                    { text: "小數『4.2』是由幾個 1 和幾個 0.1 合起來的？", correctOption: "4 個 1 和 2 個 0.1", wrongOptions: ["2 個 1 和 4 個 0.1", "42 個 1", "4 個 1 和 2 個 1"], hint: "💡 提示：小數點左邊的 4 是個位（4個1），右邊的 2 是十分位（2個0.1）。" },
+                    { text: "20 個 0.1 合起來是多少？", correctOption: "2", wrongOptions: ["0.2", "20", "2.2"], hint: "💡 提示：每 10 個 0.1 合起來是 1，所以 20 個 0.1 合起來就是 2。" },
+                    { text: "14 個 0.1 合起來是多少？", correctOption: "1.4", wrongOptions: ["14", "0.14", "1.04"], hint: "💡 提示：10 個 0.1 是 1，剩下的 4 個 0.1 是 0.4，合起來就是 1.4。" },
+                    { text: "小數『0.6』是由幾個 0.1 合起來的？", correctOption: "6 個 0.1", wrongOptions: ["60 個 0.1", "6 個 1", "16 個 0.1"], hint: "💡 提示：個位是 0，十分位是 6，代表有 6 個 0.1。" },
+                    { text: "在定位板上，小數『7.9』的『7』代表什麼？", correctOption: "7 個 1", wrongOptions: ["7 個 0.1", "70 個 1", "7 個 10"], hint: "💡 提示：『7』在小數點左邊第一位，代表個位，即有 7 個 1。" },
+                    { text: "在定位板上，小數『3.8』的『8』代表什麼？", correctOption: "8 個 0.1", wrongOptions: ["8 個 1", "80 個 0.1", "0.08"], hint: "💡 提示：『8』在小數點右邊第一位，代表十分位，即有 8 個 0.1。" },
+                    { text: "50 個 0.1 合起來是多少？", correctOption: "5", wrongOptions: ["50", "0.5", "5.5"], hint: "💡 提示：每 10 個 0.1 合起來是 1，所以 50 個 0.1 就是 5。" }
                 ]
             },
             2: {
@@ -111,7 +119,37 @@
                     { text: "小數『3.0』和整數『3』哪一個比較大？", correctOption: "一樣大", wrongOptions: ["3.0 比較大", "3 比較大", "不能比較"], hint: "💡 提示：小數點後面的 0 在沒有其他小數時可以省略，3.0 代表 3 個 1 和 0 個 0.1，就是 3。" },
                     { text: "比較小數大小：12.3 和 12.5 哪一個比較小？", correctOption: "12.3", wrongOptions: ["12.5", "一樣大", "無法比較"], hint: "💡 提示：個位和十位都相同，比較十分位：3 < 5，所以 12.3 比較小。" },
                     { text: "105 毫米等於多少公分？", correctOption: "10.5 公分", wrongOptions: ["1.05 公分", "105 公分", "10.05 公分"], hint: "💡 提示：100 毫米是 10 公分，5 毫米是 0.5 公分，合起來就是 10.5 公分。" },
-                    { text: "8.2 公分換算成毫米是多少？", correctOption: "82 毫米", wrongOptions: ["8.2 毫米", "820 毫米", "80.2 毫米"], hint: "💡 提示：1 公分 = 10 毫米。8.2 公分就是 8 個 10 毫米（80 毫米）加上 2 個 1 毫米（2 毫米），共 82 毫米。" }
+                    { text: "8.2 公分換算成毫米是多少？", correctOption: "82 毫米", wrongOptions: ["8.2 毫米", "820 毫米", "80.2 毫米"], hint: "💡 提示：1 公分 = 10 毫米。8.2 公分就是 8 個 10 毫米（80 毫米）加上 2 個 1 毫米（2 毫米），共 82 毫米。" },
+                    { text: "比較小數大小：7.2 和 7.5 哪一個比較大？", correctOption: "7.5", wrongOptions: ["7.2", "一樣大", "無法比較"], hint: "💡 提示：個位都是 7，看十分位：5 比 2 大，所以 7.5 比較大。" },
+                    { text: "比較小數大小：3.6 和 2.9 哪一個比較大？", correctOption: "3.6", wrongOptions: ["2.9", "一樣大", "無法比較"], hint: "💡 提示：先看個位：3.6 的個位是 3，2.9 的個位是 2。3 比 2 大，所以 3.6 比較大。" },
+                    { text: "已知 1 毫米 = 0.1 公分。那 58 毫米等於多少公分？", correctOption: "5.8 公分", wrongOptions: ["58 公分", "0.58 公分", "5.08 公分"], hint: "💡 提示：50 毫米是 5 公分，8 毫米是 0.8 公分，加起來就是 5.8 公分。" },
+                    { text: "2 毫米等於多少公分？", correctOption: "0.2 公分", wrongOptions: ["2 公分", "0.02 公分", "2.2 公分"], hint: "💡 提示：1 毫米 = 0.1 公分，2 毫米就是 2 個 0.1 公分，即 0.2 公分。" },
+                    { text: "小數『9.0』和整數『9』哪一個比較大？", correctOption: "一樣大", wrongOptions: ["9.0 比較大", "9 比較大", "無法比較"], hint: "💡 提示：小數點後面的 0 代表十分位是 0，9.0 就等於 9。" },
+                    { text: "比較小數大小：15.4 和 15.1 哪一個比較小？", correctOption: "15.1", wrongOptions: ["15.4", "一樣大", "無法比較"], hint: "💡 提示：個位和十位都相同，比較十分位：1 比 4 小，所以 15.1 比較小。" },
+                    { text: "120 毫米等於多少公分？", correctOption: "12 公分", wrongOptions: ["1.2 公分", "120 公分", "12.5 公分"], hint: "💡 提示：10 毫米 = 1 公分。120 毫米就是 12 公分。" },
+                    { text: "6.4 公分換算成毫米是多少？", correctOption: "64 毫米", wrongOptions: ["6.4 毫米", "640 毫米", "60.4 毫米"], hint: "💡 提示：1 公分 = 10 毫米。6.4 公分是 6 個 10 毫米（60 毫米）加上 4 毫米，共 64 毫米。" }
+                ]
+            },
+            3: {
+                title: "第三關：除雪熱量調校",
+                subtitle: "活動 4：一位小數的加減計算",
+                pool: [
+                    { text: "熱量計算：1.2 + 3.6 = ？", correctOption: "4.8", wrongOptions: ["48", "4.2", "3.8"], hint: "💡 提示：對齊小數點！十分位 2+6=8，個位 1+3=4，合起來是 4.8。" },
+                    { text: "壓力調校：9.6 - 2.7 = ？", correctOption: "6.9", wrongOptions: ["7.9", "7.1", "6.1"], hint: "💡 提示：對齊小數點！十分位 6 不夠減 7，跟個位借 1。16 - 7 = 9，個位剩下 8。8 - 2 = 6。答案是 6.9。" },
+                    { text: "融冰比例：4.5 + 2.5 = ？（最簡讀法）", correctOption: "7", wrongOptions: ["6.0", "7.0", "6.5"], hint: "💡 提示：十分位 5+5=10，進位到個位。個位 4+2+1=7。十分位為 0，通常讀寫作整數 7。" },
+                    { text: "能量校正：5 - 1.4 = ？", correctOption: "3.6", wrongOptions: ["4.6", "3.4", "4.4"], hint: "💡 提示：將 5 寫成 5.0，再對齊做減法。十分位向個位借 1 變成 10 - 4 = 6，個位剩下 4 - 1 = 3。答案是 3.6。" },
+                    { text: "除霜程序：0.7 + 0.8 = ？", correctOption: "1.5", wrongOptions: ["0.15", "1.1", "15"], hint: "💡 提示：十分位 7+8=15，寫 5 進 1。答案是 1.5。" },
+                    { text: "冰川移動：8.3 - 4 = ？", correctOption: "4.3", wrongOptions: ["8.1", "4", "4.1"], hint: "💡 提示：整數 4 對齊個位。十分位仍是 3。個位 8 - 4 = 4。答案是 4.3。" },
+                    { text: "破冰強度：10.5 + 3.7 = ？", correctOption: "14.2", wrongOptions: ["13.2", "14.12", "13.12"], hint: "💡 提示：對齊小數點。十分位 5+7=12，寫 2 進 1。個位 0+3+1=4。十位是 1。答案是 14.2。" },
+                    { text: "除冰液消耗：12 - 3.5 = ？", correctOption: "8.5", wrongOptions: ["9.5", "8.0", "9.0"], hint: "💡 提示：將 12 寫成 12.0。十分位借位：10 - 5 = 5。個位借位後剩下 11 - 3 = 8。答案是 8.5。" },
+                    { text: "熱量計算：2.4 + 5.3 = ？", correctOption: "7.7", wrongOptions: ["77", "7.1", "2.9"], hint: "💡 提示：對齊小數點！十分位 4+3=7，個位 2+5=7，答案是 7.7。" },
+                    { text: "壓力調校：8.5 - 3.2 = ？", correctOption: "5.3", wrongOptions: ["5.7", "4.3", "53"], hint: "💡 提示：十分位 5-2=3，個位 8-3=5，答案是 5.3。" },
+                    { text: "融冰比例：3.6 + 1.4 = ？（最簡讀法）", correctOption: "5", wrongOptions: ["5.0", "4.0", "4.1"], hint: "💡 提示：十分位 6+4=10 進位。個位 3+1+1=5。十分位為 0 省略，答案是 5。" },
+                    { text: "能量校正：6 - 2.8 = ？", correctOption: "3.2", wrongOptions: ["4.2", "3.8", "4.8"], hint: "💡 提示：將 6 寫成 6.0，做減法。十分位向個位借 1 變成 10 - 8 = 2，個位剩下 5 - 2 = 3。答案是 3.2。" },
+                    { text: "除霜程序：0.9 + 0.5 = ？", correctOption: "1.4", wrongOptions: ["0.14", "1.5", "14"], hint: "💡 提示：十分位 9+5=14，寫 4 進 1，答案是 1.4。" },
+                    { text: "冰川移動：7.5 - 3 = ？", correctOption: "4.5", wrongOptions: ["7.2", "4", "4.2"], hint: "💡 提示：將整數 3 對齊個位。十分位仍是 5。個位 7 - 3 = 4。答案是 4.5。" },
+                    { text: "破冰強度：11.8 + 4.5 = ？", correctOption: "16.3", wrongOptions: ["15.3", "16.13", "15.13"], hint: "💡 提示：對齊小數點。十分位 8+5=13，寫 3 進 1。個位 1+4+1=6。十位是 1。答案是 16.3。" },
+                    { text: "除冰液消耗：15 - 4.2 = ？", correctOption: "10.8", wrongOptions: ["11.8", "10.2", "11.2"], hint: "💡 提示：將 15 寫成 15.0。十分位借位：10 - 2 = 8。個位 14 - 4 = 10。答案是 10.8。" }
                 ]
             },
             3: {
@@ -195,8 +233,11 @@
             const initLevel = useCallback((levelNum) => {
                 const QUESTIONS_PER_LEVEL = 4;
                 
-                // 從 localStorage 讀取已答對題目，防止短時間重複
-                const answeredQuestions = JSON.parse(localStorage.getItem('answered_math_questions_5') || '[]');
+                // 從 localStorage 讀取已答對題目，防止短時間重複，並依據學生班級座號隔離
+                const sClass = localStorage.getItem('student_class') || '';
+                const sSeat = localStorage.getItem('student_seat') || '';
+                const storageKey = `answered_math_questions_5_${sClass}_${sSeat}`;
+                const answeredQuestions = JSON.parse(localStorage.getItem(storageKey) || '[]');
                 
                 let eligiblePool = GAME_DATA[levelNum].pool.filter(q => !answeredQuestions.includes(q.text));
                 
@@ -204,7 +245,7 @@
                 if (eligiblePool.length < QUESTIONS_PER_LEVEL) {
                     const poolTexts = GAME_DATA[levelNum].pool.map(q => q.text);
                     const updatedAnswers = answeredQuestions.filter(text => !poolTexts.includes(text));
-                    localStorage.setItem('answered_math_questions_5', JSON.stringify(updatedAnswers));
+                    localStorage.setItem(storageKey, JSON.stringify(updatedAnswers));
                     eligiblePool = GAME_DATA[levelNum].pool;
                 }
                 
@@ -257,12 +298,15 @@
                     const newScore = score + pts;
                     setScore(prev => prev + pts);
                     
-                    // 記憶已答對的題目
-                    const answered = JSON.parse(localStorage.getItem('answered_math_questions_5') || '[]');
+                    // 記憶已答對的題目，依據學生座號隔離
+                    const sClass = localStorage.getItem('student_class') || '';
+                    const sSeat = localStorage.getItem('student_seat') || '';
+                    const storageKey = `answered_math_questions_5_${sClass}_${sSeat}`;
+                    const answered = JSON.parse(localStorage.getItem(storageKey) || '[]');
                     const qText = questions[qIndex]?.text;
                     if (qText && !answered.includes(qText)) {
                         answered.push(qText);
-                        localStorage.setItem('answered_math_questions_5', JSON.stringify(answered));
+                        localStorage.setItem(storageKey, JSON.stringify(answered));
                     }
 
                     setTimeout(() => nextQuestion(newScore), 1500);
@@ -415,10 +459,10 @@
                         </a>
                     </div>
 
-                    {localStorage.getItem('answered_math_questions_5') && (
+                    {localStorage.getItem(`answered_math_questions_5_${studentClass}_${studentSeat}`) && (
                         <button onClick={() => {
                             if(confirm("確定要清除所有答對的歷史紀錄，重新開始嗎？")) {
-                                localStorage.removeItem('answered_math_questions_5');
+                                localStorage.removeItem(`answered_math_questions_5_${studentClass}_${studentSeat}`);
                                 alert("已重置學習進度！");
                                 window.location.reload();
                             }
