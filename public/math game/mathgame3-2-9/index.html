@@ -466,6 +466,114 @@
             return shuffled;
         };
 
+        const getRandomizedDataset = (dataset) => {
+            // 複製資料集範本
+            const cloned = JSON.parse(JSON.stringify(dataset));
+            const rows = cloned.rowLabels;
+            const cols = cloned.colLabels;
+            
+            if (cloned.title === "三年級男女生人數統計表" || cloned.title === "運動社團男女生人數統計表") {
+                // 從 10 到 22 隨機選取不重複的數字，保證三個項目（如班級或社團）的男女生人數有明顯區別
+                const pool1 = shuffleArray([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]);
+                const pool2 = shuffleArray([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]);
+                
+                const valRow0 = {
+                    [cols[0]]: pool1[0],
+                    [cols[1]]: pool1[1],
+                    [cols[2]]: pool1[2]
+                };
+                
+                const valRow1 = {
+                    [cols[0]]: pool2[0],
+                    [cols[1]]: pool2[1],
+                    [cols[2]]: pool2[2]
+                };
+                
+                // 計算各合計
+                const sumCol0 = valRow0[cols[0]] + valRow1[cols[0]];
+                const sumCol1 = valRow0[cols[1]] + valRow1[cols[1]];
+                const sumCol2 = valRow0[cols[2]] + valRow1[cols[2]];
+                
+                const sumRow0 = valRow0[cols[0]] + valRow0[cols[1]] + valRow0[cols[2]];
+                const sumRow1 = valRow1[cols[0]] + valRow1[cols[1]] + valRow1[cols[2]];
+                
+                const grandTotal = sumRow0 + sumRow1;
+                
+                cloned.data = {
+                    [rows[0]]: {
+                        [cols[0]]: valRow0[cols[0]],
+                        [cols[1]]: valRow0[cols[1]],
+                        [cols[2]]: valRow0[cols[2]],
+                        "合計": sumRow0
+                    },
+                    [rows[1]]: {
+                        [cols[0]]: valRow1[cols[0]],
+                        [cols[1]]: valRow1[cols[1]],
+                        [cols[2]]: valRow1[cols[2]],
+                        "合計": sumRow1
+                    },
+                    "合計": {
+                        [cols[0]]: sumCol0,
+                        [cols[1]]: sumCol1,
+                        [cols[2]]: sumCol2,
+                        "合計": grandTotal
+                    }
+                };
+            } else if (cloned.title === "圖書館借書統計表") {
+                // 學生與教師的數量池
+                // 學生借書量：25 到 50 不重複
+                const poolStu = shuffleArray([25, 28, 30, 32, 35, 38, 40, 42, 45, 48, 50]);
+                // 教師借書量：5 到 20 不重複
+                const poolTea = shuffleArray([5, 6, 8, 10, 12, 14, 15, 16, 18, 20]);
+                
+                const valRow0 = {
+                    [cols[0]]: poolStu[0],
+                    [cols[1]]: poolStu[1],
+                    [cols[2]]: poolStu[2]
+                };
+                
+                const valRow1 = {
+                    [cols[0]]: poolTea[0],
+                    [cols[1]]: poolTea[1],
+                    [cols[2]]: poolTea[2]
+                };
+                
+                // 計算各合計
+                const sumCol0 = valRow0[cols[0]] + valRow1[cols[0]];
+                const sumCol1 = valRow0[cols[1]] + valRow1[cols[1]];
+                const sumCol2 = valRow0[cols[2]] + valRow1[cols[2]];
+                
+                const sumRow0 = valRow0[cols[0]] + valRow0[cols[1]] + valRow0[cols[2]];
+                const sumRow1 = valRow1[cols[0]] + valRow1[cols[1]] + valRow1[cols[2]];
+                
+                const grandTotal = sumRow0 + sumRow1;
+                
+                cloned.data = {
+                    [rows[0]]: {
+                        [cols[0]]: valRow0[cols[0]],
+                        [cols[1]]: valRow0[cols[1]],
+                        [cols[2]]: valRow0[cols[2]],
+                        "合計": sumRow0
+                    },
+                    [rows[1]]: {
+                        [cols[0]]: valRow1[cols[0]],
+                        [cols[1]]: valRow1[cols[1]],
+                        [cols[2]]: valRow1[cols[2]],
+                        "合計": sumRow1
+                    },
+                    "合計": {
+                        [cols[0]]: sumCol0,
+                        [cols[1]]: sumCol1,
+                        [cols[2]]: sumCol2,
+                        "合計": grandTotal
+                    }
+                };
+            }
+            
+            return cloned;
+        };
+
+
         // === SVG 圖標組件 ===
         const Icon = ({ name, className }) => {
             const icons = {
@@ -580,7 +688,8 @@
                     return;
                 }
                 const l1ds = LEVEL1_DATASETS[Math.floor(Math.random() * LEVEL1_DATASETS.length)];
-                const l23ds = LEVEL23_DATASETS[Math.floor(Math.random() * LEVEL23_DATASETS.length)];
+                const baseL23ds = LEVEL23_DATASETS[Math.floor(Math.random() * LEVEL23_DATASETS.length)];
+                const l23ds = getRandomizedDataset(baseL23ds);
                 setActiveL1Dataset(l1ds);
                 setActiveL23Dataset(l23ds);
                 setGameState('PLAYING');
