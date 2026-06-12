@@ -238,9 +238,176 @@
         margin-bottom: 0;
     }
 
+    /* 封面專屬樣式 */
+    .cover-page {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        border: 12px double #e9b384 !important; /* 雙線邊框 */
+        padding: 20mm 20mm !important;
+    }
+    .cover-header-badge {
+        background-color: #7fb4b4;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        margin-top: 10px;
+    }
+    .cover-title-section {
+        text-align: center;
+        margin-top: 25px;
+        margin-bottom: 15px;
+    }
+    .cover-main-title {
+        font-size: 36px !important;
+        font-weight: 700;
+        color: #2c5e5e;
+        letter-spacing: 4px;
+        margin: 0;
+        line-height: 1.4;
+    }
+    .cover-sub-title {
+        font-size: 18px !important;
+        font-weight: 500;
+        color: #a05c2c;
+        letter-spacing: 2px;
+        margin-top: 15px;
+        margin-bottom: 0;
+        text-align: center;
+    }
+    .cover-center-illustration {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 25px 0;
+        width: 100%;
+    }
+    .cover-book-deco {
+        font-size: 64px;
+        margin-bottom: 20px;
+    }
+    .cover-qrcode-container {
+        border: 2px dashed #7fb4b4;
+        background-color: #fbfbf9;
+        border-radius: 12px;
+        padding: 15px;
+        max-width: 400px;
+        display: flex;
+        align-items: center;
+    }
+    .cover-qrcode-img-wrapper {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        padding: 6px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .cover-qrcode-image {
+        width: 100px;
+        height: 100px;
+        display: block;
+    }
+    .cover-qrcode-desc {
+        margin-left: 15px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: #4a5568;
+        text-align: justify;
+    }
+    .cover-qrcode-desc strong {
+        color: #2c5e5e;
+    }
+    .cover-info-table {
+        width: 80%;
+        margin-bottom: 30px;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+    }
+    .cover-info-table td {
+        padding: 8px 12px;
+        font-size: 15px;
+    }
+    .cover-info-table td.label {
+        width: 30%;
+        text-align: right;
+        color: #718096;
+        font-weight: bold;
+    }
+    .cover-info-table td.value {
+        width: 70%;
+        border-bottom: 2px solid #a0aec0;
+        color: #2d3748;
+        font-weight: bold;
+        padding-left: 10px;
+    }
+    .cover-page-footer {
+        font-size: 11px;
+        color: #a0aec0;
+        text-align: center;
+        width: 100%;
+        border-top: 1px solid #edf2f7;
+        padding-top: 12px;
+        letter-spacing: 1px;
+    }
+
     </style>
 </head>
 <body>
+<!-- ==================== 封面 ==================== -->
+<div class="page cover-page">
+    <div class="cover-header-badge">2026 暑期自主學習</div>
+    <div class="cover-title-section">
+        <h1 class="cover-main-title">三年五班暑假作業</h1>
+        <p class="cover-sub-title">📖 國語閱讀理解與寫作互動工作坊手冊</p>
+    </div>
+    <div class="cover-center-illustration">
+        <div class="cover-book-deco">📚✨</div>
+        <div class="cover-qrcode-container">
+            <div class="cover-qrcode-img-wrapper">
+                <a href="https://samcct-bit.github.io/2026antigravity-hub/public/chinese_workshop.html" target="_blank" title="點此直接開啟線上工作坊">
+                    <img class="cover-qrcode-image" src="chinest_workshop.png" alt="工作坊 QR Code">
+                </a>
+            </div>
+            <div class="cover-qrcode-desc">
+                <strong>📱 線上互動工作坊 QR Code</strong><br>
+                掃描左側條碼，即可開啟線上平台！內含 8 個經典閱讀故事挑戰與<strong>寫作工具箱檢測器</strong>，答題完成還能解鎖個人專屬金牌勳章喔！
+            </div>
+        </div>
+    </div>
+    <table class="cover-info-table">
+        <tr>
+            <td class="label">班 級：</td>
+            <td class="value">三年五班</td>
+        </tr>
+        <tr>
+            <td class="label">座 號：</td>
+            <td class="value">&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="label">姓 名：</td>
+            <td class="value">&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="label">家長簽名：</td>
+            <td class="value">&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="label">導師評閱：</td>
+            <td class="value">&nbsp;</td>
+        </tr>
+    </table>
+    <div class="cover-page-footer">
+        三年五班國語領域自主學習小組編印 &copy; 2026
+    </div>
+</div>
+
 <!-- ==================== 第一回 ==================== -->
 <div class="page">
  <div class="student-info">
