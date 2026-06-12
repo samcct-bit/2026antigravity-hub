@@ -315,6 +315,7 @@
     // --- Initialization ---
     window.onload = () => {
         loadLocalStorage();
+        updatePirlsChartStats();
         renderSidebar();
         updateUI();
         initRadarChart();
@@ -547,10 +548,23 @@
     }
 
     function renderTextQuestion(q) {
+        let minLen = 4;
+        if (q.category === 1) minLen = 10;
+        if (q.category === 2) minLen = 15;
+        if (q.category === 3) minLen = 20;
+
+        const savedValue = appState.answers[q.id] || '';
+        const validation = validateText(savedValue, minLen);
+        const feedbackClass = savedValue.trim().length === 0 ? 'text-gray-400' : 
+                              (validation.valid ? 'text-teal-600' : 'text-red-500');
+
         return `
-            <div class="question-card p-5 rounded-2xl shadow-sm">
-                <p class="font-bold text-gray-800 text-sm md:text-base mb-3">${q.q}</p>
-                <textarea class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-teal-400 focus:bg-white transition h-20" placeholder="在此輸入你的想法..." oninput="saveAndGrowAnswer('${q.id}', this.value, ${q.category})">${appState.answers[q.id] || ''}</textarea>
+            <div class="question-card p-5 rounded-2xl shadow-sm border border-gray-100">
+                <p class="font-bold text-gray-800 text-sm md:text-base mb-2">${q.q}</p>
+                <textarea class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-teal-400 focus:bg-white transition h-20" placeholder="在此輸入你的想法..." oninput="onQuestionInput(this, '${q.id}', ${q.category}, ${minLen})">${savedValue}</textarea>
+                <div id="${q.id}-feedback" class="text-[11px] mt-1 font-medium ${feedbackClass}">
+                    ${savedValue.trim().length === 0 ? `💡 本題字數要求：至少 ${minLen} 字。` : validation.msg}
+                </div>
             </div>
         `;
     }
@@ -614,6 +628,10 @@
                                 <div class="w-24 bg-gray-200 rounded-full h-1.5 overflow-hidden">
                                     <div id="char-progress" class="bg-teal-500 h-1.5 rounded-full" style="width: 0%"></div>
                                 </div>
+                            </div>
+                            <!-- Feedback msg -->
+                            <div id="writing-feedback" class="text-[11px] mt-2.5 font-medium text-gray-400">
+                                💡 寫作字數要求：至少 150 字，且必須為您自己的原創想法。
                             </div>
                         </div>
                     </div>
@@ -733,12 +751,27 @@
         });
         vocabGrid.innerHTML = vocabHtml;
         
-        // 4. Update stats: writing falls under category 2 & 3 (Integration & Evaluation)
-        // Adjust stats dynamically based on length
-        const baseStat = 3.0;
-        const writingLevel = Math.min(5.0, baseStat + (charCount / 200));
-        appState.pirlsStats[2] = parseFloat(writingLevel.toFixed(1));
-        appState.pirlsStats[3] = parseFloat(writingLevel.toFixed(1));
+        // 4. Copy detection & length check
+        const copyDetected = checkExemplarCopy(text);
+        const feedbackEl = document.getElementById('writing-feedback');
+        
+        if (feedbackEl) {
+            if (copyDetected) {
+                feedbackEl.innerText = "❌ 系統偵測到您的寫作內容包含範文中的句子。請發揮你的想像力，寫出你自己在這個暑假最想學會的一件事，不要直接複製範文喔！";
+                feedbackEl.className = "text-[11px] mt-2.5 font-bold text-red-500";
+            } else if (text.trim().length > 0 && text.trim().length < 150) {
+                feedbackEl.innerText = `⚠️ 寫作字數不足（目前 ${text.trim().length} 字），請至少寫滿 150 字以完整表達段落喔！`;
+                feedbackEl.className = "text-[11px] mt-2.5 font-medium text-red-500";
+            } else if (text.trim().length >= 150) {
+                feedbackEl.innerText = "✅ 寫作長度合格，太棒了！請繼續努力，寫得越多表現越棒喔！";
+                feedbackEl.className = "text-[11px] mt-2.5 font-medium text-teal-600";
+            } else {
+                feedbackEl.innerText = "💡 建議至少寫滿 150 字，請注意右側的句型與好詞好句檢查工具。";
+                feedbackEl.className = "text-[11px] mt-2.5 font-medium text-gray-400";
+            }
+        }
+        
+        updatePirlsChartStats();
     }
 
     // --- Interactive text highlighting ---
@@ -769,47 +802,131 @@
         saveLocalStorage();
     }
 
-    // --- PIRLS Stat Growth on answer input ---
+    // --- PIRLS Stat Growth & Validation ---
+    const cleanChinese = text => (text || '').replace(/[^\u4e00-\u9fa5]/g, '');
+
+    function validateText(text, minLen) {
+        const trimmed = (text || '').trim();
+        if (trimmed.length === 0) {
+            return { valid: false, msg: "❌ 欄位為空，請輸入您的答案。", code: 'empty' };
+        }
+        
+        // 1. Chinese characters presence check
+        const cleanCh = (trimmed.match(/[\u4e00-\u9fa5]/g) || []).join('');
+        if (cleanCh.length < Math.min(2, Math.ceil(minLen / 3))) {
+            return { valid: false, msg: "❌ 請使用中文完整回答問題喔！", code: 'no_chinese' };
+        }
+        
+        // 2. Repetition & diversity check (on characters excluding punctuation/spaces)
+        const cleanAll = trimmed.replace(/[\s\p{P}\p{S}]/gu, '');
+        const uniqueChars = new Set(cleanAll);
+        if (cleanAll.length >= 6) {
+            const ratio = uniqueChars.size / cleanAll.length;
+            if (ratio < 0.4) {
+                return { valid: false, msg: "❌ 偵測到重複性字元或無意義輸入，請寫下您的具體想法喔！", code: 'gibberish' };
+            }
+        }
+        
+        // 3. Length check
+        if (trimmed.length < minLen) {
+            return { valid: false, msg: `⚠️ 字數不足，建議至少輸入 ${minLen} 個字以表達完整概念（目前 ${trimmed.length} 字）。`, code: 'too_short' };
+        }
+        
+        return { valid: true, msg: "✅ 內容完成度良好，太棒了！", code: 'ok' };
+    }
+
+    const exemplarText = "每當看見姐姐騎著單車在風中飛馳，像一隻輕盈的藍天燕子，我的心裡總是充滿羨羨慕與興奮期待。為了在升上四年級前像姐姐一樣勇敢，我決定在這個暑假挑戰騎兩輪單車。雖然我知道這條學習之路可能會摔得鼻青臉腫，但是看著姐姐自信的背影，我決定勇往直前，給自己一個長大的禮物。為了實現這個夢想，我制訂了計畫，每天清晨在公園廣場練習一小時。一開始，我總是手忙腳亂，車龍頭像個調皮的醉漢左搖右晃，只要爸爸一鬆手，我就會重重摔倒在地。看著膝蓋上的烏青，我有些心灰意冷，差點想半途而廢。此時，我想起課文中王獻之練字的恆心，便一邊拍拍灰塵，一邊鼓勵自己：只要持之以恆，就一定能找到平衡。我專心致志地盯著前方，配合著呼吸踩動踏板，不僅學會了控制方向，更學會了在搖晃中穩住身形。如果我能在暑假結束前順利學會騎單車，那微風拂面、自由翱翔的滋味，一定會讓我滿心歡喜。這項新技能不僅是雙腳的延伸，更是我升上四年級時，勇敢跨越挑戰的最好起點。我相信，那台雙輪單車，將會載著我的夢想飛向更寬廣的明天。";
+
+    function checkExemplarCopy(text) {
+        if (!text || text.length < 30) return false;
+        
+        const cleanInput = text.replace(/[^\u4e00-\u9fa5]/g, '');
+        const cleanExemplar = exemplarText.replace(/[^\u4e00-\u9fa5]/g, '');
+        
+        const windowSize = 30;
+        for (let i = 0; i <= cleanInput.length - windowSize; i++) {
+            const sub = cleanInput.substring(i, i + windowSize);
+            if (cleanExemplar.includes(sub)) {
+                return true;
+            }
+        }
+        
+        if (cleanExemplar.includes(cleanInput) && cleanInput.length > 50) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    function onQuestionInput(el, id, categoryIndex, minLen) {
+        const val = el.value;
+        appState.answers[id] = val;
+        saveLocalStorage();
+        
+        const validation = validateText(val, minLen);
+        const feedbackEl = document.getElementById(id + '-feedback');
+        if (feedbackEl) {
+            feedbackEl.innerText = validation.msg;
+            feedbackEl.className = "text-[11px] mt-1 font-medium " + 
+                (validation.code === 'ok' ? 'text-teal-600' : 'text-red-500');
+        }
+        
+        updatePirlsChartStats();
+    }
+
     function saveAndGrowAnswer(id, val, categoryIndex) {
         appState.answers[id] = val;
-        
-        // Calculate category level based on length of all answers in that category
-        let totalLen = 0;
-        let count = 0;
+        saveLocalStorage();
+        updatePirlsChartStats();
+    }
+
+    function updatePirlsChartStats() {
+        const categoryLengths = [0, 0, 0, 0];
         
         rounds.forEach(r => {
             if (r.questions) {
                 r.questions.forEach(q => {
-                    if (q.category === categoryIndex) {
-                        count++;
-                        // Accumulate values
-                        if (q.type === 'select-sequence') {
-                            // sequencing questions have multiple sub-keys
-                            let seqCount = 0;
-                            for (let stepIdx = 0; stepIdx < 4; stepIdx++) {
-                                if (appState.answers[`${q.id}_step${stepIdx}`]) seqCount++;
-                            }
-                            totalLen += (seqCount === 4) ? 20 : (seqCount * 3);
-                        } else {
-                            const ans = appState.answers[q.id];
-                            if (ans) totalLen += ans.trim().length;
+                    let minLen = 4;
+                    if (q.category === 1) minLen = 10;
+                    if (q.category === 2) minLen = 15;
+                    if (q.category === 3) minLen = 20;
+                    
+                    if (q.type === 'select-sequence') {
+                        let seqCount = 0;
+                        for (let stepIdx = 0; stepIdx < 4; stepIdx++) {
+                            if (appState.answers[`${q.id}_step${stepIdx}`]) seqCount++;
+                        }
+                        if (seqCount === 4) {
+                            categoryLengths[1] += 20;
+                        }
+                    } else {
+                        const ans = appState.answers[q.id] || '';
+                        const validation = validateText(ans, minLen);
+                        if (validation.valid) {
+                            categoryLengths[q.category] += ans.trim().length;
                         }
                     }
-                }
-            );
+                });
             }
         });
         
-        // Dynamic formula: starting at 3.0, grows up to 5.0
-        const extraPoints = Math.min(2.0, totalLen / 50.0);
-        appState.pirlsStats[categoryIndex] = parseFloat((3.0 + extraPoints).toFixed(1));
+        const writingText = appState.answers['round-9-writing'] || '';
+        const writingValid = (writingText.trim().length >= 150 && !checkExemplarCopy(writingText));
+        if (writingValid) {
+            categoryLengths[2] += Math.min(200, writingText.trim().length / 2);
+            categoryLengths[3] += Math.min(200, writingText.trim().length / 2);
+        }
+        
+        for (let i = 0; i < 4; i++) {
+            const extraPoints = Math.min(2.0, categoryLengths[i] / 40.0);
+            appState.pirlsStats[i] = parseFloat((3.0 + extraPoints).toFixed(1));
+        }
         
         saveLocalStorage();
         
-        // Live update chart if active on screen
         if (radarChart && appState.currentView === 'dashboard') {
             radarChart.data.datasets[0].data = appState.pirlsStats;
-            radarChart.update('none'); // Update without animation for smoother typing feel
+            radarChart.update('none');
         }
     }
 
@@ -844,33 +961,56 @@
     }
 
     function completeRound(rid) {
-        // Double check if all questions are filled in
         const roundData = rounds.find(r => r.id === rid);
-        let completed = true;
+        const errors = [];
         
         if (roundData.questions) {
-            roundData.questions.forEach(q => {
+            roundData.questions.forEach((q, idx) => {
                 if (q.type === 'select-sequence') {
+                    let seqCount = 0;
+                    const seqVals = [];
                     for (let stepIdx = 0; stepIdx < 4; stepIdx++) {
-                        if (!appState.answers[`${q.id}_step${stepIdx}`]) completed = false;
+                        const val = appState.answers[`${q.id}_step${stepIdx}`];
+                        if (val) {
+                            seqCount++;
+                            seqVals.push(val);
+                        }
+                    }
+                    if (seqCount < 4) {
+                        errors.push(`第 ${idx + 1} 題：步驟排序尚未選擇完畢。`);
+                    } else {
+                        const distinctVals = new Set(seqVals);
+                        if (distinctVals.size < 4) {
+                            errors.push(`第 ${idx + 1} 題：步驟排序選擇有重複，請確保 1 到 4 步各不相同。`);
+                        }
                     }
                 } else {
-                    if (!appState.answers[q.id] || appState.answers[q.id].trim().length < 2) {
-                        completed = false;
+                    let minLen = 4;
+                    if (q.category === 1) minLen = 10;
+                    if (q.category === 2) minLen = 15;
+                    if (q.category === 3) minLen = 20;
+                    
+                    const ans = appState.answers[q.id] || '';
+                    const validation = validateText(ans, minLen);
+                    if (!validation.valid) {
+                        errors.push(`第 ${idx + 1} 題：${validation.msg.replace('❌ ', '').replace('⚠️ ', '')}`);
                     }
                 }
             });
         } else if (roundData.type === 'writing') {
             const textVal = appState.answers['round-9-writing'] || '';
-            if (textVal.trim().length < 50) {
-                completed = false;
+            const copyDetected = checkExemplarCopy(textVal);
+            
+            if (copyDetected) {
+                errors.push("寫作內容：偵測到大量複製範文的句子，請寫出自己的暑假計畫喔！");
+            } else if (textVal.trim().length < 150) {
+                errors.push(`寫作內容：字數不足（目前 ${textVal.trim().length} 字，需要至少 150 字）。`);
             }
         }
         
-        if (!completed) {
-            if (!confirm("你還有問題沒有回答完整，或是寫作內容太少喔！確定現在就要提交並領取勳章嗎？")) {
-                return;
-            }
+        if (errors.length > 0) {
+            alert("⚠️ 挑戰尚未完成，請修改以下項目後再提交：\n\n" + errors.map(e => "• " + e).join("\n"));
+            return;
         }
 
         if (!appState.completedRounds.includes(rid)) {
