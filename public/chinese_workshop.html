@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三升四暑假國語閱讀理解與寫作互動工作坊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #F7F3E9; /* 暖調中性背景，減輕眼睛疲勞 */
+            color: #2D3748;
+        }
+
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .sidebar-active {
+            background-color: #E9B384;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .story-box {
+            border: 2px dashed #A0AEC0;
+            background-color: #FFFFFF;
+            line-height: 1.8;
+            transition: all 0.3s ease;
+        }
+
+        .story-box:hover {
+            border-color: #E9B384;
+            background-color: #FFFDF9;
+        }
+
+        .question-card {
+            border-left: 4px solid #7FB4B4;
+            background-color: #FFFFFF;
+            transition: transform 0.2s ease;
+        }
+
+        .question-card:hover {
+            transform: translateX(5px);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 280px;
+            max-height: 350px;
+        }
+
+        /* 句子高亮樣式 */
+        .story-sentence {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-radius: 3px;
+            padding: 0 2px;
+        }
+        .story-sentence:hover {
+            background-color: #FEF3C7; /* Hover 黃色 */
+        }
+        .story-sentence.highlighted {
+            background-color: #FDE047; /* 點擊高亮黃色 */
+        }
+
+        /* 頁首與邊界設定 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 金牌動畫 */
+        @keyframes medal-spin {
+            0% { transform: scale(0) rotate(0deg); }
+            80% { transform: scale(1.2) rotate(380deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+        .medal-animate {
+            animation: medal-spin 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+<div class="flex h-screen overflow-hidden w-full">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0 hidden md:flex flex-col">
+        <div class="p-6">
+            <h1 class="text-xl font-bold text-gray-800 flex items-center">
+                <span class="mr-2 text-2xl">📖</span> 閱讀工坊
+            </h1>
+            <p class="text-xs text-gray-500 mt-1">PIRLS 閱讀與寫作工作坊</p>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-4 space-y-1 no-scrollbar" id="sidebar-nav">
+            <!-- Nav items injected by JS -->
+        </nav>
+        <div class="p-4 border-t border-gray-100 bg-gray-50">
+            <div class="flex items-center space-x-3 mb-2">
+                <div class="w-9 h-9 rounded-full bg-orange-100 border border-orange-200 flex items-center justify-center text-orange-600 font-bold overflow-hidden" id="student-avatar-container">
+                    👶
+                </div>
+                <div class="text-sm">
+                    <p class="font-bold text-gray-800" id="display-name">訪客學生</p>
+                    <p class="text-xs text-gray-500">三年五班</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Bar -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
+            <button class="md:hidden text-gray-600 text-xl" onclick="toggleMobileMenu()">☰</button>
+            <div class="flex items-center space-x-4">
+                <span id="current-round-title" class="text-lg font-bold text-gray-700">歡迎來到工作坊</span>
+                <span class="px-2.5 py-0.5 bg-teal-100 text-teal-700 text-xs rounded-full font-medium" id="round-status">探索中</span>
+            </div>
+            <div class="flex items-center space-x-2 text-sm text-gray-500">
+                <span class="hidden sm:inline">工作坊進度:</span>
+                <div class="w-24 sm:w-32 bg-gray-200 rounded-full h-2">
+                    <div id="overall-progress" class="bg-teal-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <span class="font-bold text-xs" id="progress-percent">0%</span>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6" id="main-display">
+            <!-- Content will be injected dynamically -->
+        </div>
+    </main>
+</div>
+
+<!-- Mobile Nav Drawer -->
+<div id="mobile-menu" class="fixed inset-0 bg-black/50 z-50 hidden md:hidden" onclick="toggleMobileMenu()">
+    <div class="w-64 h-full bg-white p-6 flex flex-col" onclick="event.stopPropagation()">
+        <h2 class="text-xl font-bold mb-6 text-gray-800 border-b pb-4">📖 課程回次列表</h2>
+        <nav class="space-y-1.5 flex-1 overflow-y-auto no-scrollbar" id="mobile-nav">
+            <!-- Injected by JS -->
+        </nav>
+        <div class="p-4 border-t border-gray-100 bg-gray-50 rounded-xl mt-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold overflow-hidden" id="mobile-avatar-container">
+                    👶
+                </div>
+                <div class="text-sm">
+                    <p class="font-bold text-gray-800" id="mobile-display-name">訪客學生</p>
+                    <p class="text-xs text-gray-500">三年五班</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Medal Modal (Congratulation Overlay) -->
+<div id="medal-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl border border-yellow-200 relative overflow-hidden">
+        <!-- Confetti effects -->
+        <div class="absolute inset-0 pointer-events-none opacity-40">
+            <div class="absolute w-2 h-2 bg-red-400 rounded-full top-10 left-10 animate-ping"></div>
+            <div class="absolute w-3 h-3 bg-yellow-400 rounded-full top-20 right-12 animate-ping"></div>
+            <div class="absolute w-2 h-2 bg-blue-400 rounded-full bottom-16 left-20 animate-ping"></div>
+        </div>
+        
+        <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6 border border-yellow-300">
+            <span class="text-5xl medal-animate">🥇</span>
+        </div>
+        
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">太棒了！獲得章節勳章</h3>
+        <p class="text-sm text-gray-500 mb-6" id="medal-congratulation-text">恭喜你完成了這個故事的所有挑戰！</p>
+        
+        <div class="p-3 bg-teal-50 rounded-xl mb-6 text-xs text-teal-800 font-medium">
+            📈 你的 PIRLS 閱讀理解指標已獲得提升！
+        </div>
+        
+        <button onclick="closeMedalModal()" class="w-full bg-orange-500 text-white font-bold py-3 rounded-full hover:bg-orange-600 shadow-lg transition transform hover:scale-105 active:scale-95">繼續挑戰</button>
+    </div>
+</div>
+
+<script>
+    // --- Data Source ---
+    const rounds = [
+        {
+            id: 1,
+            title: "第一回：還差一點",
+            subtitle: "第二課〈還差一點〉",
+            storyTitle: "💡 王獻之與十八缸水",
+            story: "這一天，王獻之跑去問父親，想把字練好，是不是有什麼祕訣？王羲之笑了笑，指著屋外的十八口水缸說：「祕訣藏在裡頭，你把水寫完就知道了。」為了找出寫字的祕訣，王獻之早也練，晚也練，不管是橫、豎、點……每個字的筆畫，他都用心的學習。寫了兩年後，他把字拿給母親看，母親說：「有點樣子了。」寫了兩年才有點樣子？王獻之不服氣，埋頭再練兩年。兩年下來，他覺得自己的字已經寫得和父親一模一樣。他感到非常興奮，於是把最得意的一疊字捧給母親看。母親把那些字一張張看過，最後將視線停在一個字上：「『太』字底下的這一點，倒是有你父親寫字的味道了。」「那一點啊……。」王獻之好難過。「怎麼了？」「剛才我寫字時，父親走進來，發現我的『大』字沒寫好，所以示範加了那一點。」王獻之服氣了，下定決心苦練書法。幾年後，大家都讚美他寫的字和父親一樣好，還問他：「你是怎麼做到的呢？」「等你們寫完十八缸水就知道了。」王獻之微微笑。",
+            questions: [
+                { q: "1. 【歷程一：擷取特定資訊】王羲之指著屋外的十八口水缸，告訴王獻之寫字的秘訣是什麼？", id: "r1q1", category: 0 },
+                { q: "2. 【歷程二：推解直接結論】王獻之把練了四年的字拿給母親看，為什麼他一開始感到「不服氣」，後來卻又「服氣」了呢？請根據故事內容說明他的心境轉變原因。", id: "r1q2", category: 1 },
+                { q: "3. 【歷程三與四：詮釋整合與檢驗評估】如果有一天你在學習一項新才藝（例如彈琴、畫畫或打球）已經練習了四年，卻被老師或家長指出「還差得遠」，你會像王獻之般繼續堅持努力，還是會想放棄？請結合你的生活經驗寫出真實的想法與理由。", id: "r1q3", category: 3 }
+            ]
+        },
+        {
+            id: 2,
+            title: "第二回：用膝蓋跳舞",
+            subtitle: "第三課〈用膝蓋跳舞的女孩〉",
+            storyTitle: "💡 多彩多姿的生命：郭韋齊",
+            story: "郭韋齊從小就喜歡唱唱跳跳，自得其樂。在七歲那年，因為生病引發休克。在急救時，她的手腳發黑，為了救韋齊，父母只好同意將她的四肢截斷。從此以後，韋齊的世界完全改變了，很多生活上的細節都要重新學習。沒有手掌，就用兩隻手臂夾住碗；沒有腳掌，就用兩個膝蓋跪著走。慢慢的，生活中的大小事，像吃飯、走路、寫字都能靠自己處理。不過，韋齊的心裡，始終忘不了以前跳舞、彈琴的快樂時光，於是決定重新再學習。別人用雙腳跳舞，她用膝蓋跳；別人用手指彈琴，她用腕骨一個音一個音慢慢敲。雖然練舞、彈琴要忍受手腳的疼痛，她還是不放棄。她知道，即使沒有雙手雙腳，生活一樣可以過得多彩多姿。長大後的韋齊，仍然不停的挑戰自己。她爬上玉山山頂、完成單車環臺，更成為第一個沒有四肢卻能游過日月潭的人。",
+            questions: [
+                { q: "1. 【歷程一：擷取特定資訊】郭韋齊在七歲時因為生病面臨了什麼重大的變故？她長大後克服身體的不便，完成了哪些令人佩服的自我挑戰活動？（請至少寫出兩項挑戰）", id: "r2q1", category: 0 },
+                { q: "2. 【歷程二：推解直接結論】故事中提到「別人用手指彈琴，她用腕骨一個音一個音慢慢敲」，這句話說明了郭韋齊在學習時展現了怎樣的個性和態度？", id: "r2q2", category: 1 },
+                { q: "3. 【歷程三與四：詮釋整合與檢驗評估】讀完郭韋齊的故事後，當你在學習新功課或新才藝遇到挫折（例如覺得好累、好痛或寫不好）時，這篇課文能帶給你什麼樣的鼓勵與啟發？請舉一個你生活中的例子來分享。", id: "r2q3", category: 3 }
+            ]
+        },
+        {
+            id: 3,
+            title: "第三回：茶鄉鹿谷",
+            subtitle: "第五課〈茶鄉鹿谷〉",
+            storyTitle: "💡 鹿谷烏龍茶製作過程",
+            story: "來到鹿谷，看見凍頂山滿山的茶園。嬸嬸說種茶樹需要很多條件：氣候溫和、雨量足夠、早晚溫差大、經常有雲霧等。來到嬸嬸家，她帶我們去參觀「凍頂烏龍茶」的製作過程。我看見師傅們先將剛摘下來的茶葉晒過，以減少水分；接著讓茶葉發酵，進行高溫處理，以保留香氣；最後，將茶葉揉成球形，進行乾燥與烘焙，就成為風味美好的烏龍茶。製茶的師傅告訴我們，臺灣人愛喝茶，所以對茶葉十分講究。爸爸和叔叔一邊喝茶，一邊讚嘆的說：「這茶真是值得細細品味呀！」",
+            questions: [
+                { q: "1. 【歷程一：擷取特定資訊】根據課文，南投縣鹿谷鄉種植茶樹需要具備哪些優良的自然環境條件？（請列出三項）", id: "r3q1", category: 0 },
+                { q: "2. 【歷程二：推解直接結論】請根據課文內容，將「凍頂烏龍茶」的製作步驟進行排序。(請在下方填答框選出步驟 1 至 4)", id: "r3q2", category: 1, type: "select-sequence" },
+                { q: "3. 【歷程三與四：詮釋整合與檢驗評估】故事最後提到茶葉「值得細細品味」。你認為在我們的日常生活或學習中，還有什麼事情也需要像製茶一樣「講究」且「細細品味」？請舉一個例子並說明原因。", id: "r3q3", category: 2 }
+            ]
+        },
+        {
+            id: 4,
+            title: "第四回：月世界之旅",
+            subtitle: "第六課〈月世界之旅〉",
+            storyTitle: "💡 光禿禿的灰色奇觀",
+            story: "到了目的地，我看見兩旁的山丘，就像一頭頭並排的大象，灰色的表面上有許多紋路。老師說：「月世界就像月球表面一樣，到處是灰色的山丘，所以才會有這個名字。」我發現這裡沒有濃密的林木，連草都不容易生長，跟我想像的完全不一樣。後來，老師還帶我們去看附近的泥火山，遠遠就聽到好像有人在打嗝，走近才發現是泥漿一陣一陣冒出來的聲音。當我們親眼看見這特別的景象時，忍不住驚呼起來。泥漿從地底噴發，好像一條條活蹦亂跳的泥巴魚，從水池裡跳出來。我們看得入迷，差點兒錯過集合的時間。這次戶外教育，我們看見了從來沒有看過的景色，月世界真是一個讓人難忘的地方。",
+            questions: [
+                { q: "1. 【歷程一：擷取特定資訊】根據課文，作者所看到的「月世界」山丘外觀有什麼特徵？那裡的植物生長情形又是如何？", id: "r4q1", category: 0 },
+                { q: "2. 【歷程二：推解直接結論】作者在觀察「泥火山」時，運用了哪些生動的譬喻和聲音描寫，讓讀者感覺泥火山好像是活的一樣？請從故事中找出相關的詞句。", id: "r4q2", category: 1 },
+                { q: "3. 【歷程三與四：詮釋整合與檢驗評估】雖然月世界沒有綠油油的森林或美麗的花草，到處都是光禿禿的灰色山丘，但為什麼學校依然會帶學生來這裡進行戶外教育？你覺得這種奇特的自然景觀對我們有什麼樣的學習價值？", id: "r4q3", category: 2 }
+            ]
+        },
+        {
+            id: 5,
+            title: "第五回：昆蟲記法布爾",
+            subtitle: "愛閱讀一〈熱愛昆蟲的法布爾〉",
+            storyTitle: "💡 糞金龜的推球智慧",
+            story: "有一天，法布爾看到全心全力滾動糞球的糞金龜，靈機一動，他利用一根針將糞球固定在地上，想知道糞金龜會不會找到方法來解決問題？法布爾對這點感到十分好奇。當糞金龜發現原本滾動的糞球一動也不動之後，一開始查看糞球的四周，找到那個讓糞球動不了的關鍵因素，接著發揮「頭上功夫」，用頭部邊緣的鋸齒，像鏟子一樣，不停的往下挖，挖鬆泥土，把針拔了出來，再繼續推著糞球回家。經過這個實驗，法布爾發現小小的糞金龜實在很聰明，利用自己的特長克服困難，不會把努力得來的食物輕易放棄。法布爾的一生都和昆蟲打交道，他愛昆蟲，了解昆蟲，幾乎到了著迷的程度。後來，他把自己多年來的研究心得，寫成昆蟲記，書裡除了記錄觀察到的昆蟲習性，也寫出了法布爾從昆蟲身上得到的啟示。直到今天，許多昆蟲的愛好者，仍然把這本書當作研究昆蟲的寶典呢！",
+            questions: [
+                { q: "1. 【歷程一：擷取特定資訊】法布爾設計了什麼實驗來測試糞金龜？當糞球被固定住後，糞金龜是用頭部的什麼構造和方法來解決問題的？", id: "r5q1", category: 0 },
+                { q: "2. 【歷程二：推解直接結論】法布爾做完糞金龜的實驗之後，他得到了什麼結論？這讓他對糞金龜有什麼樣的看法？", id: "r5q2", category: 1 },
+                { q: "3. 【歷程三與四：詮釋整合與檢驗評估】法布爾因為對昆蟲的熱情，一生堅持觀察並寫出巨著《昆蟲記》。請分享在你的生活中，你對什麼事物（例如：恐龍、樂高、畫畫、太空或植物）也像法布爾一樣充滿好奇心？你打算怎麼去探索它？", id: "r5q3", category: 3 }
+            ]
+        },
+        {
+            id: 6,
+            title: "第六回：行人的守護者",
+            subtitle: "第八課〈行人的守護者〉",
+            storyTitle: "💡 小綠人的工作日記",
+            story: "我是行人的好朋友，天天站在馬路口，引導人們走過行人穿越道。我會配合倒數計時，展現活潑的身手，身體還會發出閃亮的綠色光芒，因此大家都叫我「小綠人」。我還有一個好同伴－－小紅人，我們一起守護行人的安全。我喜歡欣賞路口的風光。今天早晨，我正在休息時，突然聽到兩個小朋友的交談聲。小男孩說：「你看，現在小紅人立正站好，我們不能過馬路。」小女孩說：「對呀！要等小綠人出現，小綠人是給行人看的綠燈。」知道他們這麼守秩序，我不由得精神百倍。終於，換我上場了！我邁出不疾不徐的步伐，抬頭挺胸的引導行人往前走。倒數快結束了！我開始快步走，他們也跟著加快腳步。時間到！大家都安全的穿越馬路，我真想歡呼。不管白天或夜晚，不管晴天或雨天，我總是認真的守護著行人。每個人都能夠快快樂樂的出門，平平安安的回家，就是我最大的心願。",
+            questions: [
+                { q: "1. 【歷程一：擷取特定資訊】故事中的「小綠人」在行人號誌燈倒數快要結束時，會做出什麼動作來提醒行人？它和好同伴「小紅人」共同的心願是什麼？", id: "r6q1", category: 0 },
+                { q: "2. 【歷程二：推解直接結論】這篇故事是用「小綠人」第一人稱的口吻來寫的（擬人法）。請從故事中找出兩個能表現出小綠人「心情」或「動作」像人類一樣的句子。", id: "r6q2", category: 1 },
+                { q: "3. 【歷程三與四：詮釋整合與檢驗評估】小綠人天天站在路口守護我們的安全，非常辛苦。做為一個守秩序的行人，我們在過馬路時應該注意哪些事情，才是對小綠人最好的回報？請寫出兩點具體做法。", id: "r6q3", category: 3 }
+            ]
+        },
+        {
+            id: 7,
+            title: "第七回：畫龍點睛",
+            subtitle: "第十一課〈畫龍點睛〉",
+            storyTitle: "💡 張僧繇安樂寺畫龍",
+            story: "有一次，張僧繇受邀到安樂寺畫龍，吸引許多人來參觀，大家都想見識他的本事。只見他直接在牆上揮動畫筆，沒多久，四條龍就畫好了。因為畫得十分逼真，大家都讚嘆不已。站在牆前的老奶奶，被他畫的龍嚇著了，拉著孫子的手就要跑。小孫子指著龍說：「奶奶，這些龍都沒有眼珠子，是假的，別怕。」聽到孩子這麼說，幾個大人追著畫家問：「為什麼不幫龍畫眼睛？」張僧繇說：「一旦畫上眼珠子，龍就會飛走。」有些人相信，有些人不信，吵鬧聲越來越大。張僧繇不得不拿起畫筆，給其中兩條龍點上眼珠。突然間，原本晴朗的天空竟然烏雲密布、雷電交加，那兩條點了眼珠子的龍，奮力飛出牆壁，直上天際，一下子就消失得無影無蹤。圍觀的人們目瞪口呆，久久無法回神，而牆面上只剩下兩條沒有畫眼珠子的龍。",
+            questions: [
+                { q: "1. 【歷程一：擷取特定資訊】大畫家張僧繇在安樂寺牆上畫了幾條龍？為什麼他一開始不願意幫這些龍畫上眼睛？", id: "r7q1", category: 0 },
+                { q: "2. 【歷程二：推解直接結論】當張僧繇被迫給其中兩條龍畫上眼珠後，現場的天氣和牆上的龍發生了什麼神奇的變化？這說明了張僧繇的畫技如何？", id: "r7q2", category: 1 },
+                { q: "3. 【歷程三與四：詮釋整合與檢驗評估】「畫龍點睛」現在用來比喻在關鍵的地方加入精彩的一筆，讓事物變得更完美。在你的學習經驗中（例如：寫作、畫畫、做報告或上台表演），有沒有哪一次因為做了一個「關鍵的小改變」，就讓整體表現變得非常棒的經驗？請寫下來分享。", id: "r7q3", category: 2 }
+            ]
+        },
+        {
+            id: 8,
+            title: "第八回：巨人傳說",
+            subtitle: "愛閱讀二〈巨人傳說〉",
+            storyTitle: "💡 智取大嘴巨人",
+            story: "就在一個適合打獵的日子，族裡的勇士們到山上集合，假裝要去打獵。巨人以為又有一頓豐盛的大餐即將來臨，於是躲到另一座山的後頭，等著肥美的動物跑進嘴裡。這時候，族人先在山上升火，將準備好的水晶石燒得火熱通紅，接著，合力把巨大的水晶石推下山去。勇士們假裝在追趕獵物，一邊追著巨石，一邊大喊：「下去了！下去了！趕快追呀！」看見有東西滾下山，又聽見勇士們的叫喊，巨人想也不想，很快的伸出頭、張開大嘴，靠在山路的彎道上，準備一口氣吞下衝過來的動物。突然，一個發燙的東西滾進了他的喉嚨，巨人痛得在地上打滾，一路滾進了花蓮、臺東的外海，身體從此淹沒在大海裡。據說，現在的蘭嶼和綠島，就是當時巨人露出海面的兩隻大腳變成的呢！",
+            questions: [
+                { q: "1. 【歷程一：擷取特定資訊】太魯閣族人為了打敗巨人，使用了什麼道具？他們在山頂上假裝大喊了什麼話來吸引巨人的注意？", id: "r8q1", category: 0 },
+                { q: "2. 【歷程二：推解直接結論】巨人明明擁有巨大的力量和高大的身材，為什麼最後會輕易掉進族人設計的陷阱裡？這說明了巨人有什麼缺點？", id: "r8q2", category: 1 },
+                { q: "3. 【歷程三與四：詮釋整合與檢驗評估】面對實力比自己強大許多的對手或極為困難的挑戰時，太魯閣族人沒有硬碰硬，而是用「智慧」戰勝了巨人。如果我們在生活中遇到看似無法解決的大困難（例如：一門很難的科目，或是一次複雜的團隊爭執），你會怎麼運用智慧來解決它？", id: "r8q3", category: 3 }
+            ]
+        },
+        {
+            id: 9,
+            title: "第九回：引導寫作",
+            subtitle: "作文書寫主題：《暑假，我最想學會的一件事》",
+            type: "writing"
+        }
+    ];
+
+    const roundTitles = [
+        "第一回：還差一點", "第二回：用膝蓋跳舞的女孩", "第三回：茶鄉鹿谷", "第四回：月世界之旅",
+        "第五回：熱愛昆蟲的法布爾", "第六回：行人的守護者", "第七回：畫龍點睛", "第八回：巨人傳說", "第九回：引導式寫作"
+    ];
+
+    const avatars = ["👶", "🐱", "🐶", "🐰", "🐼", "🦁", "🦊", "🤖"];
+
+    // --- State Management ---
+    let appState = {
+        userName: "訪客學生",
+        userAvatar: "👶",
+        currentView: 'dashboard',
+        completedRounds: [],
+        answers: {},
+        pirlsStats: [3.0, 3.0, 3.0, 3.0] // 擷取, 推論, 整合, 評估 (1.0 - 5.0)
+    };
+
+    let radarChart = null;
+
+    // --- Initialization ---
+    window.onload = () => {
+        loadLocalStorage();
+        renderSidebar();
+        updateUI();
+        initRadarChart();
+    };
+
+    function loadLocalStorage() {
+        const saved = localStorage.getItem('pirls_app_state_v2');
+        if (saved) {
+            appState = JSON.parse(saved);
+        }
+    }
+
+    function saveLocalStorage() {
+        localStorage.setItem('pirls_app_state_v2', JSON.stringify(appState));
+    }
+
+    function renderSidebar() {
+        const nav = document.getElementById('sidebar-nav');
+        const mobileNav = document.getElementById('mobile-nav');
+        
+        const dashboardItem = `<button onclick="switchView('dashboard')" class="w-full text-left px-4 py-2 rounded-lg text-sm font-bold flex items-center space-x-2 ${appState.currentView === 'dashboard' ? 'sidebar-active' : 'text-gray-600 hover:bg-gray-100'} transition mb-4"><span>🏠</span> <span>我的儀表板</span></button>`;
+        
+        let itemsHtml = dashboardItem;
+        rounds.forEach((r) => {
+            const isCompleted = appState.completedRounds.includes(r.id);
+            const isActive = appState.currentView === `round-${r.id}`;
+            itemsHtml += `
+                <button onclick="switchView('round-${r.id}')" class="w-full text-left px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-between transition ${isActive ? 'sidebar-active' : 'text-gray-600 hover:bg-gray-100'}">
+                    <span class="truncate pr-2">${r.title}</span>
+                    <span class="flex-shrink-0">${isCompleted ? '🏆' : '⭕'}</span>
+                </button>
+            `;
+        });
+
+        nav.innerHTML = itemsHtml;
+        mobileNav.innerHTML = itemsHtml;
+
+        // Update avatar containers
+        document.getElementById('student-avatar-container').innerText = appState.userAvatar;
+        document.getElementById('mobile-avatar-container').innerText = appState.userAvatar;
+    }
+
+    function switchView(view) {
+        appState.currentView = view;
+        updateUI();
+        renderSidebar();
+        saveLocalStorage();
+        if (!document.getElementById('mobile-menu').classList.contains('hidden')) {
+            toggleMobileMenu();
+        }
+    }
+
+    function updateUI() {
+        const main = document.getElementById('main-display');
+        const titleEl = document.getElementById('current-round-title');
+        const nameEl = document.getElementById('display-name');
+        const mobileNameEl = document.getElementById('mobile-display-name');
+        const progressEl = document.getElementById('overall-progress');
+        const percentEl = document.getElementById('progress-percent');
+
+        nameEl.innerText = appState.userName;
+        mobileNameEl.innerText = appState.userName;
+        
+        const progressPercent = Math.round((appState.completedRounds.length / 9) * 100);
+        progressEl.style.width = `${progressPercent}%`;
+        percentEl.innerText = `${progressPercent}%`;
+
+        if (appState.currentView === 'dashboard') {
+            titleEl.innerText = "我的學習儀表板";
+            renderDashboard(main);
+        } else {
+            const rid = parseInt(appState.currentView.split('-')[1]);
+            renderRound(rid);
+        }
+    }
+
+    function renderDashboard(container) {
+        const completedCount = appState.completedRounds.length;
+        
+        container.innerHTML = `
+            <section id="dashboard" class="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-300">
+                <!-- Welcome Banner -->
+                <div class="bg-gradient-to-r from-teal-500 to-amber-500 rounded-2xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl pointer-events-none">📚</div>
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2">準備好挑戰 PIRLS 了嗎？</h2>
+                    <p class="opacity-95 mb-6 text-sm md:text-base">這是一個專為三升四年級設計的閱讀寫作大冒險。完成 8 個國語故事理解與 1 個寫作挑戰，獲取專屬榮譽勳章！</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white/20 p-4 rounded-xl">
+                            <label class="text-xs font-bold block mb-1">設定個人姓名與頭像</label>
+                            <div class="flex items-center space-x-2">
+                                <input type="text" id="input-student-name" placeholder="輸入你的姓名" class="flex-1 bg-white/10 border border-white/30 rounded px-3 py-1.5 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white text-sm" onchange="updateStudentName(this.value)">
+                                <select onchange="updateStudentAvatar(this.value)" class="bg-teal-600/80 border border-white/30 rounded px-2 py-1.5 text-white focus:outline-none text-sm">
+                                    ${avatars.map(av => `<option value="${av}" ${appState.userAvatar === av ? 'selected' : ''}>${av}</option>`).join('')}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="bg-white/20 p-4 rounded-xl flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-bold block mb-1">已解鎖勳章</p>
+                                <p class="text-2xl font-bold" id="completed-count">${completedCount} / 9</p>
+                            </div>
+                            <button onclick="startFirstRound()" class="bg-white text-teal-600 px-6 py-2.5 rounded-xl font-bold hover:bg-teal-50 transition shadow-md">
+                                ${completedCount === 9 ? '再次練習' : (completedCount === 0 ? '開始練習' : '繼續練習')}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main dashboard cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-gray-700">PIRLS 四大閱讀歷程掌握度 (自評)</h3>
+                            <span class="text-xs text-gray-400">寫答愈認真，戰力圖愈高！</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                        <div class="mt-4 grid grid-cols-2 gap-2 text-xs text-gray-600">
+                            <div class="p-2 bg-blue-50/50 rounded flex items-center"><span class="w-2.5 h-2.5 bg-blue-400 rounded-full mr-1.5"></span> 擷取：從故事中搜尋事實</div>
+                            <div class="p-2 bg-teal-50/50 rounded flex items-center"><span class="w-2.5 h-2.5 bg-teal-400 rounded-full mr-1.5"></span> 推論：理解故事直接推論</div>
+                            <div class="p-2 bg-amber-50/50 rounded flex items-center"><span class="w-2.5 h-2.5 bg-amber-400 rounded-full mr-1.5"></span> 整合：結合背景知識與觀點</div>
+                            <div class="p-2 bg-red-50/50 rounded flex items-center"><span class="w-2.5 h-2.5 bg-red-400 rounded-full mr-1.5"></span> 評估：檢驗寫法並省思反省</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col space-y-6">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-gray-700 mb-3 flex items-center"><span>💡</span> <span class="ml-1">學習小撇步</span></h3>
+                                <ul class="text-xs text-gray-600 space-y-3">
+                                    <li class="flex items-start">
+                                        <span class="mr-1.5 text-teal-500">✔</span>
+                                        <span>閱讀故事時，可以<strong>點擊句子進行黃色高亮</strong>，幫助集中精神！</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-1.5 text-teal-500">✔</span>
+                                        <span>在第九回寫作中，系統會<strong>自動偵測字數</strong>與你使用的好詞好句喔！</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="mr-1.5 text-teal-500">✔</span>
+                                        <span>點擊下方連結可以取得<strong>列印版 A4 學習單</strong>，方便紙本寫作。</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-gray-100 flex flex-col space-y-3">
+                                <a href="chinese worksheet/暑假作業_國語閱讀與寫作學習單.html" target="_blank" class="w-full text-center py-2 bg-teal-50 text-teal-700 rounded-xl text-xs font-bold hover:bg-teal-100 transition">🖨️ 開啟 A4 列印版學習單</a>
+                                <button onclick="resetProgress()" class="text-left text-[11px] text-red-400 hover:text-red-600 underline">重設所有進度與答案</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        `;
+        
+        setTimeout(() => {
+            initRadarChart();
+            document.getElementById('input-student-name').value = appState.userName;
+        }, 0);
+    }
+
+    function renderRound(rid) {
+        const main = document.getElementById('main-display');
+        const statusEl = document.getElementById('round-status');
+        
+        const roundData = rounds.find(r => r.id === rid);
+        statusEl.innerText = appState.completedRounds.includes(rid) ? "已獲勳章" : "挑戰中";
+
+        if (roundData.type === 'writing') {
+            renderWritingRound(main, roundData);
+        } else {
+            renderReadingRound(main, roundData);
+        }
+    }
+
+    function renderReadingRound(main, roundData) {
+        // Prepare highlighted sentence HTML for interactive reading
+        // Split text by punctuation (.?!。？！) to allow sentence highlighting
+        const sentences = roundData.story.split(/([。？！\n])/g);
+        let storyHtml = "";
+        for (let i = 0; i < sentences.length; i++) {
+            const part = sentences[i];
+            if (!part) continue;
+            if (part === "\\n" || part === "\n") {
+                storyHtml += "<br><br>";
+            } else if (/[。？！]/.test(part)) {
+                storyHtml += part;
+            } else {
+                // Determine if already highlighted in state
+                const highlightId = `r${roundData.id}s${i}`;
+                const isHighlighted = appState.answers[highlightId] === 'true';
+                storyHtml += `<span id="${highlightId}" onclick="toggleHighlight('${highlightId}')" class="story-sentence ${isHighlighted ? 'highlighted' : ''}">${part}</span>`;
+            }
+        }
+
+        main.innerHTML = `
+            <div class="max-w-4xl mx-auto space-y-8 animate-in slide-in-from-bottom-6 duration-300">
+                <!-- Story Card -->
+                <div class="story-box p-6 md:p-8 rounded-2xl shadow-sm relative">
+                    <div class="absolute right-4 top-4 text-xs text-gray-400 flex items-center bg-gray-50 px-2 py-1 rounded-lg">
+                        <span class="mr-1">💡</span> 點擊句子可進行螢光筆標記
+                    </div>
+                    <h2 class="text-lg font-bold text-teal-800 mb-4">${roundData.storyTitle}</h2>
+                    <div class="text-gray-700 leading-relaxed text-base text-justify whitespace-normal">${storyHtml}</div>
+                </div>
+                
+                <!-- Questions -->
+                <div class="space-y-6">
+                    <h3 class="text-lg font-bold text-gray-700 flex items-center">
+                        <span class="bg-teal-500 text-white w-7 h-7 rounded-full flex items-center justify-center mr-2 text-sm font-medium">✍️</span> 
+                        PIRLS 理解力問題挑戰
+                    </h3>
+                    
+                    ${roundData.questions.map(q => {
+                        if (q.type === 'select-sequence') {
+                            return renderSequencingQuestion(q);
+                        } else {
+                            return renderTextQuestion(q);
+                        }
+                    }).join('')}
+                </div>
+
+                <!-- Footer navigation -->
+                <div class="flex justify-between items-center pt-6 border-t border-gray-200">
+                    <p class="text-xs text-gray-500 italic">完成全部問題回答後點擊右方按鈕，即可領取此關勳章！</p>
+                    <button onclick="completeRound(${roundData.id})" class="bg-teal-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-teal-700 transition transform hover:scale-105 active:scale-95">完成此回次</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderTextQuestion(q) {
+        return `
+            <div class="question-card p-5 rounded-2xl shadow-sm">
+                <p class="font-bold text-gray-800 text-sm md:text-base mb-3">${q.q}</p>
+                <textarea class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-teal-400 focus:bg-white transition h-20" placeholder="在此輸入你的想法..." oninput="saveAndGrowAnswer('${q.id}', this.value, ${q.category})">${appState.answers[q.id] || ''}</textarea>
+            </div>
+        `;
+    }
+
+    function renderSequencingQuestion(q) {
+        // Steps in order for Tea Valley Lugu
+        const steps = [
+            "讓茶葉發酵，進行高溫處理，以保留香氣。",
+            "將剛摘下來的茶葉晒過，以減少水分。",
+            "成為風味美好的烏龍茶。",
+            "將茶葉揉成球形，進行乾燥和烘焙。"
+        ];
+
+        return `
+            <div class="question-card p-5 rounded-2xl shadow-sm">
+                <p class="font-bold text-gray-800 text-sm md:text-base mb-3">${q.q}</p>
+                <div class="space-y-2.5 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    ${steps.map((step, idx) => {
+                        const savedVal = appState.answers[`${q.id}_step${idx}`] || '';
+                        return `
+                            <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg border border-gray-200">
+                                <span class="text-sm text-gray-700">${step}</span>
+                                <select onchange="saveAndGrowAnswer('${q.id}_step${idx}', this.value, ${q.category})" class="border border-gray-300 rounded px-2.5 py-1 text-sm bg-gray-50 focus:outline-none focus:ring-1 focus:ring-teal-500">
+                                    <option value="">選擇順序</option>
+                                    <option value="1" ${savedVal === '1' ? 'selected' : ''}>第 1 步</option>
+                                    <option value="2" ${savedVal === '2' ? 'selected' : ''}>第 2 步</option>
+                                    <option value="3" ${savedVal === '3' ? 'selected' : ''}>第 3 步</option>
+                                    <option value="4" ${savedVal === '4' ? 'selected' : ''}>第 4 步</option>
+                                </select>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderWritingRound(main, roundData) {
+        const textValue = appState.answers['round-9-writing'] || '';
+        
+        main.innerHTML = `
+            <div class="max-w-6xl mx-auto space-y-6 animate-in slide-in-from-bottom-6 duration-300">
+                <!-- Two column writing workstation -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    
+                    <!-- Left column: Editor -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-orange-100 relative">
+                            <h2 class="text-xl font-bold text-orange-600 mb-3 flex items-center">
+                                <span class="mr-2">📝</span> 暑假寫作工作站
+                            </h2>
+                            <textarea id="writing-area" class="w-full p-4 border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:outline-none h-96 text-sm md:text-base leading-relaxed tracking-wider" placeholder="請在此輸入你的作文草稿，並注意右邊的句型與好詞好句檢查工具..." oninput="onWritingInput(this.value)">${textValue}</textarea>
+                            
+                            <!-- Character count bar -->
+                            <div class="flex items-center justify-between mt-3 text-xs text-gray-500">
+                                <div class="flex items-center space-x-1.5">
+                                    <span>寫作字數:</span>
+                                    <span class="font-bold text-teal-600" id="char-count">0</span>
+                                    <span>/ 400 字</span>
+                                </div>
+                                <div class="w-24 bg-gray-200 rounded-full h-1.5 overflow-hidden">
+                                    <div id="char-progress" class="bg-teal-500 h-1.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right column: Dynamic Guides -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <!-- Writing Toolbox Tracker -->
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                            <h3 class="font-bold text-gray-700 text-sm mb-3">🛠️ 寫作工具箱檢測器</h3>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-xs font-bold text-gray-400 mb-1.5">【常用參考句型】(請任選選用 6 句以上)</p>
+                                    <div class="grid grid-cols-2 gap-1.5 text-[11px]" id="pattern-checklist">
+                                        <!-- Injected by JS -->
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-gray-400 mb-1.5">【常用態度與情緒詞彙】(請任選選用 6 個以上)</p>
+                                    <div class="grid grid-cols-2 gap-1.5 text-[11px]" id="vocab-checklist">
+                                        <!-- Injected by JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accordion Guides -->
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden" id="accordion-group">
+                            <!-- Section 1: 大綱 -->
+                            <div class="border-b border-gray-100">
+                                <button onclick="toggleAccordion(0)" class="w-full px-5 py-3.5 text-left font-bold text-gray-700 hover:bg-gray-50 flex items-center justify-between text-xs sm:text-sm">
+                                    <span>🎯 寫作大綱引導鷹架 (限400字以內)</span>
+                                    <span id="acc-icon-0">▼</span>
+                                </button>
+                                <div id="acc-body-0" class="px-5 py-3 text-xs text-gray-600 space-y-3 bg-gray-50/50 hidden">
+                                    <p><strong>第一段：夢想啟程 (建議 80-100 字)</strong><br>引導：這個暑假你最想學會什麼？為什麼？是想給自己什麼樣的挑戰？</p>
+                                    <p><strong>第二段：學習計劃與挑戰 (建議 180-220 字)</strong><br>引導：你打算怎麼做？在練習中可能遇到什麼困難或痛點？如果遇到了，你要如何堅持下去？</p>
+                                    <p><strong>第三段：未來的收穫與期待 (建議 80-100 字)</strong><br>引導：當你終於學會時，心情會如何？這對四年級新起點帶來什麼期許與改變？</p>
+                                </div>
+                            </div>
+
+                            <!-- Section 2: 範文與賞析 -->
+                            <div>
+                                <button onclick="toggleAccordion(1)" class="w-full px-5 py-3.5 text-left font-bold text-gray-700 hover:bg-gray-50 flex items-center justify-between text-xs sm:text-sm">
+                                    <span>✨ 中年級滿分 (6級分標準) 範文賞析</span>
+                                    <span id="acc-icon-1">▼</span>
+                                </button>
+                                <div id="acc-body-1" class="px-5 py-4 text-xs text-gray-600 space-y-4 bg-gray-50/50 hidden max-h-96 overflow-y-auto no-scrollbar">
+                                    <div class="font-bold text-center text-sm text-teal-800 border-b pb-2">《暑假，我最想學會的一件事》</div>
+                                    <div class="leading-relaxed space-y-2 text-justify">
+                                        <p class="text-indent-2">每當看見姐姐騎著單車在風中飛馳，像一隻輕盈的藍天燕子，我的心裡總是充滿羨羨慕與<strong>興奮期待</strong>。為了在升上四年級前像姐姐一樣勇敢，我決定在這個暑假挑戰騎兩輪單車。<strong>雖然</strong>我知道這條學習之路可能會摔得鼻青臉腫，<strong>但是</strong>看著姐姐自信的背影，我決定<strong>勇往直前</strong>，給自己一個長大的禮物。</p>
+                                        <p class="text-indent-2"><strong>為了</strong>實現這個夢想，我制訂了計畫，每天清晨在公園廣場練習一小時。<strong>一開始</strong>，我總是<strong>手忙腳亂</strong>，車龍頭像個調皮的醉漢左搖右晃，<strong>只要</strong>爸爸一鬆手，我<strong>就</strong>會重重摔倒在地。看著膝蓋上的烏青，我有些<strong>心灰意冷</strong>，差點想<strong>半途而廢</strong>。此時，我想起課文中王獻之練字的恆心，便<strong>一邊</strong>拍拍灰塵，<strong>一邊</strong>鼓勵自己：<strong>只要</strong>持之以恆，就一定能找到平衡。我<strong>專心致志</strong>地盯著前方，配合著呼吸踩動踏板，<strong>不僅</strong>學會了控制方向，<strong>更</strong>學會了在搖晃中穩住身形。</p>
+                                        <p class="text-indent-2"><strong>如果</strong>我能在暑假結束前順利學會騎單車，那微風拂面、自由翱翔的滋味，一定會讓我<strong>滿心歡喜</strong>。這項新技能<strong>不僅</strong>是雙腳的延伸，<strong>更</strong>是我升上四年級時，勇敢跨越挑戰的最好起點。我相信，那台雙輪單車，將會載著我的夢想飛向更寬廣的明天。</p>
+                                    </div>
+                                    <div class="border-t pt-3 mt-3 border-orange-200 bg-orange-50/50 p-3 rounded-lg text-[11px] text-orange-950">
+                                        <p class="font-bold mb-1">💡 滿分關鍵亮點剖析：</p>
+                                        <ul class="list-disc pl-4 space-y-1">
+                                            <li><strong>讀寫結合技巧</strong>：第二段把面臨挫折的心境與學過的課文「王獻之練字」進行完美對接。</li>
+                                            <li><strong>修辭與譬喻生動</strong>：使用「像一隻輕盈的藍天燕子」、「調皮的醉漢左搖右晃」等，使文字躍然紙上。</li>
+                                            <li><strong>心靈省思昇華</strong>：結尾將學會單車引導至面對四年級新學期的勇氣，提升文章深度。</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-4">
+                    <button onclick="completeRound(9)" class="bg-orange-500 text-white px-10 py-3 rounded-full font-bold shadow-lg hover:bg-orange-600 transition transform hover:scale-105 active:scale-95">提交寫作挑戰</button>
+                </div>
+            </div>
+        `;
+        
+        onWritingInput(textValue);
+        toggleAccordion(0); // Open outline accordion by default
+    }
+
+    // --- Writing assistant helper tools ---
+    const patterns = ["雖然", "但是", "不僅", "更", "一邊", "如果", "就", "為了", "決定", "只要", "一開始", "後來"];
+    const vocabularies = ["興奮期待", "滿心歡喜", "心灰意冷", "手忙腳亂", "持之以恆", "專心致志", "勇往直前", "半途而廢"];
+
+    function onWritingInput(text) {
+        saveAnswer('round-9-writing', text);
+        
+        // 1. Update character count
+        const charCount = text.length;
+        document.getElementById('char-count').innerText = charCount;
+        const progressPercent = Math.min(100, (charCount / 400) * 100);
+        document.getElementById('char-progress').style.width = `${progressPercent}%`;
+
+        // 2. Scan for sentence structures
+        const patternGrid = document.getElementById('pattern-checklist');
+        let patternHtml = "";
+        patterns.forEach(pat => {
+            const hasMatch = text.includes(pat);
+            patternHtml += `
+                <div class="flex items-center space-x-1 p-1 px-1.5 rounded transition ${hasMatch ? 'bg-teal-50 border border-teal-200 text-teal-700 font-bold' : 'bg-gray-50 border border-gray-200 text-gray-400'}">
+                    <span>${hasMatch ? '✅' : '⬜'}</span>
+                    <span>${pat}</span>
+                </div>
+            `;
+        });
+        patternGrid.innerHTML = patternHtml;
+
+        // 3. Scan for vocabularies
+        const vocabGrid = document.getElementById('vocab-checklist');
+        let vocabHtml = "";
+        vocabularies.forEach(voc => {
+            const hasMatch = text.includes(voc);
+            vocabHtml += `
+                <div class="flex items-center space-x-1 p-1 px-1.5 rounded transition ${hasMatch ? 'bg-orange-50 border border-orange-200 text-orange-700 font-bold' : 'bg-gray-50 border border-gray-200 text-gray-400'}">
+                    <span>${hasMatch ? '✅' : '⬜'}</span>
+                    <span>${voc}</span>
+                </div>
+            `;
+        });
+        vocabGrid.innerHTML = vocabHtml;
+        
+        // 4. Update stats: writing falls under category 2 & 3 (Integration & Evaluation)
+        // Adjust stats dynamically based on length
+        const baseStat = 3.0;
+        const writingLevel = Math.min(5.0, baseStat + (charCount / 200));
+        appState.pirlsStats[2] = parseFloat(writingLevel.toFixed(1));
+        appState.pirlsStats[3] = parseFloat(writingLevel.toFixed(1));
+    }
+
+    // --- Interactive text highlighting ---
+    function toggleHighlight(spanId) {
+        const span = document.getElementById(spanId);
+        if (!span) return;
+        
+        const isHighlighted = span.classList.toggle('highlighted');
+        appState.answers[spanId] = isHighlighted ? 'true' : 'false';
+        saveLocalStorage();
+    }
+
+    // --- Accordion group for page 9 ---
+    function toggleAccordion(index) {
+        const body = document.getElementById(`acc-body-${index}`);
+        const icon = document.getElementById(`acc-icon-${index}`);
+        
+        if (body.classList.contains('hidden')) {
+            body.classList.remove('hidden');
+            icon.innerText = "▲";
+        } else {
+            body.classList.add('hidden');
+            icon.innerText = "▼";
+        }
+    }
+    function saveAnswer(id, val) {
+        appState.answers[id] = val;
+        saveLocalStorage();
+    }
+
+    // --- PIRLS Stat Growth on answer input ---
+    function saveAndGrowAnswer(id, val, categoryIndex) {
+        appState.answers[id] = val;
+        
+        // Calculate category level based on length of all answers in that category
+        let totalLen = 0;
+        let count = 0;
+        
+        rounds.forEach(r => {
+            if (r.questions) {
+                r.questions.forEach(q => {
+                    if (q.category === categoryIndex) {
+                        count++;
+                        // Accumulate values
+                        if (q.type === 'select-sequence') {
+                            // sequencing questions have multiple sub-keys
+                            let seqCount = 0;
+                            for (let stepIdx = 0; stepIdx < 4; stepIdx++) {
+                                if (appState.answers[`${q.id}_step${stepIdx}`]) seqCount++;
+                            }
+                            totalLen += (seqCount === 4) ? 20 : (seqCount * 3);
+                        } else {
+                            const ans = appState.answers[q.id];
+                            if (ans) totalLen += ans.trim().length;
+                        }
+                    }
+                }
+            );
+            }
+        });
+        
+        // Dynamic formula: starting at 3.0, grows up to 5.0
+        const extraPoints = Math.min(2.0, totalLen / 50.0);
+        appState.pirlsStats[categoryIndex] = parseFloat((3.0 + extraPoints).toFixed(1));
+        
+        saveLocalStorage();
+        
+        // Live update chart if active on screen
+        if (radarChart && appState.currentView === 'dashboard') {
+            radarChart.data.datasets[0].data = appState.pirlsStats;
+            radarChart.update('none'); // Update without animation for smoother typing feel
+        }
+    }
+
+    // --- Reward gold medal chime ---
+    function playSuccessSound() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const now = ctx.currentTime;
+            
+            // Success ascending chime
+            const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+            notes.forEach((freq, idx) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+                
+                gain.gain.setValueAtTime(0, now + idx * 0.12);
+                gain.gain.linearRampToValueAtTime(0.25, now + idx * 0.12 + 0.03);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.45);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start(now + idx * 0.12);
+                osc.stop(now + idx * 0.12 + 0.5);
+            });
+        } catch(e) {
+            console.log("AudioContext blocked or not supported: ", e);
+        }
+    }
+
+    function completeRound(rid) {
+        // Double check if all questions are filled in
+        const roundData = rounds.find(r => r.id === rid);
+        let completed = true;
+        
+        if (roundData.questions) {
+            roundData.questions.forEach(q => {
+                if (q.type === 'select-sequence') {
+                    for (let stepIdx = 0; stepIdx < 4; stepIdx++) {
+                        if (!appState.answers[`${q.id}_step${stepIdx}`]) completed = false;
+                    }
+                } else {
+                    if (!appState.answers[q.id] || appState.answers[q.id].trim().length < 2) {
+                        completed = false;
+                    }
+                }
+            });
+        } else if (roundData.type === 'writing') {
+            const textVal = appState.answers['round-9-writing'] || '';
+            if (textVal.trim().length < 50) {
+                completed = false;
+            }
+        }
+        
+        if (!completed) {
+            if (!confirm("你還有問題沒有回答完整，或是寫作內容太少喔！確定現在就要提交並領取勳章嗎？")) {
+                return;
+            }
+        }
+
+        if (!appState.completedRounds.includes(rid)) {
+            appState.completedRounds.push(rid);
+            saveLocalStorage();
+            
+            // Show custom modal and play sound
+            const textEl = document.getElementById('medal-congratulation-text');
+            textEl.innerText = `恭喜你完成了「${roundTitles[rid-1]}」的所有理解與寫作挑戰！`;
+            
+            document.getElementById('medal-modal').classList.remove('hidden');
+            playSuccessSound();
+            
+            renderSidebar();
+            updateUI();
+        } else {
+            alert("此回次已完成，紀錄已更新。");
+        }
+    }
+
+    function closeMedalModal() {
+        document.getElementById('medal-modal').classList.add('hidden');
+    }
+
+    function initRadarChart() {
+        const ctx = document.getElementById('radarChart');
+        if (!ctx) return;
+        
+        if (radarChart) radarChart.destroy();
+        
+        radarChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['擷取特定資訊', '推解直接結論', '詮釋整合', '檢驗評估'],
+                datasets: [{
+                    label: '能力自評指標',
+                    data: appState.pirlsStats,
+                    fill: true,
+                    backgroundColor: 'rgba(127, 180, 180, 0.35)',
+                    borderColor: '#7FB4B4',
+                    pointBackgroundColor: '#7FB4B4',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#7FB4B4',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { display: true, color: 'rgba(0,0,0,0.06)' },
+                        grid: { color: 'rgba(0,0,0,0.06)' },
+                        suggestedMin: 1.0,
+                        suggestedMax: 5.0,
+                        ticks: { stepSize: 1.0, display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+
+    function updateStudentName(name) {
+        if (name.trim()) {
+            appState.userName = name.trim();
+            saveLocalStorage();
+            renderSidebar();
+        }
+    }
+
+    function updateStudentAvatar(avatar) {
+        appState.userAvatar = avatar;
+        saveLocalStorage();
+        renderSidebar();
+    }
+
+    function startFirstRound() {
+        switchView('round-1');
+    }
+
+    function resetProgress() {
+        if (confirm("確定要清除所有學習紀錄嗎？這無法還原喔！")) {
+            localStorage.removeItem('pirls_app_state_v2');
+            location.reload();
+        }
+    }
+
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+    }
+</script>
+
+</body>
+</html>
