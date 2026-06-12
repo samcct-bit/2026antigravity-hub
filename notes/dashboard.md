@@ -42,6 +42,7 @@
 | ☕ **金成淬精品咖啡入口平台** | `[獨立倉庫] 2026coffeewebsite` | [🔗 點擊開啟](https://samcct-bit.github.io/2026coffeewebsite/) | **[NEW] 整合 13 款熟豆與職人手沖計算器的專屬門戶網站** |
 | 🧮 數學救援遊戲 (3-2-7) | `public/math game/mathgame3-2-7` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/math%20game/mathgame3-2-7/index.html) | 具備防重練與重置歷史功能 |
 | ⏱️ **數學時間遊戲 (3-2-8)** | `public/math game/timegame3-2-8` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/math%20game/timegame3-2-8/index.html) | **[NEW] 今日上線之全新數學遊戲** |
+| 📖 **暑假作業國語學習單** | `public/chinese worksheet/...` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/chinese%20worksheet/暑假作業_國語閱讀與寫作學習單.html) | **[NEW] 支援 A4 100% 比例列印之滿分範文版** |
 
 *註：原本 Netlify 中的 `20260205board` 為手動離線部署之舊版專案，並未包含在本儲存庫與本次移轉範圍中。*
 
@@ -62,7 +63,8 @@
 
 - [x] **《飛行員和小王子》25 分鏡自動生成與排程任務**（所有 25 個分鏡生成完畢，已針對箱子外觀一致性與 Scene 21 邏輯完成修正，並已成功打包錄製為 1080p 超高清教學影片）。
 - [x] **安裝免確認 Hook 與克隆國小數學出題技能集**
-- [ ] 取得 `range.pdf` 與 `reference.pdf` 考綱檔案，分析並進行國小數學出題與排版
+- [x] **優化原來的暑假作業學習單**（融入 PIRLS 四大閱讀歷程題型、編譯 A4 100% 比例列印排版 HTML 並同步 Markdown 檔，第九回寫作學習單替換為中年級 6 級分標準範文與賞析）。
+- [ ] 取得 `range.pdf` 與 `reference.pdf` 考綱檔案，分析並進行國小數學出題與排版（或分析 `public/math testreview/` 下的三下數學期末複習 PPT 與段考 DOCX，產出或優化數學練習題與排版系統）。
 - [ ] 規劃將其他科學主題筆記本的實驗圖表也整合入多頁面展示中。
 - [ ] 優化手機瀏覽器上的點擊觸控靈敏度與算式動畫。
 - [ ] 僅在規則改變時更新本機的 ANTIGRAVITY.md。
@@ -79,10 +81,22 @@
    * **解法**：實施智慧色彩邊界掃描演算法。頂部從高度 `24%` 起掃描避開編號，底部至 `70%` 止掃描避開文字區，左右限制在 `12%-88%` 寬度間，所得邊緣各向內縮進 `2px` 防護。最後在米黃底色 (`#FAF7EE`) 畫布上 contain 貼合並以 `LANCZOS` 高品質放大。
 4. **Bug/問題**：Reveal.js 音訊播放結束 (`onended`) 後，若直接切頁，部分 Edge-TTS 旁白的尾音會被突兀截斷。
    * **解法**：在 `player.onended` 中設置 `1200ms` 的延遲緩衝 (`setTimeout`) 再進行 `Reveal.next()` 切頁，確保尾音完全釋放，大幅提升觀影流暢度。
+5. **Bug/問題**：HTML 頁面列印成 A4 實體紙張時，瀏覽器默認邊距會強制縮放網頁比例（通常縮小至 80%），導致列印後四周留白過大且比例失真。
+   * **解法**：在 CSS 的 `@media print` 區塊中配置 `@page { size: A4 portrait; margin: 0; }` 以消除預設邊距。將列印主體 `.page` 的尺寸寫死為 `width: 210mm; height: 297mm; margin: 0;`。由內部 CSS padding 自行控制版心邊界，實現 1:1 免縮放完美列印。
+6. **Bug/問題**：最後一回寫作學習單若將大綱、工具箱與範文分析垂直排列，會顯著超出 A4 頁面高度限制（高於 1123px）。
+   * **解法**：將大綱引導與寫作工具箱改為 Flexbox 左右並排排版（`.writing-guide-container`），並微調字級大小（12.5px ~ 13.5px）與縮減行高，將總高限制在 865px 內，安全容納於單頁中。
 
 ---
 
 ## 📅 每日日誌
+
+- **2026-06-12**：🟢 **完成暑假國語閱讀與寫作學習單優化與 100% A4 列印適配**。
+  - **PIRLS 題型對接**：將 1 至 8 回閱讀理解題目完整升級為 PIRLS 四大閱讀歷程（擷取特定資訊、推解直接結論、詮釋整合與檢驗評估），題目設計更加精準。
+  - **6 級分範文替換**：移除第九回作文稿紙格子，替換為中年級學生視角（學會騎雙輪單車）但符合國中教育會考 6 級分標準的高水準範文，並隨附精細的寫作亮點剖析。
+  - **列印佈局優化**：
+    - 在 CSS `@media print` 中配置 `@page` 邊界為 `0`，並鎖定 `.page` 物理尺寸為 210mm x 297mm，解決網頁需縮小至 80% 列印的長寬比不一致問題。
+    - 將第九回的引導大綱與寫作工具箱改為 Flexbox 左右並排，微調行高與字體，完美將整頁高度控制在 1123px（A4 限高）以內，解決溢出問題。
+  - **雙版本同步**：利用 Python 轉換程式，將 HTML 編譯結果同步回本機 Markdown 檔 [暑假作業_國語閱讀與寫作學習單.md](file:///d:/2026antigravity/暑假作業_國語閱讀與寫作學習單.md)。
 
 - **2026-06-06**：🟢 **安裝免確認 Hook 並完成國小數學出題技能集克隆**。
   - **免確認 Hook 設定**：成功在 `C:\Users\USER\.gemini\config` 安裝免確認自動批准 Hook (`hooks.json`) 與過濾腳本 `auto_approve.py`。針對 `view_file`、`write_to_file`、`grep_search` 等多種工具進行優化，確保阻擋敏感檔案（`.env`, `id_rsa` 等）與高危指令（`rm`, `del` 等）並引導至手動確認，其餘操作自動放行；已於本地完成模擬管道測試，目前運行綠燈。
