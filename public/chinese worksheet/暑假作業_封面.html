@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三年五班暑假作業 - 封面</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif;
+            background-color: #f0ede5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #2d3748;
+        }
+
+        .page {
+            background-color: #ffffff;
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm 20mm;
+            margin: 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            border: 15px double #e9b384; /* 雙線邊框，增添書卷感 */
+        }
+
+        /* 頂部小標 */
+        .header-badge {
+            background-color: #7fb4b4;
+            color: white;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(127, 180, 180, 0.2);
+        }
+
+        /* 抬頭與主標題 */
+        .title-section {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .main-title {
+            font-size: 38px;
+            font-weight: 700;
+            color: #2c5e5e;
+            letter-spacing: 4px;
+            margin: 0;
+            line-height: 1.4;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .sub-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #a05c2c;
+            letter-spacing: 2px;
+            margin-top: 15px;
+            margin-bottom: 0;
+        }
+
+        /* 插圖與QR code融合區塊 */
+        .center-illustration {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            margin: 30px 0;
+            width: 100%;
+        }
+
+        /* 模擬書本插畫 */
+        .book-deco {
+            font-size: 72px;
+            margin-bottom: 25px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* QR Code 區塊 */
+        .qrcode-container {
+            border: 2px dashed #7fb4b4;
+            background-color: #fbfbf9;
+            border-radius: 16px;
+            padding: 20px;
+            max-width: 420px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+        }
+
+        .qrcode-container:hover {
+            border-color: #e9b384;
+            transform: scale(1.02);
+        }
+
+        .qrcode-img-wrapper {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+        }
+
+        .qrcode-image {
+            width: 110px;
+            height: 110px;
+            display: block;
+        }
+
+        .qrcode-desc {
+            margin-left: 20px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #4a5568;
+            text-align: justify;
+        }
+
+        .qrcode-desc strong {
+            color: #2c5e5e;
+        }
+
+        /* 學生基本資料填寫區 */
+        .info-table {
+            width: 80%;
+            margin-bottom: 40px;
+            border-collapse: separate;
+            border-spacing: 0 15px;
+        }
+
+        .info-table td {
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .info-table td.label {
+            width: 30%;
+            text-align: right;
+            color: #718096;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .info-table td.value {
+            width: 70%;
+            border-bottom: 2px solid #a0aec0;
+            color: #2d3748;
+            font-weight: 700;
+            padding-left: 10px;
+        }
+
+        /* 底部頁碼 */
+        .page-footer {
+            font-size: 12px;
+            color: #a0aec0;
+            text-align: center;
+            width: 100%;
+            border-top: 1px solid #edf2f7;
+            padding-top: 15px;
+            letter-spacing: 1px;
+        }
+
+        /* 列印樣式設定 */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+            body {
+                background-color: #ffffff;
+                margin: 0;
+                padding: 0;
+            }
+            .page {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                padding: 20mm 20mm;
+                border: 15px double #e9b384;
+                border-radius: 0;
+                box-shadow: none;
+                box-sizing: border-box;
+                page-break-after: always;
+                position: relative;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+    <!-- 頂部小標 -->
+    <div class="header-badge">2026 暑期自主學習</div>
+
+    <!-- 標題區塊 -->
+    <div class="title-section">
+        <h1 class="main-title">三年五班暑假作業</h1>
+        <p class="sub-title">📖 國語閱讀理解與寫作互動工作坊手冊</p>
+    </div>
+
+    <!-- 中間插圖與 QR Code -->
+    <div class="center-illustration">
+        <div class="book-deco">📚✨</div>
+        <div class="qrcode-container">
+            <div class="qrcode-img-wrapper">
+                <a href="https://samcct-bit.github.io/2026antigravity-hub/public/chinese_workshop.html" target="_blank" title="點此直接開啟線上工作坊">
+                    <img class="qrcode-image" src="chinest_workshop.png" alt="工作坊 QR Code">
+                </a>
+            </div>
+            <div class="qrcode-desc">
+                <strong>📱 線上互動工作坊 QR Code</strong><br>
+                掃描左側條碼，即可開啟線上平台！內含 8 個經典閱讀故事挑戰與<strong>寫作工具箱檢測器</strong>，答題完成還能解鎖個人專屬金牌勳章喔！
+            </div>
+        </div>
+    </div>
+
+    <!-- 學生填寫資料區 -->
+    <table class="info-table">
+        <tr>
+            <td class="label">班 級：</td>
+            <td class="value">三年五班</td>
+        </tr>
+        <tr>
+            <td class="label">座 號：</td>
+            <td class="value">&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="label">姓 名：</td>
+            <td class="value">&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="label">家長簽名：</td>
+            <td class="value">&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="label">導師評閱：</td>
+            <td class="value">&nbsp;</td>
+        </tr>
+    </table>
+
+    <!-- 頁尾 -->
+    <div class="page-footer">
+        三年五班國語領域自主學習小組編印 &copy; 2026
+    </div>
+</div>
+
+</body>
+</html>
