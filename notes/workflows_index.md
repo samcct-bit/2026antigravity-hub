@@ -82,6 +82,10 @@
 *   🧮 **數學救援遊戲 (3-2-7)**：[index.html](file:///d:/2026antigravity/public/math%20game/mathgame3-2-7/index.html)（含進度重置）
 *   ⏱️ **數學時間遊戲 (3-2-8)**：[index.html](file:///d:/2026antigravity/public/math%20game/timegame3-2-8/index.html)（時間觀念練習）
 
+### 3. 叩首的意義與方法互動簡報
+*   🙇 **網頁簡報主頁**：[index.html](file:///d:/2026antigravity/public/kowtow-bowing/index.html)
+*   🖼️ **背景底圖與去背圖標目錄**：[images/](file:///d:/2026antigravity/public/kowtow-bowing/images/)
+
 ---
 
 ## 🔌 五、外部服務連線技能 (Service Integration)
