@@ -112,6 +112,9 @@
     *   **專案目錄**：[visual_design_expert](file:///d:/2026antigravity/visual_design_expert)
 *   **專業對話機器人指令架構師**：[18-prompt-architect.md](file:///d:/2026antigravity/skills/18-prompt-architect.md)
     *   **專案目錄**：[prompt_architect](file:///d:/2026antigravity/prompt_architect)
+*   **二腦字幕知識庫建置**：[19-sensebar-knowledge-vault-builder.md](file:///d:/2026antigravity/skills/19-sensebar-knowledge-vault-builder.md)
+    *   **專案目錄**：[sensebar-agent-knowledge-vault-builder](file:///d:/2026antigravity/sensebar-agent-knowledge-vault-builder)
+
 
 
 

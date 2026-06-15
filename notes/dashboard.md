@@ -2,7 +2,7 @@
 
 > 專案：2026antigravity-hub
 > 位置：`d:\2026antigravity\notes\dashboard.md`
-> 本日記錄：2026-06-13
+> 本日記錄：2026-06-15
 
 
 ---
@@ -25,6 +25,8 @@
   * [x] Clasp & Netlify 雙向閉環部署工作流自訂技能開發與全域註冊
   * [x] HTML 互動簡報生成器 (Reveal.js) 本地儲存庫克隆與 Python 依賴 Pillow 實裝
   * [x] HTML 互動簡報生成技能的 AntiGravity 適配（免金鑰內建生圖）與全域技能註冊
+  * [x] YouTube 字幕自動提取與 Obsidian 三層式二腦知識庫技能實裝與初始化下載
+
 
 
 
@@ -92,7 +94,15 @@
 
 ## 📅 每日日誌
  
+- **2026-06-15**：🟢 **YouTube 字幕自動提取與 Obsidian 三層式二腦知識庫安裝**。
+  - **開工連線檢查通過**：GitHub CLI（samcct-bit）、NotebookLM MCP（samcct@gmail.com）及 Firebase CLI 全數健康綠燈。
+  - **儲存庫克隆與適配**：克隆 `sensebar-agent-knowledge-vault-builder` 專案，將腳本中寫死的 C 槽路徑改為相對路徑，成功在本地虛擬環境執行。
+  - **Obsidian 三層式資料夾建立**：在 `notes/` 駕駛艙建立 `Clipping`、`創作庫`、`知識庫` 三個子目錄，建立標準 Obsidian Second Brain 結構。
+  - **自動下載與去重**：呼叫 `download_all_subs.py` 背景任務，自動下載 36 部 AI Agent 影片的自動字幕，去除 consecutive 滾動重複文字，產出乾淨 Markdown 並複製至 `notes/Clipping/`。
+  - **技能全域註冊完成**：撰寫並註冊全新技能 [19-sensebar-knowledge-vault-builder.md](file:///d:/2026antigravity/skills/19-sensebar-knowledge-vault-builder.md)，編入懶人包入口與 workflows 索引中。
+
 - **2026-06-13**：🟢 **整合並轉化「叩首的意義與方法」互動式網頁簡報**。
+
   - **簡報整合與轉化**：分析 `叩首的意義與方法-員林.pptx` / `叩首的意義與方法-員林.pdf`，提取 `叩首的意義與好處.pdf`、`三寶心法員林普善佛堂.pdf` 與 `06三寶心法--南海古佛白話慈語`，將 4 份教材完美整合為單一風格之網頁簡報。
   - **禪意科技風格 (Zen Cyber Tech)**：配置午夜藍背景 (`#0a0f1d`)、佛光橘 (`#e8643a`) 與自性青 (`#4fc3f7`)。使用 `generate_image` 生成四款專屬禪意科技背景，並生成 4 欄並列圖標總表，配合本地 PIL 裁切與 `remove_bg.py` 自動去背。
   - **Firebase 互動元件**：成功在簡報中串接課前破冰「即時文字雲」與課中「觀念確認單選投票」，並修正點狀 Key 巢狀寫入問題。

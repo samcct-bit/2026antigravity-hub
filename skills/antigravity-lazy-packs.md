@@ -29,7 +29,9 @@ description: AntiGravity 懶人包 — 服務連接與工作流程設定。說�
 | 16 | `16-trilingual-speech-generator` | 國台英朗讀文本生成師 |
 | 17 | `17-visual-design-expert` | 視覺設計與影像生成大師 |
 | 18 | `18-prompt-architect` | 專業對話機器人指令架構師 |
+| 19 | `19-sensebar-knowledge-vault-builder` | YouTube 影片字幕提取與 Obsidian 三層式知識庫構建技能 |
 | 00 | `00-install-all` | 一次安裝全部 |
+
 
 
 
