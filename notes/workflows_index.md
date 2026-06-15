@@ -115,6 +115,18 @@
 *   **二腦字幕知識庫建置**：[19-sensebar-knowledge-vault-builder.md](file:///d:/2026antigravity/skills/19-sensebar-knowledge-vault-builder.md)
     *   **專案目錄**：[sensebar-agent-knowledge-vault-builder](file:///d:/2026antigravity/sensebar-agent-knowledge-vault-builder)
 
+---
+
+## 🧠 六、Obsidian 二腦知識庫提煉筆記 (Second Brain Vault Notes)
+
+*   **AI 編碼與 Agent 工具指南**：[AI編碼與Agent工具指南.md](file:///d:/2026antigravity/notes/知識庫/AI工作流/AI編碼與Agent工具指南.md)
+    *   **主題**：GPT-CodeX, OpenCode, Google AntiGravity, Claude Eco-system, Skills.
+*   **教育自動化與影音生成指引**：[教育自動化與影音生成指引.md](file:///d:/2026antigravity/notes/知識庫/教學趨勢/教育自動化與影音生成指引.md)
+    *   **主題**：備課大綱, GAS 備課, Google Classroom, 作文批改, 影音生成.
+*   **網頁開發與數位二腦架構**：[網頁開發與數位二腦架構.md](file:///d:/2026antigravity/notes/知識庫/學術筆記/網頁開發與數位二腦架構.md)
+    *   **主題**：NotebookLM, Obsidian 筆記流, Supabase/Firebase, HTML 簡報 (Reveal.js).
+
+
 
 
 
