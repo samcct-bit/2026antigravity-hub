@@ -2,7 +2,7 @@
 
 > 專案：2026antigravity-hub
 > 位置：`d:\2026antigravity\notes\dashboard.md`
-> 本日記錄：2026-06-15
+> 本日記錄：2026-06-16
 
 
 ---
@@ -94,6 +94,17 @@
 
 ## 📅 每日日誌
  
+- **2026-06-16**：🟢 **完成天祥大同新竹區一日基礎班課程簡章海報設計與自動化渲染**。
+  - **開工與服務連線檢測**：GitHub CLI（samcct-bit）、NotebookLM MCP（samcct@gmail.com）與 Firebase CLI 均綠燈健康。
+  - **素材去背與處理**：使用 Python PIL 智慧定位 [3.jpg](file:///d:/2026antigravity/public/course%20poster/3.jpg) 的文字與蓮花邊界（ y = 360 處），徹底去除上方黑字像素，僅保留純淨的「去背蓮花」並存為透明 PNG。
+  - **新版面風格轉譯**：以 [2.jpg](file:///d:/2026antigravity/public/course%20poster/2.jpg) 風格為基準，利用內建 AI 生圖工具生成全新祥雲與蓮花之米色宣紙海報背景 [poster_bg.png](file:///d:/2026antigravity/public/course%20poster/poster_bg.png)。
+  - **內容更新與排版**：
+    - 將活動日期更新為 `2026年6月28日`，報到時間改為 `8:30` 並刪除獻供。
+    - 上午專題課程改由 `林楹翔講師與林冠妘講師` 主講。
+    - 下午課程調整為 `餅乾手作課程`。
+    - 底部訓文改為 `3.jpg` 之無我無爭，完美融入去背蓮花。
+  - **Playwright 自動化渲染**：建立 HTML 模板並呼叫 Playwright 進行高解析度 (1000px × 1414px) PNG 海報截圖渲染，存為 [poster.png](file:///d:/2026antigravity/public/course%20poster/poster.png)。
+
 - **2026-06-15**：🟢 **YouTube 字幕自動提取與 Obsidian 三層式二腦知識庫安裝及週整理**。
   - **開工連線檢查通過**：GitHub CLI（samcct-bit）、NotebookLM MCP（samcct@gmail.com）及 Firebase CLI 全數健康綠燈。
   - **儲存庫克隆與適配**：克隆 `sensebar-agent-knowledge-vault-builder` 專案，將腳本中寫死的 C 槽路徑改為相對路徑，成功在本地虛擬環境執行。

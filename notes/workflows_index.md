@@ -86,6 +86,10 @@
 *   🙇 **網頁簡報主頁**：[index.html](file:///d:/2026antigravity/public/kowtow-bowing/index.html)
 *   🖼️ **背景底圖與去背圖標目錄**：[images/](file:///d:/2026antigravity/public/kowtow-bowing/images/)
 
+### 4. 天祥大同新竹區一日基礎班課程簡章海報
+*   🌸 **海報網頁主頁**：[index.html](file:///d:/2026antigravity/public/course%20poster/index.html)
+*   🖼️ **高解析度海報 PNG**：[poster.png](file:///d:/2026antigravity/public/course%20poster/poster.png)
+
 ---
 
 ## 🔌 五、外部服務連線技能 (Service Integration)
