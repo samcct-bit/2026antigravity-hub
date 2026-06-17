@@ -2,7 +2,7 @@
 
 > 專案：2026antigravity-hub
 > 位置：`d:\2026antigravity\notes\dashboard.md`
-> 本日記錄：2026-06-16
+> 本日記錄：2026-06-17
 
 
 ---
@@ -26,6 +26,7 @@
   * [x] HTML 互動簡報生成器 (Reveal.js) 本地儲存庫克隆與 Python 依賴 Pillow 實裝
   * [x] HTML 互動簡報生成技能的 AntiGravity 適配（免金鑰內建生圖）與全域技能註冊
   * [x] YouTube 字幕自動提取與 Obsidian 三層式二腦知識庫技能實裝與初始化下載
+  * [x] 國小考場專用倒數計時器網頁重建與 Netlify/GitHub Pages 雙向部署
 
 
 
@@ -46,6 +47,7 @@
 | ⏱️ **數學時間遊戲 (3-2-8)** | `public/math game/timegame3-2-8` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/math%20game/timegame3-2-8/index.html) | **[NEW] 今日上線之全新數學遊戲** |
 | 📖 **暑假作業國語學習單** | `public/chinese worksheet/...` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/chinese%20worksheet/暑假作業_國語閱讀與寫作學習單.html) | **[NEW] 支援 A4 100% 比例列印之滿分範文版** |
 | 🙇 **叩首的意義與方法** | `public/kowtow-bowing/...` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/kowtow-bowing/index.html) | **[NEW] 整合 4 份簡報與 PDF 的互動式網頁簡報** |
+| ⏱️ **考場專用倒數計時器** | `public/exam-timer` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/exam-timer/index.html) | **[NEW] 國小考場專用倒數計時器，大字體倒數及自訂科目/時間，Netlify網域：https://school-test-clock.netlify.app** |
 
 *註：原本 Netlify 中的 `20260205board` 為手動離線部署之舊版專案，並未包含在本儲存庫與本次移轉範圍中。*
 
@@ -94,6 +96,17 @@
 
 ## 📅 每日日誌
  
+- **2026-06-17**：🟢 **重建國小考場專用倒數計時器網頁，並成功部署至 Netlify 與 GitHub Pages**。
+  - **開工與服務連線檢測**：GitHub CLI（samcct-bit）、NotebookLM MCP（samcct@gmail.com）與 Firebase CLI 均綠燈健康。
+  - **計時器網頁設計與開發**：
+    - 設計極簡高對比、干擾低的考場計時器介面，支援國語、數學、英語三大預設科目及自訂科目與時間。
+    - 實作超大字幕倒數鐘、起訖時間對齊、進度條顯示、當前即時時鐘與 localStorage 快取記憶。
+    - 實作 Web Audio API 音效生成器，在剩餘 5 分鐘及時間終了時自動播放經典金屬鐘聲。
+    - 提供雙擊編輯注意事項功能，修改結果會自動儲存於本地。
+  - **自動化部署**：
+    - 成功在 Netlify 註冊新站點並部署於 `https://school-test-clock.netlify.app`。
+    - 同步於 [workflows_index.md](file:///d:/2026antigravity/notes/workflows_index.md) 索引與 [dashboard.md](file:///d:/2026antigravity/notes/dashboard.md) 中更新項目狀態。
+
 - **2026-06-16**：🟢 **完成天祥大同新竹區一日基礎班課程簡章海報設計與自動化渲染，並完成 GitHub 憑證過期處理與安全防護**。
   - **開工與服務連線檢測**：GitHub CLI（samcct-bit）、NotebookLM MCP（samcct@gmail.com）與 Firebase CLI 均綠燈健康。
   - **素材去背與處理**：使用 Python PIL 智慧定位 [3.jpg](file:///d:/2026antigravity/public/course%20poster/3.jpg) 的文字與蓮花邊界（ y = 360 處），徹底去除上方黑字像素，僅保留純淨的「去背蓮花」並存為透明 PNG。

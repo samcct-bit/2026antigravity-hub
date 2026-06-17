@@ -90,6 +90,13 @@
 *   🌸 **海報網頁主頁**：[index.html](file:///d:/2026antigravity/public/course%20poster/index.html)
 *   🖼️ **高解析度海報 PNG**：[poster.png](file:///d:/2026antigravity/public/course%20poster/poster.png)
 
+### 5. 考場專用倒數計時器
+*   ⏱️ **計時器網頁主頁**：[index.html](file:///d:/2026antigravity/public/exam-timer/index.html)
+*   🎨 **樣式表**：[style.css](file:///d:/2026antigravity/public/exam-timer/style.css)
+*   ⚙️ **邏輯腳本**：[script.js](file:///d:/2026antigravity/public/exam-timer/script.js)
+*   🌐 **Netlify 線上網址**：[🔗 點擊開啟](https://school-test-clock.netlify.app)
+*   🌐 **GitHub Pages 線上網址**：[🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/exam-timer/index.html)
+
 ---
 
 ## 🔌 五、外部服務連線技能 (Service Integration)

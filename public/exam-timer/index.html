@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>考場專用倒數計時器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme">
+    <!-- 頂部資訊列：日期、當前本機時間 -->
+    <header class="header-info">
+        <div class="left-info">
+            <span id="current-date">2026 年 6 月 17 日</span>
+            <span class="separator">|</span>
+            <span id="current-time">08:40</span>
+        </div>
+        <div class="right-info">
+            <button id="config-toggle-btn" class="icon-btn" title="設定考場參數">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.13,5.91,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.04,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- 考場倒數主要顯示區域 -->
+    <main class="clock-container">
+        <!-- 目前科目名稱 -->
+        <h1 id="exam-subject-display">國語</h1>
+
+        <!-- 考試起訖時間顯示 -->
+        <div id="exam-time-range-display" class="time-range">考試時間：--:-- ~ --:--</div>
+
+        <!-- 倒數數字鐘 -->
+        <div id="countdown-timer" class="timer-display">80:00</div>
+
+        <!-- 進度條 -->
+        <div class="progress-bar-container">
+            <div id="progress-bar" class="progress-bar-fill"></div>
+        </div>
+        
+        <!-- 狀態提示（如已暫停或即將結束） -->
+        <div id="timer-status-msg" class="status-msg"></div>
+    </main>
+
+    <!-- 考場注意事項區域 -->
+    <footer class="instructions-section">
+        <div class="section-title">
+            <span>✏️ 考場注意事項</span>
+            <span class="edit-hint">（雙擊內容可進行編輯，編輯後會自動儲存）</span>
+        </div>
+        <div id="editable-instructions" class="instructions-content" contenteditable="false" title="雙擊編輯內容">
+            <ol>
+                <li>鐘聲響起即停止作答，雙手離開桌面。</li>
+                <li>請將准考證（或學生證）置於桌面左上角以利查驗。</li>
+                <li>答案卡限用 2B 鉛筆劃記，修正時請使用橡皮擦擦乾淨。</li>
+                <li>試卷與答案卷上請務必書寫班級、座號與姓名。</li>
+                <li>考試期間嚴禁左顧右盼、低聲交談或攜帶穿戴式電子裝置。</li>
+            </ol>
+        </div>
+        <div id="instructions-editor-actions" class="editor-actions hidden">
+            <button id="save-instructions-btn" class="btn btn-save">儲存修改</button>
+            <button id="cancel-instructions-btn" class="btn btn-cancel">取消</button>
+        </div>
+    </footer>
+
+    <!-- 設定控制側邊欄 (Sidebar Modal) -->
+    <div id="config-sidebar" class="sidebar hidden">
+        <div class="sidebar-header">
+            <h2>⚙️ 考場參數設定</h2>
+            <button id="config-close-btn" class="close-btn">&times;</button>
+        </div>
+        
+        <div class="sidebar-body">
+            <!-- 1. 快速科目選擇 -->
+            <div class="form-group">
+                <label>選擇科目</label>
+                <div class="subject-presets">
+                    <button class="preset-btn active" data-subject="國語" data-duration="80">國語 (80m)</button>
+                    <button class="preset-btn" data-subject="數學" data-duration="80">數學 (80m)</button>
+                    <button class="preset-btn" data-subject="英語" data-duration="60">英語 (60m)</button>
+                    <button class="preset-btn" data-subject="自訂" data-duration="40">自訂</button>
+                </div>
+            </div>
+
+            <!-- 2. 自訂科目與時間輸入 (自訂時顯示) -->
+            <div id="custom-subject-inputs" class="form-row hidden">
+                <div class="form-group col-6">
+                    <label for="custom-subject-name">科目名稱</label>
+                    <input type="text" id="custom-subject-name" placeholder="例如：自然" value="自訂科目">
+                </div>
+                <div class="form-group col-6">
+                    <label for="custom-duration">考試時間 (分)</label>
+                    <input type="number" id="custom-duration" min="1" max="180" value="40">
+                </div>
+            </div>
+
+            <!-- 3. 開始時間設定模式 -->
+            <div class="form-group">
+                <label>起訖時間設定</label>
+                <div class="time-setting-options">
+                    <label class="radio-label">
+                        <input type="radio" name="time-mode" value="auto-now" checked> 現在立即開始
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="time-mode" value="manual"> 手動指定開始時間
+                    </label>
+                </div>
+            </div>
+
+            <!-- 4. 手動指定開始時間輸入框 -->
+            <div id="manual-time-inputs" class="form-row hidden">
+                <div class="form-group col-12">
+                    <label for="manual-start-time">開始時間 (HH:MM)</label>
+                    <input type="time" id="manual-start-time">
+                </div>
+            </div>
+
+            <!-- 5. 提醒與音效設定 -->
+            <div class="form-group">
+                <label>提醒音效與功能</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="sound-finish-toggle" checked> 考試結束播放鐘聲
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="sound-warning-toggle" checked> 剩餘 5 分鐘警示音
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="theme-toggle"> 啟用深色主題模式
+                    </label>
+                </div>
+            </div>
+
+            <!-- 6. 倒數控制按鈕 -->
+            <div class="sidebar-actions">
+                <button id="start-btn" class="btn btn-primary">開始考試</button>
+                <button id="pause-btn" class="btn btn-secondary" disabled>暫停</button>
+                <button id="reset-btn" class="btn btn-danger">重置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 側邊欄遮罩 -->
+    <div id="sidebar-overlay" class="overlay hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
