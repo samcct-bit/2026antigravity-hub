@@ -977,6 +977,51 @@ document.addEventListener("DOMContentLoaded", () => {
     configCloseBtn.addEventListener("click", closeSidebar);
     sidebarOverlay.addEventListener("click", closeSidebar);
 
+    // === 快速載入考程範本按鈕事件 ===
+    const presetDay1Btn = document.getElementById("preset-day-1");
+    const presetDay2Btn = document.getElementById("preset-day-2");
+
+    if (presetDay1Btn && presetDay2Btn) {
+        presetDay1Btn.addEventListener("click", () => {
+            document.getElementById("class-active-1").checked = true;
+            document.getElementById("class-subj-1").value = "國語";
+            document.getElementById("class-start-1").value = "08:40";
+            document.getElementById("class-end-1").value = "09:20";
+
+            document.getElementById("class-active-2").checked = true;
+            document.getElementById("class-subj-2").value = "自然";
+            document.getElementById("class-start-2").value = "09:30";
+            document.getElementById("class-end-2").value = "10:10";
+
+            document.getElementById("class-active-3").checked = true;
+            document.getElementById("class-subj-3").value = "英語";
+            document.getElementById("class-start-3").value = "10:30";
+            document.getElementById("class-end-3").value = "11:10";
+
+            if (startTimeMode === "daily-schedule") {
+                updateDailySchedulePreview();
+            }
+        });
+
+        presetDay2Btn.addEventListener("click", () => {
+            document.getElementById("class-active-1").checked = true;
+            document.getElementById("class-subj-1").value = "數學";
+            document.getElementById("class-start-1").value = "08:40";
+            document.getElementById("class-end-1").value = "09:20";
+
+            document.getElementById("class-active-2").checked = true;
+            document.getElementById("class-subj-2").value = "社會";
+            document.getElementById("class-start-2").value = "09:30";
+            document.getElementById("class-end-2").value = "10:10";
+
+            document.getElementById("class-active-3").checked = false;
+
+            if (startTimeMode === "daily-schedule") {
+                updateDailySchedulePreview();
+            }
+        });
+    }
+
     // === 偏好與設定儲存 ===
     themeToggle.addEventListener("change", () => {
         const isDark = themeToggle.checked;
