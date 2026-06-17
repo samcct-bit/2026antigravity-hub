@@ -69,10 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // === 預設與本地快取記憶功能 ===
     const defaultInstructions = `
         <ol>
-            <li>鐘聲響起即停止作答，雙手離開桌面。</li>
-            <li>請將准考證（或學生證）置於桌面左上角以利查驗。</li>
-            <li>答案卡限用 2B 鉛筆劃記，修正時請使用橡皮擦擦乾淨。</li>
-            <li>試卷與答案卷上請務必書寫班級、座號與姓名。</li>
+            <li>下課鐘聲響起即停止作答，雙手離開桌面。</li>
+            <li>試卷上請務必書寫班級、座號與姓名。</li>
             <li>考試期間嚴禁左顧右盼、低聲交談或攜帶穿戴式電子裝置。</li>
         </ol>
     `;
@@ -80,12 +78,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // 初始化載入
     function init() {
         // 載入注意事項
-        const savedInstructions = localStorage.getItem("exam_instructions");
+        const savedInstructions = localStorage.getItem("exam_instructions_v2");
         if (savedInstructions) {
             editableInstructions.innerHTML = savedInstructions;
         } else {
             editableInstructions.innerHTML = defaultInstructions;
-            localStorage.setItem("exam_instructions", defaultInstructions);
+            localStorage.setItem("exam_instructions_v2", defaultInstructions);
         }
 
         // 載入主題設定
@@ -481,13 +479,13 @@ document.addEventListener("DOMContentLoaded", () => {
     saveInstructionsBtn.addEventListener("click", () => {
         editableInstructions.contentEditable = "false";
         instructionsEditorActions.classList.add("hidden");
-        localStorage.setItem("exam_instructions", editableInstructions.innerHTML);
+        localStorage.setItem("exam_instructions_v2", editableInstructions.innerHTML);
     });
 
     cancelInstructionsBtn.addEventListener("click", () => {
         editableInstructions.contentEditable = "false";
         instructionsEditorActions.classList.add("hidden");
-        const savedInstructions = localStorage.getItem("exam_instructions");
+        const savedInstructions = localStorage.getItem("exam_instructions_v2");
         if (savedInstructions) {
             editableInstructions.innerHTML = savedInstructions;
         }
