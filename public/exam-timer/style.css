@@ -57,7 +57,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.25rem;
+    font-size: 1.8rem;
     font-weight: 500;
     color: var(--text-color);
     opacity: 0.8;
@@ -112,7 +112,7 @@ body {
 }
 
 #exam-subject-display {
-    font-size: 3.5rem;
+    font-size: 4.5rem;
     font-weight: 800;
     letter-spacing: 4px;
     margin-bottom: 1vh;
@@ -120,7 +120,7 @@ body {
 }
 
 .time-range {
-    font-size: 1.5rem;
+    font-size: 2.2rem;
     font-weight: 500;
     opacity: 0.7;
     margin-bottom: 2vh;
@@ -168,7 +168,7 @@ body {
 }
 
 .status-msg {
-    font-size: 1.5rem;
+    font-size: 2.2rem;
     font-weight: 600;
     color: var(--danger-color);
     height: 2rem;
@@ -190,7 +190,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1.15rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--accent-color);
     border-bottom: 1px dashed var(--border-color);
@@ -199,13 +199,13 @@ body {
 }
 
 .edit-hint {
-    font-size: 0.85rem;
+    font-size: 1.1rem;
     font-weight: normal;
     color: #7F8C8D;
 }
 
 .instructions-content {
-    font-size: 1.15rem;
+    font-size: 1.7rem;
     line-height: 1.6;
     color: var(--text-color);
     padding: 4px;
@@ -514,7 +514,7 @@ button:disabled {
 }
 
 .schedule-item {
-    font-size: 1.1rem;
+    font-size: 1.6rem;
     font-weight: 500;
     opacity: 0.6;
     display: flex;
