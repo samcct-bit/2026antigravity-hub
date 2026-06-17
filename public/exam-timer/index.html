@@ -41,6 +41,11 @@
         
         <!-- 狀態提示（如已暫停或即將結束） -->
         <div id="timer-status-msg" class="status-msg"></div>
+
+        <!-- 今日考程狀態列 (排程模式下顯示) -->
+        <div id="daily-schedule-list" class="daily-schedule-display hidden">
+            <!-- 由 JS 動態生成，如 ➊ 國語 08:40~09:30 | ➋ 數學 10:10~11:00 -->
+        </div>
     </main>
 
     <!-- 考場注意事項區域 -->
@@ -71,7 +76,7 @@
         
         <div class="sidebar-body">
             <!-- 1. 快速科目選擇 -->
-            <div class="form-group">
+            <div id="subject-preset-group" class="form-group">
                 <label>選擇科目</label>
                 <div class="subject-presets">
                     <button class="preset-btn active" data-subject="國語" data-duration="80">國語 (80m)</button>
@@ -95,13 +100,16 @@
 
             <!-- 3. 開始時間設定模式 -->
             <div class="form-group">
-                <label>起訖時間設定</label>
+                <label>時間設定模式</label>
                 <div class="time-setting-options">
                     <label class="radio-label">
-                        <input type="radio" name="time-mode" value="auto-now" checked> 現在立即開始
+                        <input type="radio" name="time-mode" value="auto-now" checked> 現在立即計時 (單堂)
                     </label>
                     <label class="radio-label">
-                        <input type="radio" name="time-mode" value="manual"> 手動指定開始時間
+                        <input type="radio" name="time-mode" value="manual"> 手動指定時間 (單堂)
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="time-mode" value="daily-schedule"> 今日多堂考程排程 (自動)
                     </label>
                 </div>
             </div>
@@ -111,6 +119,46 @@
                 <div class="form-group col-12">
                     <label for="manual-start-time">開始時間 (HH:MM)</label>
                     <input type="time" id="manual-start-time">
+                </div>
+            </div>
+
+            <!-- 4.5. 今日多堂考程排程輸入面板 -->
+            <div id="daily-schedule-inputs" class="daily-schedule-panel hidden">
+                <div class="schedule-row">
+                    <div class="row-checkbox">
+                        <input type="checkbox" id="class-active-1" checked>
+                    </div>
+                    <div class="row-inputs">
+                        <span class="row-label">第一節</span>
+                        <input type="text" id="class-subj-1" placeholder="科目" value="國語">
+                        <input type="time" id="class-start-1" value="08:40">
+                        <span>~</span>
+                        <input type="time" id="class-end-1" value="09:30">
+                    </div>
+                </div>
+                <div class="schedule-row">
+                    <div class="row-checkbox">
+                        <input type="checkbox" id="class-active-2" checked>
+                    </div>
+                    <div class="row-inputs">
+                        <span class="row-label">第二節</span>
+                        <input type="text" id="class-subj-2" placeholder="科目" value="數學">
+                        <input type="time" id="class-start-2" value="10:10">
+                        <span>~</span>
+                        <input type="time" id="class-end-2" value="11:00">
+                    </div>
+                </div>
+                <div class="schedule-row">
+                    <div class="row-checkbox">
+                        <input type="checkbox" id="class-active-3" checked>
+                    </div>
+                    <div class="row-inputs">
+                        <span class="row-label">第三節</span>
+                        <input type="text" id="class-subj-3" placeholder="科目" value="英語">
+                        <input type="time" id="class-start-3" value="11:10">
+                        <span>~</span>
+                        <input type="time" id="class-end-3" value="12:00">
+                    </div>
                 </div>
             </div>
 

@@ -495,3 +495,114 @@ button:disabled {
         width: 100%;
     }
 }
+
+/* 今日考程狀態列樣式 */
+.daily-schedule-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 3vh;
+    padding: 10px 20px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    max-width: 90%;
+    transition: opacity 0.3s;
+}
+
+.schedule-item {
+    font-size: 1.1rem;
+    font-weight: 500;
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    transition: all 0.3s;
+}
+
+/* 狀態：等待中 */
+.schedule-item.upcoming {
+    opacity: 0.5;
+}
+
+/* 狀態：進行中 */
+.schedule-item.active {
+    opacity: 1;
+    font-weight: 700;
+    color: var(--accent-color);
+    background-color: rgba(27, 54, 93, 0.08);
+    transform: scale(1.05);
+}
+body.dark-theme .schedule-item.active {
+    background-color: rgba(49, 130, 206, 0.15);
+    color: var(--accent-color);
+}
+
+/* 狀態：下課休息中 */
+.schedule-item.break {
+    opacity: 1;
+    font-weight: 700;
+    color: #E67E22; /* 休息特色橘 */
+    background-color: rgba(230, 126, 34, 0.08);
+}
+
+/* 狀態：已結束 */
+.schedule-item.completed {
+    opacity: 0.3;
+    text-decoration: line-through;
+}
+
+/* 多堂排程設定面板樣式 */
+.daily-schedule-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 22px;
+    padding: 12px;
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-color);
+}
+
+.schedule-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.row-checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.row-inputs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-grow: 1;
+}
+
+.row-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    width: 48px;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.row-inputs input[type="text"] {
+    width: 80px;
+    padding: 6px;
+    font-size: 0.85rem;
+}
+
+.row-inputs input[type="time"] {
+    flex-grow: 1;
+    padding: 6px;
+    font-size: 0.85rem;
+}
