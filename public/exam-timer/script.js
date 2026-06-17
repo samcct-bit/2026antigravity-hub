@@ -116,10 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 載入多堂排程設定
         for (let i = 1; i <= 3; i++) {
-            const active = localStorage.getItem(`exam_class_active_${i}`) !== "false"; // 預設為 true
-            const subj = localStorage.getItem(`exam_class_subj_${i}`) || (i === 1 ? "國語" : i === 2 ? "數學" : "英語");
-            const start = localStorage.getItem(`exam_class_start_${i}`) || (i === 1 ? "08:40" : i === 2 ? "10:10" : "11:10");
-            const end = localStorage.getItem(`exam_class_end_${i}`) || (i === 1 ? "09:30" : i === 2 ? "11:00" : "12:00");
+            const active = localStorage.getItem(`exam_class_active_v2_${i}`) !== "false"; // 預設為 true
+            const subj = localStorage.getItem(`exam_class_subj_v2_${i}`) || (i === 1 ? "國語" : i === 2 ? "自然" : "英語");
+            const start = localStorage.getItem(`exam_class_start_v2_${i}`) || (i === 1 ? "08:30" : i === 2 ? "09:30" : "10:30");
+            const end = localStorage.getItem(`exam_class_end_v2_${i}`) || (i === 1 ? "09:20" : i === 2 ? "10:10" : "11:10");
             
             document.getElementById(`class-active-${i}`).checked = active;
             document.getElementById(`class-subj-${i}`).value = subj;
@@ -660,10 +660,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 dailyClasses.push({ active, subject, start, end });
                 
                 // 本地快取儲存，方便下次使用
-                localStorage.setItem(`exam_class_active_${i}`, active);
-                localStorage.setItem(`exam_class_subj_${i}`, subject);
-                localStorage.setItem(`exam_class_start_${i}`, start);
-                localStorage.setItem(`exam_class_end_${i}`, end);
+                localStorage.setItem(`exam_class_active_v2_${i}`, active);
+                localStorage.setItem(`exam_class_subj_v2_${i}`, subject);
+                localStorage.setItem(`exam_class_start_v2_${i}`, start);
+                localStorage.setItem(`exam_class_end_v2_${i}`, end);
             }
             
             // 初次手動渲染預覽
@@ -985,7 +985,7 @@ document.addEventListener("DOMContentLoaded", () => {
         presetDay1Btn.addEventListener("click", () => {
             document.getElementById("class-active-1").checked = true;
             document.getElementById("class-subj-1").value = "國語";
-            document.getElementById("class-start-1").value = "08:40";
+            document.getElementById("class-start-1").value = "08:30";
             document.getElementById("class-end-1").value = "09:20";
 
             document.getElementById("class-active-2").checked = true;
