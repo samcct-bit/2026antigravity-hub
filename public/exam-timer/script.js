@@ -59,9 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // 核心計時參數 (單堂模式)
     let selectedSubject = "國語";
-    let examDurationMinutes = 80;
-    let totalSeconds = 80 * 60;
-    let secondsRemaining = 80 * 60;
+    let examDurationMinutes = 40;
+    let totalSeconds = 40 * 60;
+    let secondsRemaining = 40 * 60;
     let startTimeMode = "auto-now"; // "auto-now" | "manual" | "daily-schedule"
     let targetEndTimeStamp = null; // 當前倒數終點時間戳 (ms)
     let pauseRemainingMs = null;   // 暫停時剩餘的毫秒數
