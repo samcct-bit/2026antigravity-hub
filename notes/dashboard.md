@@ -106,6 +106,8 @@
   - **自動化部署**：
     - 成功在 Netlify 註冊新站點並部署於 `https://school-test-clock.netlify.app`。
     - 同步於 [workflows_index.md](file:///d:/2026antigravity/notes/workflows_index.md) 索引與 [dashboard.md](file:///d:/2026antigravity/notes/dashboard.md) 中更新項目狀態。
+  - **簡章海報細節微調**：
+    - 微調並放大「天祥大同新竹區一日基礎班課程簡章海報」中間四項說明文字的字體大小至 `32px`，並完成重新渲染與遠端推送同步。
 
 - **2026-06-16**：🟢 **完成天祥大同新竹區一日基礎班課程簡章海報設計與自動化渲染，並完成 GitHub 憑證過期處理與安全防護**。
   - **開工與服務連線檢測**：GitHub CLI（samcct-bit）、NotebookLM MCP（samcct@gmail.com）與 Firebase CLI 均綠燈健康。
