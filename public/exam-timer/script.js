@@ -348,13 +348,26 @@ document.addEventListener("DOMContentLoaded", () => {
             const start = new Date();
             start.setHours(hours, minutes, 0, 0);
             
-            // 如果指定的時間比當前時間早，視為明天的這個時間（或是稍後今天）
-            if (start.getTime() < Date.now() - 30 * 60 * 1000) {
-                // 如果早於半小時以上，推斷是用戶選錯了，或是要設為明天
+            const durationMs = examDurationMinutes * 60 * 1000;
+            let endTimeMs = start.getTime() + durationMs;
+            
+            // 如果考試結束時間小於當前時間，說明該時段已過去，判定為排程明天同時間
+            if (endTimeMs < Date.now()) {
                 start.setDate(start.getDate() + 1);
+                endTimeMs = start.getTime() + durationMs;
             }
+            
             scheduledStartTime = start;
-            targetEndTimeStamp = null; // 還沒觸發
+            
+            if (Date.now() < start.getTime()) {
+                // 還沒開始，等待開考
+                targetEndTimeStamp = null;
+                secondsRemaining = examDurationMinutes * 60;
+            } else {
+                // 已經在考試時間內 (start <= now < endTimeMs)
+                targetEndTimeStamp = endTimeMs;
+                secondsRemaining = Math.max(0, Math.ceil((endTimeMs - Date.now()) / 1000));
+            }
         }
 
         isRunning = true;
