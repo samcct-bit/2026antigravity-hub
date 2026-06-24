@@ -6,6 +6,9 @@
     <title>三升四暑假國語閱讀理解與寫作互動工作坊</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 引入 Firebase Compat SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
         
@@ -120,13 +123,17 @@
         <!-- Top Bar -->
         <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10">
             <button class="md:hidden text-gray-600 text-xl" onclick="toggleMobileMenu()">☰</button>
-            <div class="flex items-center space-x-4">
-                <span id="current-round-title" class="text-lg font-bold text-gray-700">歡迎來到工作坊</span>
+            <div class="flex items-center space-x-4 sm:space-x-6">
+                <span id="current-round-title" class="text-base sm:text-lg font-bold text-gray-700 truncate max-w-[120px] sm:max-w-none">歡迎來到工作坊</span>
                 <span class="px-2.5 py-0.5 bg-teal-100 text-teal-700 text-xs rounded-full font-medium" id="round-status">探索中</span>
+                <span class="text-xs text-gray-400 flex items-center space-x-1 animate-fade-in" id="cloud-sync-status">
+                    <span class="inline-block w-2.5 h-2.5 rounded-full bg-gray-300" id="cloud-sync-dot"></span>
+                    <span id="cloud-sync-text">本地儲存</span>
+                </span>
             </div>
             <div class="flex items-center space-x-2 text-sm text-gray-500">
                 <span class="hidden sm:inline">工作坊進度:</span>
-                <div class="w-24 sm:w-32 bg-gray-200 rounded-full h-2">
+                <div class="w-20 sm:w-32 bg-gray-200 rounded-full h-2">
                     <div id="overall-progress" class="bg-teal-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
                 <span class="font-bold text-xs" id="progress-percent">0%</span>
@@ -302,7 +309,9 @@
 
     // --- State Management ---
     let appState = {
+        studentId: "",
         userName: "訪客學生",
+        seatNumber: "",
         userAvatar: "👶",
         currentView: 'dashboard',
         completedRounds: [],
@@ -311,25 +320,138 @@
     };
 
     let radarChart = null;
+    let db = null;
+    let syncTimeout = null;
+
+    // --- Firebase Configuration ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyC48oAqalT77SPpYVtCupYfV5hd6_ZrD2I",
+        authDomain: "my-teaching-tools-01.firebaseapp.com",
+        projectId: "my-teaching-tools-01",
+        storageBucket: "my-teaching-tools-01.firebasestorage.app",
+        messagingSenderId: "552535919921",
+        appId: "1:552535919921:web:95b4c1288edbae9572b410"
+    };
 
     // --- Initialization ---
     window.onload = () => {
         loadLocalStorage();
+        initFirebase();
         updatePirlsChartStats();
         renderSidebar();
         updateUI();
         initRadarChart();
     };
 
-    function loadLocalStorage() {
-        const saved = localStorage.getItem('pirls_app_state_v2');
-        if (saved) {
-            appState = JSON.parse(saved);
+    function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    function initFirebase() {
+        try {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            db = firebase.firestore();
+            syncToFirebase();
+        } catch (err) {
+            console.error("Firebase init failed: ", err);
+            updateSyncStatus('error', '雲端連線失敗');
         }
     }
 
-    function saveLocalStorage() {
+    function loadLocalStorage() {
+        const saved = localStorage.getItem('pirls_app_state_v2');
+        if (saved) {
+            try {
+                appState = JSON.parse(saved);
+            } catch(e) {
+                console.error("Error parsing saved state: ", e);
+            }
+        }
+        
+        let needsSave = false;
+        if (!appState.studentId) {
+            appState.studentId = generateUUID();
+            needsSave = true;
+        }
+        if (appState.seatNumber === undefined) {
+            appState.seatNumber = "";
+            needsSave = true;
+        }
+        if (needsSave) {
+            saveLocalStorage(true);
+        }
+    }
+
+    function saveLocalStorage(skipSync = false) {
         localStorage.setItem('pirls_app_state_v2', JSON.stringify(appState));
+        if (!skipSync) {
+            debounceSyncToFirebase();
+        }
+    }
+
+    // --- Cloud Sync Helper Functions ---
+    function updateSyncStatus(status, text) {
+        const dot = document.getElementById('cloud-sync-dot');
+        const txt = document.getElementById('cloud-sync-text');
+        if (!dot || !txt) return;
+
+        if (status === 'synced') {
+            dot.className = "inline-block w-2.5 h-2.5 rounded-full bg-teal-500 animate-pulse";
+            txt.innerText = text || "雲端已同步";
+            txt.className = "text-teal-600 font-medium";
+        } else if (status === 'syncing') {
+            dot.className = "inline-block w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse";
+            txt.innerText = text || "雲端同步中...";
+            txt.className = "text-amber-600 font-medium";
+        } else if (status === 'error') {
+            dot.className = "inline-block w-2.5 h-2.5 rounded-full bg-red-500";
+            txt.innerText = text || "同步失敗";
+            txt.className = "text-red-500 font-medium";
+        } else {
+            dot.className = "inline-block w-2.5 h-2.5 rounded-full bg-gray-300";
+            txt.innerText = text || "本地儲存";
+            txt.className = "text-gray-400";
+        }
+    }
+
+    function syncToFirebase() {
+        if (!db || !appState.studentId) return;
+        updateSyncStatus('syncing');
+        
+        const payload = {
+            studentId: appState.studentId,
+            name: appState.userName,
+            seatNumber: appState.seatNumber,
+            avatar: appState.userAvatar,
+            completedRounds: appState.completedRounds,
+            pirlsStats: appState.pirlsStats,
+            answers: appState.answers,
+            lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        db.collection('summer_homework_2026').doc(appState.studentId).set(payload, { merge: true })
+            .then(() => {
+                updateSyncStatus('synced');
+            })
+            .catch(err => {
+                console.error("Firestore sync error: ", err);
+                updateSyncStatus('error', '雲端同步失敗');
+            });
+    }
+
+    function debounceSyncToFirebase() {
+        updateSyncStatus('syncing', '準備同步...');
+        if (syncTimeout) {
+            clearTimeout(syncTimeout);
+        }
+        syncTimeout = setTimeout(() => {
+            syncToFirebase();
+        }, 2000);
     }
 
     function renderSidebar() {
@@ -362,7 +484,8 @@
         appState.currentView = view;
         updateUI();
         renderSidebar();
-        saveLocalStorage();
+        saveLocalStorage(true);
+        syncToFirebase();
         if (!document.getElementById('mobile-menu').classList.contains('hidden')) {
             toggleMobileMenu();
         }
@@ -404,9 +527,10 @@
                     <p class="opacity-95 mb-6 text-sm md:text-base">這是一個專為三升四年級設計的閱讀寫作大冒險。完成 8 個國語故事理解與 1 個寫作挑戰，獲取專屬榮譽勳章！</p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-white/20 p-4 rounded-xl">
-                            <label class="text-xs font-bold block mb-1">設定個人姓名與頭像</label>
+                            <label class="text-xs font-bold block mb-1">設定個人座號、姓名與頭像</label>
                             <div class="flex items-center space-x-2">
-                                <input type="text" id="input-student-name" placeholder="輸入你的姓名" class="flex-1 bg-white/10 border border-white/30 rounded px-3 py-1.5 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white text-sm" onchange="updateStudentName(this.value)">
+                                <input type="number" id="input-student-seat" min="1" max="99" placeholder="座號" class="w-16 bg-white/10 border border-white/30 rounded px-2 py-1.5 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white text-sm font-bold" onchange="updateStudentSeat(this.value)">
+                                <input type="text" id="input-student-name" placeholder="輸入姓名" class="flex-1 bg-white/10 border border-white/30 rounded px-3 py-1.5 text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white text-sm" onchange="updateStudentName(this.value)">
                                 <select onchange="updateStudentAvatar(this.value)" class="bg-teal-600/80 border border-white/30 rounded px-2 py-1.5 text-white focus:outline-none text-sm">
                                     ${avatars.map(av => `<option value="${av}" ${appState.userAvatar === av ? 'selected' : ''}>${av}</option>`).join('')}
                                 </select>
@@ -474,6 +598,8 @@
         setTimeout(() => {
             initRadarChart();
             document.getElementById('input-student-name').value = appState.userName;
+            const seatInput = document.getElementById('input-student-seat');
+            if (seatInput) seatInput.value = appState.seatNumber || '';
         }, 0);
     }
 
@@ -1015,7 +1141,8 @@
 
         if (!appState.completedRounds.includes(rid)) {
             appState.completedRounds.push(rid);
-            saveLocalStorage();
+            saveLocalStorage(true);
+            syncToFirebase();
             
             // Show custom modal and play sound
             const textEl = document.getElementById('medal-congratulation-text');
@@ -1077,18 +1204,27 @@
         });
     }
 
+    function updateStudentSeat(seat) {
+        appState.seatNumber = seat.trim();
+        saveLocalStorage(true);
+        renderSidebar();
+        syncToFirebase();
+    }
+
     function updateStudentName(name) {
         if (name.trim()) {
             appState.userName = name.trim();
-            saveLocalStorage();
+            saveLocalStorage(true);
             renderSidebar();
+            syncToFirebase();
         }
     }
 
     function updateStudentAvatar(avatar) {
         appState.userAvatar = avatar;
-        saveLocalStorage();
+        saveLocalStorage(true);
         renderSidebar();
+        syncToFirebase();
     }
 
     function startFirstRound() {
@@ -1097,8 +1233,23 @@
 
     function resetProgress() {
         if (confirm("確定要清除所有學習紀錄嗎？這無法還原喔！")) {
-            localStorage.removeItem('pirls_app_state_v2');
-            location.reload();
+            if (db && appState.studentId) {
+                updateSyncStatus('syncing', '清除雲端資料...');
+                db.collection('summer_homework_2026').doc(appState.studentId).delete()
+                    .then(() => {
+                        console.log("Cloud progress reset");
+                        localStorage.removeItem('pirls_app_state_v2');
+                        location.reload();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        localStorage.removeItem('pirls_app_state_v2');
+                        location.reload();
+                    });
+            } else {
+                localStorage.removeItem('pirls_app_state_v2');
+                location.reload();
+            }
         }
     }
 

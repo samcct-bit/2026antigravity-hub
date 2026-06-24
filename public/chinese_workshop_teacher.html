@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教師管理端 - 暑假國語閱讀理解與寫作互動工作坊</title>
+    
+    <!-- 引入 Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 引入 Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- 引入 Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- 引入 Firebase Compat SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        body {
+            font-family: 'Noto Sans TC', 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #1E293B;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .active-tab {
+            background-color: #0F766E;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Passcode Overlay -->
+    <div id="passcode-overlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-slate-100 text-center transform transition duration-300 scale-100">
+            <div class="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center mx-auto mb-5 text-3xl">🔑</div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">請輸入教師登入密碼</h2>
+            <p class="text-sm text-slate-500 mb-6">請輸入班級專屬密碼以瀏覽學生學習進度與答案。</p>
+            <form onsubmit="verifyPasscode(event)" class="space-y-4">
+                <input type="password" id="passcode-input" placeholder="請輸入密碼 (預設: 305)" class="w-full text-center px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 font-bold tracking-widest text-lg bg-slate-50">
+                <p id="passcode-error" class="text-xs text-red-500 font-medium hidden">⚠️ 密碼錯誤，請重新輸入</p>
+                <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-teal-600/20 transition active:scale-98">驗證登入</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Application (Hidden until passcode verification) -->
+    <div id="app-container" class="hidden flex-1 flex flex-col h-screen overflow-hidden">
+        
+        <!-- Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0 z-10">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl">👩‍🏫</span>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold text-slate-800">暑假國語學習單 - 教師管理端</h1>
+                    <p class="text-[10px] sm:text-xs text-slate-400">三年五班自主學習平台資料庫</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="exportCSV()" class="bg-teal-50 hover:bg-teal-100 text-teal-700 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition flex items-center space-x-1 border border-teal-200/50">
+                    <span>📥</span> <span>匯出全班 CSV</span>
+                </button>
+                <button onclick="logout()" class="text-xs text-slate-400 hover:text-red-500 underline font-medium">登出</button>
+            </div>
+        </header>
+
+        <!-- Stats Bar -->
+        <section class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex-shrink-0 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-2xl border border-slate-200/50 shadow-sm flex items-center space-x-3">
+                <div class="w-10 h-10 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center text-xl">👥</div>
+                <div>
+                    <p class="text-xs text-slate-400 font-medium">提交學生數</p>
+                    <p class="text-lg font-bold text-slate-800" id="stat-total-students">0人</p>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200/50 shadow-sm flex items-center space-x-3">
+                <div class="w-10 h-10 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl">🏆</div>
+                <div>
+                    <p class="text-xs text-slate-400 font-medium">全員滿載率</p>
+                    <p class="text-lg font-bold text-slate-800" id="stat-completed-all">0人</p>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200/50 shadow-sm flex items-center space-x-3">
+                <div class="w-10 h-10 bg-sky-50 text-sky-600 rounded-xl flex items-center justify-center text-xl">📊</div>
+                <div>
+                    <p class="text-xs text-slate-400 font-medium">全班平均進度</p>
+                    <p class="text-lg font-bold text-slate-800" id="stat-avg-progress">0%</p>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-2xl border border-slate-200/50 shadow-sm flex items-center space-x-3">
+                <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl">📝</div>
+                <div>
+                    <p class="text-xs text-slate-400 font-medium">作文撰寫率</p>
+                    <p class="text-lg font-bold text-slate-800" id="stat-essay-rate">0%</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Area -->
+        <div class="flex-1 flex overflow-hidden">
+            
+            <!-- Left Pane: Student List -->
+            <aside class="w-full md:w-[35%] bg-white border-r border-slate-200 flex flex-col overflow-hidden">
+                <div class="p-4 border-b border-slate-100 flex-shrink-0">
+                    <input type="text" id="search-input" placeholder="🔍 搜尋學生姓名或座號..." oninput="filterStudents()" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-teal-500 bg-slate-50">
+                </div>
+                <!-- Student cards list -->
+                <div class="flex-1 overflow-y-auto p-4 space-y-2.5" id="student-list">
+                    <!-- Loading state -->
+                    <div class="text-center py-10 text-slate-400 text-sm" id="loading-indicator">
+                        <div class="inline-block w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin mb-2"></div>
+                        <p>載入雲端資料中...</p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Right Pane: Student Details -->
+            <main class="hidden md:flex flex-1 flex-col bg-slate-50 overflow-hidden" id="details-pane">
+                <!-- Placeholder when no student is selected -->
+                <div class="flex-1 flex flex-col items-center justify-center text-slate-400" id="details-placeholder">
+                    <span class="text-6xl mb-4">👈</span>
+                    <p class="text-base font-medium">請選擇左側學生以查看詳細作答內容</p>
+                </div>
+                
+                <!-- Main detail container -->
+                <div class="hidden flex-1 flex flex-col overflow-hidden" id="details-content">
+                    <!-- Top Student Card -->
+                    <div class="bg-white border-b border-slate-200 p-6 flex-shrink-0 flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-3xl shadow-sm" id="detail-avatar">👶</div>
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-xs font-bold" id="detail-seat">座號 --</span>
+                                    <h2 class="text-xl font-bold text-slate-800" id="detail-name">姓名</h2>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-1" id="detail-time">最後同步時間：--</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2 text-sm text-slate-500">
+                            <span>學習總進度:</span>
+                            <div class="w-24 bg-slate-200 rounded-full h-2 overflow-hidden">
+                                <div id="detail-progress-bar" class="bg-teal-500 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span class="font-bold text-slate-700" id="detail-progress-percent">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Details scrollable area -->
+                    <div class="flex-1 overflow-y-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        
+                        <!-- Left Details: Chart and Info -->
+                        <div class="lg:col-span-4 space-y-6">
+                            <!-- Chart card -->
+                            <div class="bg-white p-5 rounded-3xl border border-slate-200/60 shadow-sm">
+                                <h3 class="font-bold text-slate-700 text-sm mb-4">PIRLS 四大閱讀歷程指標</h3>
+                                <div class="chart-container">
+                                    <canvas id="detailsRadarChart"></canvas>
+                                </div>
+                            </div>
+                            <!-- Completion status -->
+                            <div class="bg-white p-5 rounded-3xl border border-slate-200/60 shadow-sm space-y-3">
+                                <h3 class="font-bold text-slate-700 text-sm">回次解鎖狀態</h3>
+                                <div class="grid grid-cols-3 gap-2" id="detail-rounds-grid">
+                                    <!-- Injected by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Details: Answers tabs -->
+                        <div class="lg:col-span-8 flex flex-col bg-white rounded-3xl border border-slate-200/60 shadow-sm overflow-hidden h-[500px] lg:h-auto">
+                            <!-- Tabs navigation -->
+                            <div class="bg-slate-50 border-b border-slate-200 flex-shrink-0 overflow-x-auto flex space-x-1 p-2" id="round-tabs-container">
+                                <!-- Injected by JS -->
+                            </div>
+                            <!-- Tab Content -->
+                            <div class="flex-1 overflow-y-auto p-6" id="tab-content-area">
+                                <!-- Injected by JS -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </main>
+            
+        </div>
+    </div>
+
+    <!-- Mobile Student Detail modal (Used when screen is small) -->
+    <div id="mobile-detail-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-40 hidden flex flex-col">
+        <div class="bg-white flex-1 mt-10 rounded-t-3xl flex flex-col overflow-hidden">
+            <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between flex-shrink-0">
+                <span class="font-bold text-slate-700">學生詳細作答</span>
+                <button onclick="closeMobileDetail()" class="text-slate-400 hover:text-slate-600 text-xl font-bold p-1">✕</button>
+            </div>
+            <div class="flex-1 overflow-y-auto" id="mobile-detail-modal-body">
+                <!-- Clones and populates details-content -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Firebase Configuration ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyC48oAqalT77SPpYVtCupYfV5hd6_ZrD2I",
+            authDomain: "my-teaching-tools-01.firebaseapp.com",
+            projectId: "my-teaching-tools-01",
+            storageBucket: "my-teaching-tools-01.firebasestorage.app",
+            messagingSenderId: "552535919921",
+            appId: "1:552535919921:web:95b4c1288edbae9572b410"
+        };
+
+        const rounds = [
+            { id: 1, title: "第一回：還差一點", qTitle: "王獻之與十八缸水", questions: [
+                "1. 王羲之指著水缸，告訴王獻之寫字的秘訣是什麼？",
+                "2. 王獻之練了四年的字，心境有何轉變？為什麼？",
+                "3. 面對「還差得遠」的評價，你會堅持還是放棄？請結合經驗說明。"
+            ]},
+            { id: 2, title: "第二回：用膝蓋跳舞", qTitle: "郭韋齊的多彩生命", questions: [
+                "1. 郭韋齊面臨何種重大的病痛與變故？她長大後完成了哪些挑戰？",
+                "2. 「用腕骨一個音一個音慢慢敲」這句話展現郭韋齊怎樣的個性和態度？",
+                "3. 當你在學習遇到挫折時，這篇故事帶給你何種啟發？請舉例。"
+            ]},
+            { id: 3, title: "第三回：茶鄉鹿谷", qTitle: "鹿谷烏龍茶製作過程", questions: [
+                "1. 根據課文，南投縣鹿谷鄉種植茶樹需要具備哪些環境條件？",
+                "2. 請根據課文排序「凍頂烏龍茶」的製作步驟。",
+                "3. 生活中還有什麼事情需要像製茶一樣「講究」且「細細品味」？"
+            ]},
+            { id: 4, title: "第四回：月世界之旅", qTitle: "光禿禿的灰色奇觀", questions: [
+                "1. 作者看到的「月世界」山丘外觀有何特徵？植物生長情形如何？",
+                "2. 作者在觀察「泥火山」時，運用了哪些譬喻和聲音描寫？",
+                "3. 為什麼學校帶學生參觀這種光禿禿的地方？有何學習價值？"
+            ]},
+            { id: 5, title: "第五回：昆蟲記法布爾", qTitle: "糞金龜的推球智慧", questions: [
+                "1. 法布爾設計了什麼實驗？糞金龜如何解決問題？",
+                "2. 實驗完成後，法布爾得到什麼結論？對糞金龜有何看法？",
+                "3. 你對生活中的什麼事物也像法布爾一樣充滿好奇心？如何探索？"
+            ]},
+            { id: 6, title: "第六回：行人的守護者", qTitle: "小綠人的工作日記", questions: [
+                "1. 「小綠人」在行人號誌燈倒數快結束時做何動作？它與小紅人有何心願？",
+                "2. 請找出兩個能表現出小綠人「心情」或「動作」擬人化的句子。",
+                "3. 作為守秩序的行人，我們在過馬路時應該注意哪些事情？"
+            ]},
+            { id: 7, title: "第七回：畫龍點睛", qTitle: "張僧繇安樂寺畫龍", questions: [
+                "1. 大畫家張僧繇畫了幾條龍？為什麼一開始不願意點上眼睛？",
+                "2. 點上眼珠後發生了什麼神奇變化？這說明畫家的畫技如何？",
+                "3. 你的學習經驗中，是否有「關鍵的小改變」讓整體表現更棒的經驗？"
+            ]},
+            { id: 8, title: "第八回：巨人傳說", qTitle: "智取大嘴巨人", questions: [
+                "1. 太魯閣族人使用了什麼道具打敗巨人？在山頂上假裝大喊了什麼？",
+                "2. 巨人強大卻輕易掉入陷阱，說明巨人有何缺點？",
+                "3. 面對無可避免的強大困難時，你會如何運用智慧來解決它？"
+            ]},
+            { id: 9, title: "第九回：引導寫作", qTitle: "暑假，我最想學會的一件事", questions: [] }
+        ];
+
+        // --- State ---
+        let studentsData = [];
+        let selectedStudent = null;
+        let selectedRoundTab = 1;
+        let db = null;
+        let detailRadarChartInstance = null;
+
+        // --- Initialization ---
+        window.onload = () => {
+            checkLoginState();
+        };
+
+        function checkLoginState() {
+            const loggedIn = sessionStorage.getItem('teacher_logged_in');
+            if (loggedIn === 'true') {
+                unlockDashboard();
+            }
+        }
+
+        function verifyPasscode(event) {
+            if (event) event.preventDefault();
+            
+            const val = document.getElementById('passcode-input').value;
+            const errorEl = document.getElementById('passcode-error');
+            
+            if (val === '305') {
+                sessionStorage.setItem('teacher_logged_in', 'true');
+                errorEl.classList.add('hidden');
+                unlockDashboard();
+            } else {
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        function unlockDashboard() {
+            document.getElementById('passcode-overlay').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            initFirebase();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('teacher_logged_in');
+            location.reload();
+        }
+
+        function initFirebase() {
+            try {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                db = firebase.firestore();
+                subscribeStudentsData();
+            } catch (err) {
+                alert("Firebase 載入失敗，請確認資料庫狀態：\n" + err.message);
+            }
+        }
+
+        // --- Data Subscription ---
+        function subscribeStudentsData() {
+            const listIndicator = document.getElementById('loading-indicator');
+            
+            db.collection('summer_homework_2026')
+              .onSnapshot(snapshot => {
+                  studentsData = [];
+                  snapshot.forEach(doc => {
+                      const data = doc.data();
+                      studentsData.push({
+                          id: doc.id,
+                          ...data
+                      });
+                  });
+                  
+                  // Sort by Seat Number (numerical)
+                  studentsData.sort((a, b) => {
+                      const seatA = parseInt(a.seatNumber) || 999;
+                      const seatB = parseInt(b.seatNumber) || 999;
+                      if (seatA !== seatB) return seatA - seatB;
+                      return (a.name || '').localeCompare(b.name || '');
+                  });
+
+                  if (listIndicator) listIndicator.remove();
+                  
+                  renderStudentList();
+                  updateStats();
+                  
+                  // Keep currently selected student updated if they push modifications
+                  if (selectedStudent) {
+                      const updated = studentsData.find(s => s.id === selectedStudent.id);
+                      if (updated) {
+                          selectedStudent = updated;
+                          renderStudentDetails();
+                      }
+                  }
+              }, error => {
+                  console.error("Firestore loading error:", error);
+                  document.getElementById('student-list').innerHTML = `<p class="text-center py-10 text-red-500 font-semibold">資料庫載入失敗</p>`;
+              });
+        }
+
+        // --- Render Student List ---
+        function renderStudentList() {
+            const container = document.getElementById('student-list');
+            if (studentsData.length === 0) {
+                container.innerHTML = `<p class="text-center py-10 text-slate-400 text-sm">目前尚無學生上傳資料</p>`;
+                return;
+            }
+            filterStudents();
+        }
+
+        function filterStudents() {
+            const query = document.getElementById('search-input').value.trim().toLowerCase();
+            const container = document.getElementById('student-list');
+            
+            let filtered = studentsData;
+            if (query) {
+                filtered = studentsData.filter(s => 
+                    (s.name || '').toLowerCase().includes(query) ||
+                    (s.seatNumber || '').toString().includes(query)
+                );
+            }
+            
+            let html = "";
+            filtered.forEach(s => {
+                const compCount = s.completedRounds ? s.completedRounds.length : 0;
+                const isSelected = selectedStudent && selectedStudent.id === s.id;
+                const seatStr = s.seatNumber ? `${s.seatNumber}號` : '未設定';
+                
+                html += `
+                    <div onclick="selectStudent('${s.id}')" class="p-3.5 rounded-2xl cursor-pointer transition flex items-center justify-between border ${isSelected ? 'bg-teal-50 border-teal-400/60 shadow-sm' : 'bg-white hover:bg-slate-50 border-slate-200/60 shadow-sm'}">
+                        <div class="flex items-center space-x-3 truncate">
+                            <span class="text-2xl flex-shrink-0">${s.avatar || '👶'}</span>
+                            <div class="truncate">
+                                <p class="text-sm font-bold text-slate-800 truncate">${s.name || '無姓名'}</p>
+                                <p class="text-xs text-slate-400 mt-0.5">座號: ${seatStr}</p>
+                            </div>
+                        </div>
+                        <div class="text-right flex-shrink-0 ml-2">
+                            <p class="text-xs font-bold text-slate-700">${compCount} / 9 回</p>
+                            <div class="w-16 bg-slate-200 rounded-full h-1.5 mt-1 overflow-hidden">
+                                <div class="bg-teal-500 h-1.5 rounded-full" style="width: ${(compCount/9)*100}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `<p class="text-center py-10 text-slate-400 text-sm">找不到符合搜尋條件的學生</p>`;
+            } else {
+                container.innerHTML = html;
+            }
+        }
+
+        // --- Stats ---
+        function updateStats() {
+            const total = studentsData.length;
+            document.getElementById('stat-total-students').innerText = `${total} 人`;
+            
+            if (total === 0) {
+                document.getElementById('stat-completed-all').innerText = `0 人`;
+                document.getElementById('stat-avg-progress').innerText = `0%`;
+                document.getElementById('stat-essay-rate').innerText = `0%`;
+                return;
+            }
+            
+            let allCompleted = 0;
+            let totalRounds = 0;
+            let essayCompleted = 0;
+            
+            studentsData.forEach(s => {
+                const count = s.completedRounds ? s.completedRounds.length : 0;
+                if (count === 9) allCompleted++;
+                totalRounds += count;
+                if (s.completedRounds && s.completedRounds.includes(9)) essayCompleted++;
+            });
+            
+            const avgProgress = Math.round((totalRounds / (total * 9)) * 100);
+            const essayRate = Math.round((essayCompleted / total) * 100);
+            
+            document.getElementById('stat-completed-all').innerText = `${allCompleted} 人`;
+            document.getElementById('stat-avg-progress').innerText = `${avgProgress}%`;
+            document.getElementById('stat-essay-rate').innerText = `${essayRate}% (${essayCompleted}人)`;
+        }
+
+        // --- Select Student ---
+        function selectStudent(studentId) {
+            const student = studentsData.find(s => s.id === studentId);
+            if (!student) return;
+            
+            selectedStudent = student;
+            
+            // Render on desktop
+            document.getElementById('details-placeholder').classList.add('hidden');
+            document.getElementById('details-content').classList.remove('hidden');
+            renderStudentList(); // refresh list active state
+            renderStudentDetails();
+            
+            // Check if mobile screen size
+            if (window.innerWidth < 768) {
+                openMobileDetail();
+            }
+        }
+
+        // --- Render Details Page ---
+        function renderStudentDetails() {
+            const s = selectedStudent;
+            if (!s) return;
+            
+            const compCount = s.completedRounds ? s.completedRounds.length : 0;
+            const progressPercent = Math.round((compCount / 9) * 100);
+            
+            document.getElementById('detail-avatar').innerText = s.avatar || '👶';
+            document.getElementById('detail-seat').innerText = s.seatNumber ? `座號 ${s.seatNumber}` : '座號 --';
+            document.getElementById('detail-name').innerText = s.name || '姓名';
+            
+            let timeStr = '未同步';
+            if (s.lastUpdated) {
+                const date = s.lastUpdated.toDate();
+                timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+            document.getElementById('detail-time').innerText = `最後同步時間：${timeStr}`;
+            
+            document.getElementById('detail-progress-percent').innerText = `${progressPercent}%`;
+            document.getElementById('detail-progress-bar').style.width = `${progressPercent}%`;
+            
+            // Render rounds grid check/uncheck indicators
+            const roundGrid = document.getElementById('detail-rounds-grid');
+            let roundHtml = "";
+            for (let i = 1; i <= 9; i++) {
+                const done = s.completedRounds && s.completedRounds.includes(i);
+                roundHtml += `
+                    <div class="p-2.5 rounded-xl border flex flex-col items-center justify-center text-center transition ${done ? 'bg-teal-50/50 border-teal-200 text-teal-700' : 'bg-slate-50 border-slate-200 text-slate-400'}">
+                        <span class="text-xs font-semibold">第 ${i} 回</span>
+                        <span class="text-sm mt-1">${done ? '🏆 已鎖' : '⭕ 缺'}</span>
+                    </div>
+                `;
+            }
+            roundGrid.innerHTML = roundHtml;
+            
+            // Setup radar chart
+            initDetailRadarChart(s.pirlsStats || [3.0, 3.0, 3.0, 3.0]);
+            
+            // Setup tabs
+            renderRoundTabs();
+            renderTabContent();
+        }
+
+        // --- PIRLS Radar Chart ---
+        function initDetailRadarChart(stats) {
+            const ctx = document.getElementById('detailsRadarChart');
+            if (!ctx) return;
+            
+            if (detailRadarChartInstance) {
+                detailRadarChartInstance.destroy();
+            }
+            
+            detailRadarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['擷取特定資訊', '推解直接結論', '詮釋整合', '檢驗評估'],
+                    datasets: [{
+                        label: '學習者歷程表現',
+                        data: stats,
+                        fill: true,
+                        backgroundColor: 'rgba(15, 118, 110, 0.25)',
+                        borderColor: '#0F766E',
+                        pointBackgroundColor: '#0F766E',
+                        pointBorderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0,0,0,0.06)' },
+                            grid: { color: 'rgba(0,0,0,0.06)' },
+                            suggestedMin: 1.0,
+                            suggestedMax: 5.0,
+                            ticks: { stepSize: 1.0, display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // --- Render Tabs & Contents ---
+        function renderRoundTabs() {
+            const container = document.getElementById('round-tabs-container');
+            let html = "";
+            rounds.forEach(r => {
+                const isActive = selectedRoundTab === r.id;
+                const isCompleted = selectedStudent.completedRounds && selectedStudent.completedRounds.includes(r.id);
+                html += `
+                    <button onclick="selectRoundTab(${r.id})" class="px-3.5 py-1.5 rounded-xl font-bold text-xs flex-shrink-0 transition flex items-center space-x-1 ${isActive ? 'active-tab' : 'text-slate-600 hover:bg-slate-100'}">
+                        <span>第 ${r.id} 回</span>
+                        <span>${isCompleted ? '🏆' : '⭕'}</span>
+                    </button>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function selectRoundTab(tabId) {
+            selectedRoundTab = tabId;
+            renderRoundTabs();
+            renderTabContent();
+        }
+
+        function renderTabContent() {
+            const area = document.getElementById('tab-content-area');
+            const s = selectedStudent;
+            const r = rounds.find(item => item.id === selectedRoundTab);
+            
+            if (!s || !r) return;
+            
+            const isCompleted = s.completedRounds && s.completedRounds.includes(r.id);
+            const statusBadge = isCompleted ? 
+                `<span class="px-2 py-0.5 bg-teal-100 text-teal-700 text-[10px] rounded font-bold">已解鎖勳章</span>` :
+                `<span class="px-2 py-0.5 bg-rose-100 text-rose-700 text-[10px] rounded font-bold">尚未完成</span>`;
+                
+            if (r.id === 9) {
+                // Essay round
+                const essayText = s.answers ? s.answers['round-9-writing'] : '';
+                if (!essayText) {
+                    area.innerHTML = `
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                                <h4 class="font-bold text-slate-800">${r.title} : ${r.qTitle}</h4>
+                                ${statusBadge}
+                            </div>
+                            <p class="text-slate-400 italic text-sm text-center py-10">學生尚未在此區塊輸入內容</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const patterns = ["雖然", "但是", "不僅", "更", "一邊", "如果", "就", "為了", "決定", "只要", "一開始", "後來"];
+                const vocabularies = ["興奮期待", "滿心歡喜", "心灰意冷", "手忙腳亂", "持之以恆", "專心致志", "勇往直前", "半途而廢"];
+                
+                let detectedPats = patterns.filter(p => essayText.includes(p));
+                let detectedVocs = vocabularies.filter(v => essayText.includes(v));
+                
+                area.innerHTML = `
+                    <div class="space-y-5">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <h4 class="font-bold text-slate-800">${r.title} : ${r.qTitle}</h4>
+                            ${statusBadge}
+                        </div>
+                        
+                        <div class="bg-teal-50/50 border border-teal-100 rounded-2xl p-4 flex justify-between text-xs text-teal-800">
+                            <div>作文總字數: <span class="font-bold text-sm text-teal-900">${essayText.length} 字</span> (標準：150字)</div>
+                            <div>使用句型: <span class="font-bold text-sm text-teal-900">${detectedPats.length} 個</span></div>
+                            <div>好詞好句: <span class="font-bold text-sm text-teal-900">${detectedVocs.length} 個</span></div>
+                        </div>
+                        
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 mb-2">【寫作分析工具箱比對結果】</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 text-xs">
+                                    <p class="font-bold text-slate-600 mb-1.5">已選用句型:</p>
+                                    <div class="flex flex-wrap gap-1.5">
+                                        ${detectedPats.length > 0 ? 
+                                            detectedPats.map(p => `<span class="bg-teal-100 text-teal-800 px-2 py-0.5 rounded font-bold">${p}</span>`).join('') : 
+                                            '<span class="text-slate-400">無</span>'}
+                                    </div>
+                                </div>
+                                <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 text-xs">
+                                    <p class="font-bold text-slate-600 mb-1.5">已選用詞彙:</p>
+                                    <div class="flex flex-wrap gap-1.5">
+                                        ${detectedVocs.length > 0 ? 
+                                            detectedVocs.map(v => `<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">${v}</span>`).join('') : 
+                                            '<span class="text-slate-400">無</span>'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border-t border-slate-100 pt-4">
+                            <label class="text-xs font-bold text-slate-400 block mb-2">【作文完整內容】</label>
+                            <div class="bg-slate-50 rounded-2xl p-4 text-slate-800 text-base leading-relaxed tracking-wider whitespace-pre-wrap select-all font-serif min-h-[200px] border border-slate-100">
+                                ${essayText}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Reading rounds 1-8
+                let questionsHtml = "";
+                r.questions.forEach((qText, qIdx) => {
+                    const qId = `r${r.id}q${qIdx + 1}`;
+                    let rawAnswer = "";
+                    
+                    if (r.id === 3 && qIdx === 1) {
+                        // Sequencing question (r3q2)
+                        rawAnswer = getSequenceAnswer(s.answers || {}, qId);
+                    } else {
+                        rawAnswer = s.answers ? s.answers[qId] : "";
+                        rawAnswer = rawAnswer ? rawAnswer.trim().replace(/\n/g, '<br>') : '<span class="text-red-400">未作答</span>';
+                    }
+                    
+                    questionsHtml += `
+                        <div class="bg-slate-50/60 border border-slate-100 rounded-2xl p-4 space-y-2">
+                            <p class="font-bold text-slate-700 text-sm">${qText}</p>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3.5 text-slate-800 text-sm leading-relaxed tracking-wide min-h-[50px]">
+                                ${rawAnswer}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                area.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <div>
+                                <h4 class="font-bold text-slate-800">${r.title}</h4>
+                                <p class="text-[10px] text-teal-600 font-medium">主題：${r.qTitle}</p>
+                            </div>
+                            ${statusBadge}
+                        </div>
+                        
+                        <div class="space-y-4 pt-2">
+                            ${questionsHtml}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function getSequenceAnswer(answers, qId) {
+            const steps = [
+                "讓茶葉發酵，進行高溫處理，以保留香氣。",
+                "將剛摘下來的茶葉晒過，以減少水分。",
+                "成為風味美好的烏龍茶。",
+                "將茶葉揉成球形，進行乾燥和烘焙。"
+            ];
+            let ordered = [];
+            for (let i = 1; i <= 4; i++) {
+                let stepIdx = -1;
+                for (let j = 0; j < 4; j++) {
+                    if (answers[`${qId}_step${j}`] === String(i)) {
+                        stepIdx = j;
+                        break;
+                    }
+                }
+                if (stepIdx !== -1) {
+                    ordered.push(`第 ${i} 步：${steps[stepIdx]}`);
+                }
+            }
+            return ordered.length > 0 ? ordered.join('<br>') : '<span class="text-red-400">未作答</span>';
+        }
+
+        // --- Mobile modal handler ---
+        function openMobileDetail() {
+            const modal = document.getElementById('mobile-detail-modal');
+            const body = document.getElementById('mobile-detail-modal-body');
+            const content = document.getElementById('details-content');
+            
+            body.innerHTML = content.innerHTML;
+            modal.classList.remove('hidden');
+            
+            // Re-render chart on mobile modal
+            const stats = selectedStudent.pirlsStats || [3.0, 3.0, 3.0, 3.0];
+            
+            setTimeout(() => {
+                const mCtx = body.querySelector('#detailsRadarChart');
+                if (mCtx) {
+                    new Chart(mCtx, {
+                        type: 'radar',
+                        data: {
+                            labels: ['擷取特定資訊', '推解直接結論', '詮釋整合', '檢驗評估'],
+                            datasets: [{
+                                data: stats,
+                                fill: true,
+                                backgroundColor: 'rgba(15, 118, 110, 0.25)',
+                                borderColor: '#0F766E',
+                                pointBackgroundColor: '#0F766E',
+                                pointBorderColor: '#fff',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                r: {
+                                    suggestedMin: 1.0,
+                                    suggestedMax: 5.0,
+                                    ticks: { display: false }
+                                }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                }
+                
+                // Re-bind click events for tabs in mobile view
+                const tabButtons = body.querySelectorAll('#round-tabs-container button');
+                tabButtons.forEach((btn, idx) => {
+                    btn.onclick = () => {
+                        selectedRoundTab = idx + 1;
+                        renderRoundTabs();
+                        renderTabContent();
+                        
+                        body.querySelector('#tab-content-area').innerHTML = document.getElementById('tab-content-area').innerHTML;
+                        
+                        tabButtons.forEach((b, bIdx) => {
+                            if (bIdx === idx) {
+                                b.className = "px-3.5 py-1.5 rounded-xl font-bold text-xs flex-shrink-0 transition flex items-center space-x-1 active-tab";
+                            } else {
+                                b.className = "px-3.5 py-1.5 rounded-xl font-bold text-xs flex-shrink-0 transition flex items-center space-x-1 text-slate-600 hover:bg-slate-100";
+                            }
+                        });
+                    };
+                });
+            }, 50);
+        }
+
+        function closeMobileDetail() {
+            document.getElementById('mobile-detail-modal').classList.add('hidden');
+        }
+
+        // --- Export CSV ---
+        function exportCSV() {
+            if (studentsData.length === 0) {
+                alert("目前尚無資料可匯出！");
+                return;
+            }
+            
+            let headers = [
+                "座號", "姓名", "已完成回次數", 
+                "雷達-擷取", "雷達-推論", "雷達-整合", "雷達-評估"
+            ];
+            
+            rounds.forEach(r => {
+                if (r.id < 9) {
+                    r.questions.forEach((_, qIdx) => {
+                        headers.push(`${r.title}_第${qIdx+1}題`);
+                    });
+                } else {
+                    headers.push("第九回引導寫作作文");
+                    headers.push("作文總字數");
+                }
+            });
+            
+            let csvRows = [headers.join(",")];
+            
+            studentsData.forEach(s => {
+                let row = [];
+                row.push(`"${s.seatNumber || ''}"`);
+                row.push(`"${(s.name || '').replace(/"/g, '""')}"`);
+                row.push(s.completedRounds ? s.completedRounds.length : 0);
+                
+                const stats = s.pirlsStats || [0, 0, 0, 0];
+                row.push(stats[0]);
+                row.push(stats[1]);
+                row.push(stats[2]);
+                row.push(stats[3]);
+                
+                rounds.forEach(r => {
+                    if (r.id < 9) {
+                        r.questions.forEach((_, qIdx) => {
+                            const qId = `r${r.id}q${qIdx+1}`;
+                            let ansVal = "";
+                            if (r.id === 3 && qIdx === 1) {
+                                ansVal = getPlainSequenceAnswer(s.answers || {}, qId);
+                            } else {
+                                ansVal = s.answers ? s.answers[qId] : "";
+                            }
+                            row.push(`"${(ansVal || '').trim().replace(/"/g, '""').replace(/\n/g, ' ')}"`);
+                        });
+                    } else {
+                        const essayText = s.answers ? s.answers['round-9-writing'] : '';
+                        row.push(`"${(essayText || '').trim().replace(/"/g, '""').replace(/\n/g, ' ')}"`);
+                        row.push(essayText ? essayText.length : 0);
+                    }
+                });
+                
+                csvRows.push(row.join(","));
+            });
+            
+            const csvContent = "\uFEFF" + csvRows.join("\n");
+            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+            const link = document.createElement("a");
+            
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", `三年五班_暑假國語學習單作答統計_${new Date().toISOString().slice(0,10)}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        function getPlainSequenceAnswer(answers, qId) {
+            const steps = [
+                "讓茶葉發酵(高溫保留香氣)",
+                "曬茶葉(減少水分)",
+                "製成風味美好的烏龍茶",
+                "揉成球形(乾燥烘焙)"
+            ];
+            let ordered = [];
+            for (let i = 1; i <= 4; i++) {
+                let stepIdx = -1;
+                for (let j = 0; j < 4; j++) {
+                    if (answers[`${qId}_step${j}`] === String(i)) {
+                        stepIdx = j;
+                        break;
+                    }
+                }
+                if (stepIdx !== -1) {
+                    ordered.push(`${i}.${steps[stepIdx]}`);
+                }
+            }
+            return ordered.join(" -> ");
+        }
+    </script>
+</body>
+</html>

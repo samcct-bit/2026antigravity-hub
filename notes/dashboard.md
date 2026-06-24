@@ -45,7 +45,9 @@
 | ☕ **金成淬精品咖啡入口平台** | `[獨立倉庫] 2026coffeewebsite` | [🔗 點擊開啟](https://samcct-bit.github.io/2026coffeewebsite/) | **[NEW] 整合 13 款熟豆與職人手沖計算器的專屬門戶網站** |
 | 🧮 數學救援遊戲 (3-2-7) | `public/math game/mathgame3-2-7` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/math%20game/mathgame3-2-7/index.html) | 具備防重練與重置歷史功能 |
 | ⏱️ **數學時間遊戲 (3-2-8)** | `public/math game/timegame3-2-8` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/math%20game/timegame3-2-8/index.html) | **[NEW] 今日上線之全新數學遊戲** |
-| 📖 **暑假作業國語學習單** | `public/chinese worksheet/...` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/chinese%20worksheet/暑假作業_國語閱讀與寫作學習單.html) | **[NEW] 支援 A4 100% 比例列印之滿分範文版** |
+| 📖 **暑假作業國語學習單** | `public/chinese worksheet/...` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/chinese%20worksheet/暑假作業_國語閱讀與寫作學習單.html) | **支援 A4 100% 比例列印之滿分範文版** |
+| 💻 **國語互動工作坊 (學生端)** | `public/chinese_workshop.html` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/chinese_workshop.html) | **[NEW] 支援座號、姓名自訂與 Firebase Firestore 雲端自動同步** |
+| 👩‍🏫 **國語互動工作坊 (教師端)** | `public/chinese_workshop_teacher.html` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/chinese_workshop_teacher.html) | **[NEW] 即時後台，密碼防護(305)，支援雷達圖閱卷與一鍵 CSV 匯出** |
 | 🙇 **叩首的意義與方法** | `public/kowtow-bowing/...` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/kowtow-bowing/index.html) | **[NEW] 整合 4 份簡報與 PDF 的互動式網頁簡報** |
 | ⏱️ **考場專用倒數計時器** | `public/exam-timer` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/exam-timer/index.html) | **[NEW] 國小考場專用倒數計時器，大字體倒數及自訂科目/時間，Netlify網域：https://school-test-clock.netlify.app** |
 
@@ -55,6 +57,11 @@
 
 ## 🏆 最近完成事項
 
+- 成功開發並實作「暑假國語閱讀理解與寫作互動工作坊」的 Firebase Firestore 雲端資料庫串接（方案三）與教師端管理後台：
+  * **學生端升級**：支援個人「座號」設定與專屬 UUID 追蹤，加入打字防抖（Debounce）2秒自動同步至雲端機制，並提供即時「☁️ 雲端已同步 / 🔄 同步中」狀態狀態燈。
+  * **教師管理端開發 (public/chinese_workshop_teacher.html)**：加入密碼保護屏障（預設 `305`），支援即時訂閱（Real-time Subscription）全班名冊與座號自動排序，點擊即可調閱 PIRLS 雷達圖與答題詳情。
+  * **作文工具箱與字數統計**：針對第九回作文，教師端能直觀展示學生作文總字數、使用的好詞好句與常用句型分析。
+  * **一鍵匯出 CSV**：支援為教師匯出全班資料成 CSV 檔案，特別注入 UTF-8 BOM，解決微軟 Excel 開啟亂碼問題。
 - 成功整合 4 份「叩首的意義與方法」教材與 PDF 講義大綱，利用 Reveal.js + Firebase 成功建構暗色系禪意科技風格的「叩首的意義與方法」網頁式互動簡報，內建即時文字雲與觀念投票功能，並通過 Playwright 本地自動化驗證。
 - 成功設計「甜味藥劑學：代糖與糖類大對決」互動網頁，整合 HSL 擬物玻璃態設計與**互動式甜度換算器**，並成功部署至 Firebase Hosting (https://my-teaching-tools-01.web.app)。
 - 成功從最新的 NotebookLM 筆記本「The Apothecary of Sweetness: A Comparative Sugar Study」中下載並生成了高畫質的 **橫式與直式甜度強度對比資訊圖表**（已安全存放至 `assets/` 與 `public/assets/` 目錄中）。
