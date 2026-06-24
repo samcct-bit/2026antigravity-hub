@@ -78,7 +78,7 @@
             <h2 class="text-2xl font-bold text-slate-800 mb-2">請輸入教師登入密碼</h2>
             <p class="text-sm text-slate-500 mb-6">請輸入班級專屬密碼以瀏覽學生學習進度與答案。</p>
             <form onsubmit="verifyPasscode(event)" class="space-y-4">
-                <input type="password" id="passcode-input" placeholder="請輸入密碼 (預設: 305)" class="w-full text-center px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 font-bold tracking-widest text-lg bg-slate-50">
+                <input type="password" id="passcode-input" placeholder="請輸入密碼" class="w-full text-center px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 font-bold tracking-widest text-lg bg-slate-50">
                 <p id="passcode-error" class="text-xs text-red-500 font-medium hidden">⚠️ 密碼錯誤，請重新輸入</p>
                 <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-teal-600/20 transition active:scale-98">驗證登入</button>
             </form>
@@ -319,7 +319,7 @@
             const val = document.getElementById('passcode-input').value;
             const errorEl = document.getElementById('passcode-error');
             
-            if (val === '305') {
+            if (val === 'vgtrn6744') {
                 sessionStorage.setItem('teacher_logged_in', 'true');
                 errorEl.classList.add('hidden');
                 unlockDashboard();
