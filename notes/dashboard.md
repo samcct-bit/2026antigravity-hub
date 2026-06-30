@@ -111,6 +111,13 @@
 
 ## 📅 每日日誌
  
+- **2026-06-30**：🟢 **完成本機所有專案備份推送與最新移植策略更新**。
+  - **各專案狀態普查**：對本機 10 個專案目錄進行全面 Git 與同步檢測。
+  - **Git 備份推送與 Repo 重建**：
+    - 成功推送 `2026hyperframes` 本地提交。
+    - 針對權限不足 (403) 的 `2026antigravity_voice` 與 `2026padletcontrol`，將原 remote 重新命名為 `upstream`，並在個人帳號下建立 [samcct-bit/voxcpm2-voice-cloner](https://github.com/samcct-bit/voxcpm2-voice-cloner) 與 [samcct-bit/padlet-mcp](https://github.com/samcct-bit/padlet-mcp) 公開倉庫，完成所有本地 Commit 的備份與遠端同步。
+  - **移植指南精鍊**：更新並提供包含 GITHUB_TOKEN 快取衝突解法及大型多媒體檔案備份排除的「Antigravity 2.0 系統移植與備份完整策略」，完成萬全準備。
+
 - **2026-06-20**：🟢 **完成 GitHub 憑證過期疑慮排解與新電腦移轉計畫指南撰寫**。
   - **GitHub 憑證處理**：排查並確認本機已使用 Keychain/OAuth 機制（`gho_` Token），不受 `gh-cli` 傳統個人存取金鑰（PAT）過期影響。使用者可安全忽略或移除該金鑰。
   - **新舊電腦移轉方案**：撰寫 6 大核心步驟（備份、新機環境、設定還原、專案依賴安裝、重新授權、驗證測試），並提醒使用者名稱變更及安全隔離原則，完成完整移轉指引。
