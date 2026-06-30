@@ -27,6 +27,7 @@
   * [x] HTML 互動簡報生成技能的 AntiGravity 適配（免金鑰內建生圖）與全域技能註冊
   * [x] YouTube 字幕自動提取與 Obsidian 三層式二腦知識庫技能實裝與初始化下載
   * [x] 國小考場專用倒數計時器網頁重建與 Netlify/GitHub Pages 雙向部署
+  * [x] 升小四無痛接軌暑假實戰陪伴工具箱開發與部署
 
 
 
@@ -50,6 +51,8 @@
 | 👩‍🏫 **國語互動工作坊 (教師端)** | `public/chinese_workshop_teacher.html` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/chinese_workshop_teacher.html) | **[NEW] 即時後台，密碼防護(305)，支援雷達圖閱卷與一鍵 CSV 匯出** |
 | 🙇 **叩首的意義與方法** | `public/kowtow-bowing/...` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/kowtow-bowing/index.html) | **[NEW] 整合 4 份簡報與 PDF 的互動式網頁簡報** |
 | ⏱️ **考場專用倒數計時器** | `public/exam-timer` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/exam-timer/index.html) | **[NEW] 國小考場專用倒數計時器，大字體倒數及自訂科目/時間，Netlify網域：https://school-test-clock.netlify.app** |
+| 👶 **升小四無痛接軌陪伴箱** | `public/summer-companion` | [🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/summer-companion/index.html) | **[NEW] 包含每日時間小卡、5W1H 閱讀思考卡與 30 貼紙集點板的家長數位手冊與實體 A4 完美列印卡片組** |
+
 
 *註：原本 Netlify 中的 `20260205board` 為手動離線部署之舊版專案，並未包含在本儲存庫與本次移轉範圍中。*
 
@@ -57,7 +60,12 @@
 
 ## 🏆 最近完成事項
 
+- 成功為家長開發並優化「升小四無痛接軌 - 暑假實戰陪伴講義與學習模板」網頁應用程式：
+  * **陪伴指引深化**：拆解四大微習慣的教育意義與三升四痛點，提供鷹架提問對話指引與陪伴心法。
+  * **數位工具箱實作**：包含可記錄的「時間規劃小卡」、可生成 5W1H 結構思考卡片的「閱讀紀錄器」以及 30 點「集點獎勵板」，全數支援 LocalStorage 自動儲存。
+  * **完美列印 A4 整合**：利用 `@media print` 實現無邊距 100% 比例列印，支援「每日小卡（四合一版）」與「閱讀卡（二合一版）」，解決家用印表機尺寸縮水失真問題。
 - 成功開發並實作「暑假國語閱讀理解與寫作互動工作坊」的 Firebase Firestore 雲端資料庫串接（方案三）與教師端管理後台：
+
   * **學生端升級**：支援個人「座號」設定與專屬 UUID 追蹤，加入打字防抖（Debounce）2秒自動同步至雲端機制，並提供即時「☁️ 雲端已同步 / 🔄 同步中」狀態狀態燈。
   * **教師管理端開發 (public/chinese_workshop_teacher.html)**：加入密碼保護屏障（預設 `305`），支援即時訂閱（Real-time Subscription）全班名冊與座號自動排序，點擊即可調閱 PIRLS 雷達圖與答題詳情。
   * **作文工具箱與字數統計**：針對第九回作文，教師端能直觀展示學生作文總字數、使用的好詞好句與常用句型分析。

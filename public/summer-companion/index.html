@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>升小四無痛接軌 - 暑假實戰陪伴工具箱</title>
+  <meta name="description" content="專為三升四國小學生與家長設計的暑假陪伴指南。包含四大微習慣養成計畫、每日時間規劃小卡、5W1H 閱讀思考紀錄卡與集點獎勵板，支持 A4 完美列印，陪伴孩子無痛建立自我管理慣性。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Screen Header -->
+  <header class="no-print screen-header">
+    <div class="header-container">
+      <div class="header-logo">
+        <span class="logo-emoji">🎓</span>
+        <div class="logo-text">
+          <h1>升小四無痛接軌</h1>
+          <p>暑假實戰陪伴講義與學習模板</p>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <button class="nav-btn active" id="btn-guide" onclick="switchTab('guide')">📖 陪伴指南</button>
+        <button class="nav-btn" id="btn-tools" onclick="switchTab('tools')">🛠️ 互動工具箱</button>
+        <button class="nav-btn" id="btn-print" onclick="switchTab('print')">🖨️ A4 列印區</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- TAB 1: PARENT GUIDE -->
+    <section id="tab-guide" class="tab-content active no-print">
+      <div class="hero-section">
+        <div class="hero-text">
+          <span class="badge">給家長的實用操作手冊</span>
+          <h2>用黃金 60 天，陪伴孩子建立自主管理慣性</h2>
+          <p>四年級是國小學習的分水嶺。課程內容從「具體」走向「抽象」，文章篇幅變長，數學運算步驟增加。這個暑假，讓我們透過<b>「四大微習慣」</b>，溫柔且堅定地為孩子搭起學習的鷹架。</p>
+          <div class="hero-actions">
+            <button class="cta-btn" onclick="switchTab('tools')">開始使用互動工具</button>
+            <button class="secondary-btn" onclick="switchTab('print')">直接去列印紙本</button>
+          </div>
+        </div>
+        <div class="hero-image-wrapper">
+          <img src="cover.png" alt="親子共讀與時間規劃溫馨插圖" class="hero-image">
+        </div>
+      </div>
+
+      <!-- Core Teaching Goals -->
+      <div class="section-title">
+        <h3>🎯 核心教學目標與重點</h3>
+      </div>
+      <div class="goals-grid">
+        <div class="goal-card">
+          <div class="goal-icon">🧭</div>
+          <h4>建立自我管理慣性</h4>
+          <p>升上四年級，學習不再只是單純被動吸收，更需要自我管理。透過暑假規律的生活步調，陪伴孩子無痛建立自主學習的慣性，有效降低開學後的親師生摩擦與焦慮。</p>
+        </div>
+        <div class="goal-card">
+          <div class="goal-icon">🌱</div>
+          <h4>培養四大微習慣</h4>
+          <p>將抽象的「閱讀力、思考力、整理力、時間管理」等進階學習能力，拆解轉化為每日可執行的具體微習慣。進步最快的往往不是最聰明的，而是願意堅持習慣的孩子。</p>
+        </div>
+      </div>
+
+      <!-- Four Micro-Habits Detailed Guide -->
+      <div class="section-title">
+        <h3>📊 暑假四大微習慣計畫</h3>
+        <p class="subtitle">家長是孩子學習的「引導教練」，透過鷹架提問（Scaffolding）激發思考</p>
+      </div>
+
+      <div class="habits-accordion">
+        <!-- Habit 1 -->
+        <div class="habit-item">
+          <div class="habit-header" onclick="toggleAccordion(0)">
+            <span class="habit-num">01</span>
+            <div class="habit-title-group">
+              <span class="habit-tag tag-read">閱讀力 / 思考力</span>
+              <h4>每天閱讀 20 分鐘</h4>
+            </div>
+            <span class="accordion-arrow">▼</span>
+          </div>
+          <div class="habit-body">
+            <div class="habit-detail-grid">
+              <div class="detail-block">
+                <h5>📋 具體任務（每天做什麼）</h5>
+                <p>每天定時安靜閱讀 20 分鐘，不限題材（適合三升四的橋梁書、少年小說、知識漫畫或科學雜誌皆可）。重點是養成定時安靜閱讀的專注力。</p>
+              </div>
+              <div class="detail-block">
+                <h5>💬 家長引導（鷹架提問）</h5>
+                <ul>
+                  <li>「這本書裡最有趣或最讓你驚訝的一句話/一幕是什麼？」</li>
+                  <li>「如果是你，遇到主角這個狀況，你會怎麼解決這個問題？」</li>
+                </ul>
+              </div>
+              <div class="detail-block">
+                <h5>💡 三升四關鍵提醒</h5>
+                <p>四年級開始需要面對長文閱讀。此階段應逐漸減少拼音輔助，增加對詞義、段落大意的理解，可引導孩子多讀科普書或世界名著簡短版。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Habit 2 -->
+        <div class="habit-item">
+          <div class="habit-header" onclick="toggleAccordion(1)">
+            <span class="habit-num">02</span>
+            <div class="habit-title-group">
+              <span class="habit-tag tag-notes">整理力</span>
+              <h4>練習筆記（記錄探索本）</h4>
+            </div>
+            <span class="accordion-arrow">▼</span>
+          </div>
+          <div class="habit-body">
+            <div class="habit-detail-grid">
+              <div class="detail-block">
+                <h5>📋 具體任務（每天做什麼）</h5>
+                <p>準備一本空白「探索本」。出遊、看紀錄片、閱讀完後，用文字或手繪圖畫，在探索本上記下或畫出 3 個重點，訓練抓取關鍵資訊的能力。</p>
+              </div>
+              <div class="detail-block">
+                <h5>💬 家長引導（鷹架提問）</h5>
+                <ul>
+                  <li>「你能用 3 句話總結今天看到的/學到的事嗎？」</li>
+                  <li>「如果我們要幫今天的行程或這本書下一個最帥的標題，你會寫什麼？」</li>
+                </ul>
+              </div>
+              <div class="detail-block">
+                <h5>💡 三升四關鍵提醒</h5>
+                <p>不要強求完美的筆記。可以用心智圖、插畫格子、甚至是符號來記錄。四年級開始需要組織零散的知識，記錄探索本是很好的橋樑。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Habit 3 -->
+        <div class="habit-item">
+          <div class="habit-header" onclick="toggleAccordion(2)">
+            <span class="habit-num">03</span>
+            <div class="habit-title-group">
+              <span class="habit-tag tag-math">鞏固學力</span>
+              <h4>維持計算 5-10 題</h4>
+            </div>
+            <span class="accordion-arrow">▼</span>
+          </div>
+          <div class="habit-body">
+            <div class="habit-detail-grid">
+              <div class="detail-block">
+                <h5>📋 具體任務（每天做什麼）</h5>
+                <p>每天完成 5-10 題基礎運算（如三下的小數加減、三位數乘除），重質不重量。嚴格要求「數字對齊、寫出直式、確實驗算」。</p>
+              </div>
+              <div class="detail-block">
+                <h5>💬 家長引導（鷹架提問）</h5>
+                <ul>
+                  <li>「我們來用計時器挑戰，看今天能不能比昨天快 10 秒且全對？」</li>
+                  <li>「這一題的直式位置對得好漂亮，你是怎麼想出這個解法的？」</li>
+                </ul>
+              </div>
+              <div class="detail-block">
+                <h5>💡 三升四關鍵提醒</h5>
+                <p>四年級數學會大量接觸大數、乘除法進階直式。三升四暑假的關鍵是「確保位置對齊（位數觀念）」與「運算的精準度」，每天算 5 題全對，遠比算 50 題卻錯漏百出更有效。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Habit 4 -->
+        <div class="habit-item">
+          <div class="habit-header" onclick="toggleAccordion(3)">
+            <span class="habit-num">04</span>
+            <div class="habit-title-group">
+              <span class="habit-tag tag-time">時間管理</span>
+              <h4>睡前規劃時間小卡</h4>
+            </div>
+            <span class="accordion-arrow">▼</span>
+          </div>
+          <div class="habit-body">
+            <div class="habit-detail-grid">
+              <div class="detail-block">
+                <h5>📋 具體任務（每天做什麼）</h5>
+                <p>每天睡前花 5 分鐘，寫下或畫出「明天要做的 3 件重要事」，並預估每件事需要花幾分鐘。隔天睡前覆盤挑戰結果。</p>
+              </div>
+              <div class="detail-block">
+                <h5>💬 家長引導（鷹架提問）</h5>
+                <ul>
+                  <li>「你覺得明天這件事需要花多少時間完成？包含收拾嗎？」</li>
+                  <li>「明天先做這三件的哪一件，後面的時間安排會比較順暢？」</li>
+                </ul>
+              </div>
+              <div class="detail-block">
+                <h5>💡 三升四關鍵提醒</h5>
+                <p>孩子一開始的時間預估一定不準確。家長請扮演觀察者，讓孩子體驗「時間沒預估好而導致想玩的時間被壓縮」的自然後果，進而學會自我調整。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expert companion mindsets -->
+      <div class="section-title">
+        <h3>💡 專家關鍵提醒：陪伴心法</h3>
+      </div>
+      <div class="mindsets-container">
+        <div class="mindset-card">
+          <div class="mindset-header">
+            <span class="mindset-icon">❤️</span>
+            <h5>容錯率重於完美</h5>
+          </div>
+          <p>剛開始孩子一定會抗拒或拖延，這是非常正常的。家長的責任是<b>「陪伴建立規律」</b>，而不是「確保零錯誤」。多肯定他的嘗試與堅持，不糾結於一時的偷懶。</p>
+        </div>
+        <div class="mindset-card">
+          <div class="mindset-header">
+            <span class="mindset-icon">🤝</span>
+            <h5>避免過度干涉</h5>
+          </div>
+          <p>時間規劃初期一定不準，請讓孩子體驗<b>「沒估好時間而需承擔的自然後果」</b>（例如：預估 30 分鐘寫完作業，結果花了 1 小時，導致玩樂時間減少），而非家長直接出手碎念、干涉或代勞。</p>
+        </div>
+        <div class="mindset-card">
+          <div class="mindset-header">
+            <span class="mindset-icon">🪜</span>
+            <h5>循序漸進不貪多</h5>
+          </div>
+          <p>若孩子一開始無法接受四大任務，請遵循循序漸進原則。可先從最簡單的<b>「每天閱讀」</b>及<b>「時間規劃小卡」</b>兩項開始，建立信心與信任感後，再慢慢增加其他項目。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: INTERACTIVE DIGITAL TOOLBOX -->
+    <section id="tab-tools" class="tab-content no-print">
+      <div class="tools-layout">
+        
+        <!-- Left Side: Interactive Forms -->
+        <div class="tools-forms">
+          
+          <!-- Tool A: Time Planner Card -->
+          <div class="tool-section-card">
+            <div class="tool-card-title">
+              <span class="tool-icon">🕒</span>
+              <div>
+                <h4>每日時間規劃小卡</h4>
+                <p>睡前規劃明天的 3 件重要大事，並在隔天進行覆盤</p>
+              </div>
+            </div>
+
+            <div class="planner-form">
+              <div class="form-group-title">🌅 明天最重要的 3 件事：</div>
+              
+              <div class="task-input-row">
+                <span class="task-num">1.</span>
+                <input type="text" id="task1-name" placeholder="例如：完成國語暑假作業第 4 頁" class="input-task">
+                <div class="time-input-group">
+                  預估：<input type="number" id="task1-est" min="5" step="5" class="input-time"> 分鐘
+                </div>
+              </div>
+              
+              <div class="task-input-row">
+                <span class="task-num">2.</span>
+                <input type="text" id="task2-name" placeholder="例如：複習數學小數計算直式" class="input-task">
+                <div class="time-input-group">
+                  預估：<input type="number" id="task2-est" min="5" step="5" class="input-time"> 分鐘
+                </div>
+              </div>
+              
+              <div class="task-input-row">
+                <span class="task-num">3.</span>
+                <input type="text" id="task3-name" placeholder="例如：安靜閱讀《神奇樹屋》20分鐘" class="input-task">
+                <div class="time-input-group">
+                  預估：<input type="number" id="task3-est" min="5" step="5" class="input-time"> 分鐘
+                </div>
+              </div>
+
+              <div class="form-group-title divider-top">🏁 實際挑戰結果（隔日覆盤）：</div>
+              
+              <div class="review-row">
+                <label class="radio-label">
+                  <input type="radio" name="challenge-res" value="ontime" id="res-ontime">
+                  <span class="radio-custom"></span> 準時完成，我真棒！
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="challenge-res" value="overtime" id="res-overtime">
+                  <span class="radio-custom"></span> 比預期久，下次改進的地方：
+                </label>
+              </div>
+              
+              <textarea id="challenge-note" placeholder="寫下覆盤心得：例如分心了、事情比想像中難、或者因為專注而提早寫完了！" class="review-textarea"></textarea>
+
+              <div class="action-row">
+                <button class="save-btn" onclick="saveDailyPlanner()">💾 儲存今日規劃</button>
+                <button class="clear-btn" onclick="clearDailyInputs()">🔄 清除重填</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tool B: Reading Card (5W1H) -->
+          <div class="tool-section-card">
+            <div class="tool-card-title">
+              <span class="tool-icon">📚</span>
+              <div>
+                <h4>閱讀思考紀錄卡 (5W1H)</h4>
+                <p>每週一篇，用 5W1H 架構幫助孩子結構化地整理故事重點</p>
+              </div>
+            </div>
+
+            <div class="reading-form">
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label for="book-title">📖 書名/文章名</label>
+                  <input type="text" id="book-title" placeholder="請輸入書名">
+                </div>
+                <div class="form-field">
+                  <label for="book-who">👤 主角是誰 (Who)</label>
+                  <input type="text" id="book-who" placeholder="故事裡的主要角色是誰？">
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label for="book-what">⚡ 發生什麼事 (What)</label>
+                <input type="text" id="book-what" placeholder="故事裡發生了什麼主要事件或衝突？">
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label for="book-where">📍 在哪裡發生 (Where)</label>
+                  <input type="text" id="book-where" placeholder="故事發生的地點或背景？">
+                </div>
+                <div class="form-field">
+                  <label for="book-when">🕒 什麼時候發生 (When)</label>
+                  <input type="text" id="book-when" placeholder="故事發生的時間或時代？">
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label for="book-why">❓ 為什麼會這樣 (Why)</label>
+                <input type="text" id="book-why" placeholder="主角為什麼會遇到這個問題？或為什麼要這麼做？">
+              </div>
+
+              <div class="form-field">
+                <label for="book-how">💡 最後怎麼解決 (How)</label>
+                <input type="text" id="book-how" placeholder="問題最後是怎麼被解決的？故事的結局是什麼？">
+              </div>
+
+              <div class="form-field">
+                <label for="book-thoughts">💭 我的心得或疑問</label>
+                <textarea id="book-thoughts" placeholder="讀完這本書，你學到了什麼？或有什麼問題想問主角嗎？"></textarea>
+              </div>
+
+              <div class="action-row">
+                <button class="save-btn" onclick="generateReadingCard()">🎨 產生思考卡片</button>
+                <button class="clear-btn" onclick="clearReadingInputs()">🔄 清除重填</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Sticker Board & Live Previews -->
+        <div class="tools-side">
+          
+          <!-- Reward & Sticker Board -->
+          <div class="tool-section-card sticker-card">
+            <div class="tool-card-title">
+              <span class="tool-icon">🎁</span>
+              <div>
+                <h4>暑假專屬集點進度條</h4>
+                <p>每完成一日時間規劃或閱讀卡即可集點，兌換親子專屬獎勵！</p>
+              </div>
+            </div>
+            
+            <div class="sticker-counter-display">
+              目前已累積：<span id="sticker-count-num">0</span> 個貼紙
+            </div>
+
+            <!-- Stickers Board Grid -->
+            <div class="stickers-grid" id="stickers-container">
+              <!-- JS will generate 30 circles here -->
+            </div>
+
+            <div class="rewards-milestones">
+              <div class="milestone" id="milestone-3">
+                <div class="milestone-badge">3 點</div>
+                <div class="milestone-desc">
+                  <strong>🧁 小確幸獎勵：</strong> 決定今天的點心種類、或多看 10 分鐘優質卡通
+                </div>
+              </div>
+              <div class="milestone" id="milestone-15">
+                <div class="milestone-badge">15 點</div>
+                <div class="milestone-desc">
+                  <strong>🌳 體驗型獎勵：</strong> 週末去喜歡的特色公園、獲得「免做家事一次」券
+                </div>
+              </div>
+              <div class="milestone" id="milestone-30">
+                <div class="milestone-badge">30 點</div>
+                <div class="milestone-desc">
+                  <strong>🎬 終極大獎勵：</strong> 挑選買一本喜歡的課外書、全家人一起去看一場電影
+                </div>
+              </div>
+            </div>
+
+            <div class="board-actions">
+              <button class="sticker-add-btn" onclick="addStickerDirectly()">✨ 增加一個貼紙</button>
+              <button class="sticker-reset-btn" onclick="resetStickers()">🔄 重置點數</button>
+            </div>
+          </div>
+
+          <!-- Live Preview: Reading Card -->
+          <div class="tool-section-card preview-card" id="reading-preview-card" style="display: none;">
+            <div class="preview-card-header">
+              <span class="card-tag">5W1H 閱讀思考卡片</span>
+              <button class="close-preview-btn" onclick="hideReadingPreview()">關閉</button>
+            </div>
+            
+            <div class="visual-reading-card" id="visual-card-content">
+              <h3 id="prev-title">書名</h3>
+              
+              <div class="card-grid">
+                <div class="card-item-box">
+                  <div class="box-label">Who 角色</div>
+                  <div class="box-text" id="prev-who">-</div>
+                </div>
+                <div class="card-item-box">
+                  <div class="box-label">When 時間</div>
+                  <div class="box-text" id="prev-when">-</div>
+                </div>
+                <div class="card-item-box">
+                  <div class="box-label">Where 地點</div>
+                  <div class="box-text" id="prev-where">-</div>
+                </div>
+              </div>
+
+              <div class="card-long-box">
+                <div class="box-label">What 事情</div>
+                <div class="box-text" id="prev-what">-</div>
+              </div>
+
+              <div class="card-long-box">
+                <div class="box-label">Why 原因</div>
+                <div class="box-text" id="prev-why">-</div>
+              </div>
+
+              <div class="card-long-box">
+                <div class="box-label">How 解決方法</div>
+                <div class="box-text" id="prev-how">-</div>
+              </div>
+
+              <div class="card-long-box accent-box">
+                <div class="box-label">💭 我的心得/疑問</div>
+                <div class="box-text" id="prev-thoughts">-</div>
+              </div>
+            </div>
+            
+            <div class="preview-actions">
+              <button class="print-card-btn" onclick="printSingleCard()">🖨️ 列印此卡片</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 3: PRINTABLE A4 AREA -->
+    <section id="tab-print" class="tab-content no-print">
+      <div class="print-hub-intro">
+        <div class="intro-text">
+          <h3>🖨️ 實體紙本列印中心</h3>
+          <p>我們特別優化了紙張版面，讓您可以直接用家用印表機進行 A4 100% 比例列印。孩子在實體卡片上書寫，更能專注且避免螢幕藍光影響。</p>
+          <div class="print-tips">
+            <strong>💡 列印技巧說明：</strong>
+            <ol>
+              <li>點擊下方「啟動列印對話框」按鈕。</li>
+              <li>在列印設定中，確認選擇<b>「A4」</b>尺寸，並將邊距設為<b>「無」 (None)</b> 或<b>「預設」</b>。</li>
+              <li>勾選<b>「背景圖形」 (Background graphics)</b> 確保漂亮的卡片框線與顏色能順利印出。</li>
+            </ol>
+          </div>
+          <button class="print-trigger-btn" onclick="triggerPrint()">🖨️ 立即列印（彈出列印預覽）</button>
+        </div>
+      </div>
+
+      <!-- Live Printable Preview Showcase on Screen -->
+      <div class="screen-print-preview-container">
+        <h4>👀 紙本排版預覽（A4 比例）</h4>
+        
+        <div class="preview-section-box">
+          <h5>1. 每日時間規劃小卡（一張 A4 可裁切為 4 張）</h5>
+          <div class="print-mini-preview" onclick="triggerPrint()">
+            <!-- Representing the 4-in-1 layout -->
+            <div class="mini-grid-4">
+              <div class="mini-card-shell">🕒 時間小卡 1</div>
+              <div class="mini-card-shell">🕒 時間小卡 2</div>
+              <div class="mini-card-shell">🕒 時間小卡 3</div>
+              <div class="mini-card-shell">🕒 時間小卡 4</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-section-box">
+          <h5>2. 閱讀思考紀錄卡（一張 A4 可裁切為 2 張）</h5>
+          <div class="print-mini-preview" onclick="triggerPrint()">
+            <!-- Representing the 2-in-1 layout -->
+            <div class="mini-grid-2">
+              <div class="mini-card-shell">📚 閱讀卡 1</div>
+              <div class="mini-card-shell">📚 閱讀卡 2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== PRINT ONLY CONTAINERS ==================== -->
+  <!-- These will only render when the browser prints (triggered by @media print) -->
+  
+  <div class="print-only-layout" id="print-area">
+    
+    <!-- PAGE 1: DAILY TIME PLANNERS (4-IN-1 GRID) -->
+    <div class="print-page A4-portrait">
+      <div class="print-page-header">
+        <span>⏰ 升小四無痛接軌：每日時間規劃小卡（請沿虛線剪裁）</span>
+        <span>暑假實戰陪伴工具箱</span>
+      </div>
+      
+      <div class="print-grid-2x2">
+        <!-- Card 1 -->
+        <div class="print-time-card">
+          <div class="card-header-inner">
+            <span class="card-title-main">🕒 每日時間規劃小卡</span>
+            <span class="date-placeholder">日期：___ 月 ___ 日</span>
+          </div>
+          
+          <div class="card-content-inner">
+            <div class="print-label-bold">🌅 明天最重要的 3 件事：</div>
+            <div class="blank-lines">
+              <div class="blank-line-item">1. ____________________________ (預估：_____分)</div>
+              <div class="blank-line-item">2. ____________________________ (預估：_____分)</div>
+              <div class="blank-line-item">3. ____________________________ (預估：_____分)</div>
+            </div>
+            
+            <div class="print-label-bold divider-top-dashed">🏁 實際挑戰結果（隔日覆盤）：</div>
+            <div class="print-checkboxes">
+              <span class="checkbox-box-print"></span> 準時完成，我真棒！
+            </div>
+            <div class="print-checkboxes">
+              <span class="checkbox-box-print"></span> 比預期久，下次改進：
+            </div>
+            <div class="reflection-box-blank"></div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="print-time-card">
+          <div class="card-header-inner">
+            <span class="card-title-main">🕒 每日時間規劃小卡</span>
+            <span class="date-placeholder">日期：___ 月 ___ 日</span>
+          </div>
+          
+          <div class="card-content-inner">
+            <div class="print-label-bold">🌅 明天最重要的 3 件事：</div>
+            <div class="blank-lines">
+              <div class="blank-line-item">1. ____________________________ (預估：_____分)</div>
+              <div class="blank-line-item">2. ____________________________ (預估：_____分)</div>
+              <div class="blank-line-item">3. ____________________________ (預估：_____分)</div>
+            </div>
+            
+            <div class="print-label-bold divider-top-dashed">🏁 實際挑戰結果（隔日覆盤）：</div>
+            <div class="print-checkboxes">
+              <span class="checkbox-box-print"></span> 準時完成，我真棒！
+            </div>
+            <div class="print-checkboxes">
+              <span class="checkbox-box-print"></span> 比預期久，下次改進：
+            </div>
+            <div class="reflection-box-blank"></div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="print-time-card">
+          <div class="card-header-inner">
+            <span class="card-title-main">🕒 每日時間規劃小卡</span>
+            <span class="date-placeholder">日期：___ 月 ___ 日</span>
+          </div>
+          
+          <div class="card-content-inner">
+            <div class="print-label-bold">🌅 明天最重要的 3 件事：</div>
+            <div class="blank-lines">
+              <div class="blank-line-item">1. ____________________________ (預估：_____分)</div>
+              <div class="blank-line-item">2. ____________________________ (預估：_____分)</div>
+              <div class="blank-line-item">3. ____________________________ (預估：_____分)</div>
+            </div>
+            
+            <div class="print-label-bold divider-top-dashed">🏁 實際挑戰結果（隔日覆盤）：</div>
+            <div class="print-checkboxes">
+              <span class="checkbox-box-print"></span> 準時完成，我真棒！
+            </div>
+            <div class="print-checkboxes">
+              <span class="checkbox-box-print"></span> 比預期久，下次改進：
+            </div>
+            <div class="reflection-box-blank"></div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="print-time-card">
+          <div class="card-header-inner">
+            <span class="card-title-main">🕒 每日時間規劃小卡</span>
+            <span class="date-placeholder">日期：___ 月 ___ 日</span>
+          </div>
+          
+          <div class="card-content-inner">
+            <div class="print-label-bold">🌅 明天最重要的 3 件事：</div>
+            <div class="blank-lines">
+              <div class="blank-line-item">1. ____________________________ (預估：_____分)</div>
+              <div class="blank-line-item">2. ____________________________ (預估：_____分)</div>
+              <div class="blank-line-item">3. ____________________________ (預估：_____分)</div>
+            </div>
+            
+            <div class="print-label-bold divider-top-dashed">🏁 實際挑戰結果（隔日覆盤）：</div>
+            <div class="print-checkboxes">
+              <span class="checkbox-box-print"></span> 準時完成，我真棒！
+            </div>
+            <div class="print-checkboxes">
+              <span class="checkbox-box-print"></span> 比預期久，下次改進：
+            </div>
+            <div class="reflection-box-blank"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: READING THINKING CARDS (2-IN-1 ROW) -->
+    <div class="print-page A4-portrait page-break-before">
+      <div class="print-page-header">
+        <span>📚 升小四無痛接軌：閱讀思考紀錄卡 (5W1H)（請沿虛線剪裁）</span>
+        <span>每週一篇 ‧ 建立邏輯思考鷹架</span>
+      </div>
+      
+      <div class="print-grid-2x1">
+        
+        <!-- Card 1 -->
+        <div class="print-reading-card">
+          <div class="reading-card-header-inner">
+            <span class="card-title-main">📚 閱讀思考紀錄卡 (5W1H)</span>
+            <span class="date-placeholder">姓名：__________ 日期：___/___</span>
+          </div>
+          
+          <div class="reading-card-content-inner">
+            <div class="write-row-print">📖 書名 / 文章名：_______________________________________________</div>
+            
+            <div class="card-print-grid-3">
+              <div class="grid-cell-print">
+                <span class="cell-label-print">Who 主角是誰？</span>
+                <div class="cell-line-print">___________________</div>
+              </div>
+              <div class="grid-cell-print">
+                <span class="cell-label-print">When 什麼時候？</span>
+                <div class="cell-line-print">___________________</div>
+              </div>
+              <div class="grid-cell-print">
+                <span class="cell-label-print">Where 在哪裡？</span>
+                <div class="cell-line-print">___________________</div>
+              </div>
+            </div>
+
+            <div class="long-field-print">
+              <span class="cell-label-print">What 發生什麼事（起因與衝突）？</span>
+              <div class="cell-line-print">__________________________________________________________________</div>
+            </div>
+
+            <div class="long-field-print">
+              <span class="cell-label-print">Why 為什麼會這樣（主角的想法或動機）？</span>
+              <div class="cell-line-print">__________________________________________________________________</div>
+            </div>
+
+            <div class="long-field-print">
+              <span class="cell-label-print">How 最後怎麼解決（結局是什麼）？</span>
+              <div class="cell-line-print">__________________________________________________________________</div>
+            </div>
+
+            <div class="long-field-print special-print-box">
+              <span class="cell-label-print">💭 我的心得或疑問：</span>
+              <div class="cell-line-print">__________________________________________________________________</div>
+              <div class="cell-line-print">__________________________________________________________________</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="print-reading-card">
+          <div class="reading-card-header-inner">
+            <span class="card-title-main">📚 閱讀思考紀錄卡 (5W1H)</span>
+            <span class="date-placeholder">姓名：__________ 日期：___/___</span>
+          </div>
+          
+          <div class="reading-card-content-inner">
+            <div class="write-row-print">📖 書名 / 文章名：_______________________________________________</div>
+            
+            <div class="card-print-grid-3">
+              <div class="grid-cell-print">
+                <span class="cell-label-print">Who 主角是誰？</span>
+                <div class="cell-line-print">___________________</div>
+              </div>
+              <div class="grid-cell-print">
+                <span class="cell-label-print">When 什麼時候？</span>
+                <div class="cell-line-print">___________________</div>
+              </div>
+              <div class="grid-cell-print">
+                <span class="cell-label-print">Where 在哪裡？</span>
+                <div class="cell-line-print">___________________</div>
+              </div>
+            </div>
+
+            <div class="long-field-print">
+              <span class="cell-label-print">What 發生什麼事（起因與衝突）？</span>
+              <div class="cell-line-print">__________________________________________________________________</div>
+            </div>
+
+            <div class="long-field-print">
+              <span class="cell-label-print">Why 為什麼會這樣（主角的想法或動機）？</span>
+              <div class="cell-line-print">__________________________________________________________________</div>
+            </div>
+
+            <div class="long-field-print">
+              <span class="cell-label-print">How 最後怎麼解決（結局是什麼）？</span>
+              <div class="cell-line-print">__________________________________________________________________</div>
+            </div>
+
+            <div class="long-field-print special-print-box">
+              <span class="cell-label-print">💭 我的心得或疑問：</span>
+              <div class="cell-line-print">__________________________________________________________________</div>
+              <div class="cell-line-print">__________________________________________________________________</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="no-print main-footer">
+    <div class="footer-inner">
+      <p>© 2026 升小四無痛接軌 ‧ 暑假實戰陪伴計畫 ‧ 設計給關心孩子的您</p>
+      <p>Obsidian 專案駕駛艙備忘：本網頁已同步至本地專案目錄</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

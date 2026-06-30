@@ -97,6 +97,13 @@
 *   🌐 **Netlify 線上網址**：[🔗 點擊開啟](https://school-test-clock.netlify.app)
 *   🌐 **GitHub Pages 線上網址**：[🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/exam-timer/index.html)
 
+### 6. 升小四無痛接軌暑假實戰陪伴工具箱
+*   👶 **網頁主頁**：[index.html](file:///d:/2026antigravity/public/summer-companion/index.html)
+*   🎨 **樣式表**：[style.css](file:///d:/2026antigravity/public/summer-companion/style.css)
+*   ⚙️ **邏輯腳本**：[script.js](file:///d:/2026antigravity/public/summer-companion/script.js)
+*   🖼️ **溫馨封面插圖**：[cover.png](file:///d:/2026antigravity/public/summer-companion/cover.png)
+*   🌐 **GitHub Pages 線上網址**：[🔗 點擊開啟](https://samcct-bit.github.io/2026antigravity-hub/public/summer-companion/index.html)
+
 ---
 
 ## 🔌 五、外部服務連線技能 (Service Integration)
