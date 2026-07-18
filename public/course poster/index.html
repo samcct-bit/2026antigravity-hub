@@ -31,7 +31,7 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
         
-        /* 1. Top Title Overlay (replaces "研究班") */
+        /* 1. Top Title (Shrunk) */
         .title-container {
             position: absolute;
             top: 75px;
@@ -43,29 +43,48 @@
         }
         
         .org-name {
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 700;
             color: rgba(255, 255, 255, 0.95);
-            letter-spacing: 6px;
-            margin-bottom: 8px;
+            letter-spacing: 5px;
+            margin-bottom: 6px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
         }
         
         .main-title {
-            font-size: 92px;
+            font-size: 76px;
             font-weight: 900;
             color: #f2e661;
-            letter-spacing: 8px;
+            letter-spacing: 6px;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9), -1px -1px 2px rgba(0, 0, 0, 0.5);
         }
         
-        /* 2. Middle Course Info Overlay (replaces yellow quotes) */
+        /* 2. Wisdom Text (Shrunk, overlayed in HTML) */
+        .wisdom-container {
+            position: absolute;
+            top: 245px;
+            left: 95px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .wisdom-line {
+            font-size: 34px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 4px;
+            margin-bottom: 6px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+        }
+        
+        /* 3. Middle Course Info (Enlarged date and details) */
         .course-info-container {
             position: absolute;
-            top: 440px;
-            left: 80px;
-            width: 840px;
-            height: 245px;
+            top: 400px;
+            left: 95px;
+            width: 810px;
+            height: 380px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -78,10 +97,10 @@
         }
         
         .item-title {
-            font-size: 22px;
+            font-size: 26px;
             font-weight: 700;
             color: #f2e661;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
             display: flex;
             align-items: center;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
@@ -90,20 +109,28 @@
         .item-title::before {
             content: "";
             display: inline-block;
-            width: 4px;
-            height: 18px;
+            width: 5px;
+            height: 20px;
             background-color: #f2e661;
-            margin-right: 8px;
+            margin-right: 10px;
             border-radius: 2px;
             box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         .item-body {
-            font-size: 20px;
+            font-size: 23px;
             font-weight: 500;
             color: #ffffff;
-            padding-left: 12px;
-            line-height: 1.35;
+            padding-left: 15px;
+            line-height: 1.4;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+        }
+        
+        /* Specific enlargement for date */
+        .date-body {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
         }
         
@@ -113,9 +140,9 @@
         }
         
         .sub-list li {
-            margin-bottom: 2px;
+            margin-bottom: 4px;
             position: relative;
-            padding-left: 16px;
+            padding-left: 18px;
         }
         
         .sub-list li::before {
@@ -124,6 +151,18 @@
             font-weight: bold;
             position: absolute;
             left: 0;
+        }
+        
+        /* 4. Shrunk Vase Image overlay (placed on bottom-left) */
+        .vase-overlay {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 320px;
+            height: auto;
+            z-index: 10;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 15px rgba(0,0,0,0.5));
         }
     </style>
 </head>
@@ -135,11 +174,17 @@
             <div class="main-title">一日基礎班</div>
         </div>
         
+        <!-- Shrunk Wisdom Text -->
+        <div class="wisdom-container">
+            <div class="wisdom-line">智慧開啟 祖先沾光</div>
+            <div class="wisdom-line">心靈淨化 生命進化</div>
+        </div>
+        
         <!-- Course details overlayed in the middle -->
         <div class="course-info-container">
             <div class="item">
                 <div class="item-title">一、課程日期</div>
-                <div class="item-body">2026年7月26日 (星期日)</div>
+                <div class="item-body date-body">2026年7月26日 (星期日)</div>
             </div>
             
             <div class="item">
@@ -162,6 +207,9 @@
                 <div class="item-body">請即日起向各區區長完成報名程序；區長統計人數後，請回報給道務組長（蔡講師）。</div>
             </div>
         </div>
+        
+        <!-- Shrunk Vase image overlayed at the bottom-left -->
+        <img src="vase_cutout.png" class="vase-overlay" alt="精緻去背花瓶">
     </div>
 </body>
 </html>
