@@ -2,9 +2,9 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>一日基礎班課程簡章</title>
+    <title>天祥大同新竹區一日基礎班課程簡章</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&display=swap');
         
         * {
             box-sizing: border-box;
@@ -14,7 +14,7 @@
         
         body {
             font-family: 'Noto Serif TC', 'Microsoft JhengHei', serif;
-            background-color: #120909;
+            background-color: #f4eae0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -23,168 +23,154 @@
         
         .poster {
             width: 1000px;
-            height: 1415px;
-            background: url('S__23208083_patched.jpg') no-repeat center center;
+            height: 1414px;
+            background: url('poster_bg.png') no-repeat center center;
             background-size: cover;
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-        }
-        
-        /* 1. Top Title (Shrunk) */
-        .title-container {
-            position: absolute;
-            top: 75px;
-            left: 95px;
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        
-        .org-name {
-            font-size: 22px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.95);
-            letter-spacing: 5px;
-            margin-bottom: 6px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
-        }
-        
-        .main-title {
-            font-size: 76px;
-            font-weight: 900;
-            color: #f2e661;
-            letter-spacing: 6px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9), -1px -1px 2px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* 2. Wisdom Text (Shrunk, overlayed in HTML) */
-        .wisdom-container {
-            position: absolute;
-            top: 245px;
-            left: 95px;
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .wisdom-line {
-            font-size: 34px;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 4px;
-            margin-bottom: 6px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
-        }
-        
-        /* 3. Middle Course Info (Enlarged and shifted left to use freed space) */
-        .course-info-container {
-            position: absolute;
-            top: 380px;
-            left: 220px;
-            width: 680px;
-            height: 420px;
+            padding: 90px 100px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .header {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .header h2 {
+            font-size: 38px;
+            font-weight: 700;
+            color: #2c1a04;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 58px;
+            font-weight: 900;
+            color: #8a1f11;
+            letter-spacing: 6px;
+            border-bottom: 3px double #8a1f11;
+            display: inline-block;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+        }
+        
+        .content-section {
+            margin-top: -30px;
+            background-color: rgba(255, 252, 246, 0.85);
+            border: 2px solid #e2cfb6;
+            border-radius: 12px;
+            padding: 45px 50px;
+            box-shadow: 0 4px 15px rgba(138, 31, 17, 0.05);
         }
         
         .item {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            margin-bottom: 25px;
+            font-size: 32px;
+            line-height: 1.6;
+            color: #3e270c;
+        }
+        
+        .item:last-child {
+            margin-bottom: 0;
         }
         
         .item-title {
-            font-size: 29px;
             font-weight: 700;
-            color: #f2e661;
-            margin-bottom: 3px;
+            color: #8a1f11;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
         }
         
         .item-title::before {
             content: "";
             display: inline-block;
-            width: 5px;
-            height: 20px;
-            background-color: #f2e661;
-            margin-right: 10px;
+            width: 8px;
+            height: 28px;
+            background-color: #8a1f11;
+            margin-right: 12px;
             border-radius: 2px;
-            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         .item-body {
-            font-size: 25px;
-            font-weight: 500;
-            color: #ffffff;
-            padding-left: 15px;
-            line-height: 1.4;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
-        }
-        
-        /* Specific enlargement for date */
-        .date-body {
-            font-size: 32px;
-            font-weight: 700;
-            color: #ffffff;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+            padding-left: 20px;
         }
         
         .sub-list {
+            margin-top: 8px;
             list-style-type: none;
-            padding-left: 0;
+            padding-left: 10px;
         }
         
         .sub-list li {
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             position: relative;
-            padding-left: 18px;
+            padding-left: 20px;
         }
         
         .sub-list li::before {
             content: "•";
-            color: #f2e661;
+            color: #8a1f11;
             font-weight: bold;
             position: absolute;
             left: 0;
         }
         
-        /* 4. Shrunk Vase Image overlay (placed on bottom-left, shrunk to 170px width) */
-        .vase-overlay {
-            position: absolute;
-            bottom: 0px;
-            left: 0px;
-            width: 170px;
-            height: auto;
-            z-index: 10;
-            pointer-events: none;
-            filter: drop-shadow(0 4px 15px rgba(0,0,0,0.5));
+        .footer {
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .quote {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c1a04;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            border-left: 3px solid #8a1f11;
+            border-right: 3px solid #8a1f11;
+            padding: 0 20px;
+            display: inline-block;
+        }
+        
+        .lotus-container {
+            width: 280px;
+            height: 190px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .lotus-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
         }
     </style>
 </head>
 <body>
     <div class="poster">
-        <!-- New Title elements overlayed on top -->
-        <div class="title-container">
-            <div class="org-name">天祥大同新竹區</div>
-            <div class="main-title">一日基礎班</div>
+        <div class="header">
+            <h2>天祥大同新竹區</h2>
+            <h1>一日基礎班課程簡章</h1>
         </div>
         
-        <!-- Shrunk Wisdom Text -->
-        <div class="wisdom-container">
-            <div class="wisdom-line">智慧開啟 祖先沾光</div>
-            <div class="wisdom-line">心靈淨化 生命進化</div>
-        </div>
-        
-        <!-- Course details overlayed in the middle -->
-        <div class="course-info-container">
+        <div class="content-section">
             <div class="item">
                 <div class="item-title">一、課程日期</div>
-                <div class="item-body date-body">2026年7月26日 (星期日)</div>
+                <div class="item-body">2026年6月28日 (星期日)</div>
             </div>
             
             <div class="item">
@@ -196,8 +182,8 @@
                 <div class="item-title">三、課程內容</div>
                 <div class="item-body">
                     <ul class="sub-list">
-                        <li><strong>上午專題課程</strong>：由張宏茂壇主與蔡金成講師主講啟發性課程</li>
-                        <li><strong>下午課程</strong>：手語表演課程</li>
+                        <li><strong>上午專題課程</strong>：由林楹翔講師與林冠妘講師主講啟發性課程</li>
+                        <li><strong>下午課程</strong>：餅乾手作課程</li>
                     </ul>
                 </div>
             </div>
@@ -208,8 +194,15 @@
             </div>
         </div>
         
-        <!-- Shrunk Vase image overlayed at the bottom-left -->
-        <img src="vase_cutout.png" class="vase-overlay" alt="精緻去背花瓶">
+        <div class="footer">
+            <div class="quote">
+                修道最高的境界～無我<br>
+                處事最好的方法～無爭
+            </div>
+            <div class="lotus-container">
+                <img src="lotus_transparent.png" class="lotus-img" alt="去背蓮花">
+            </div>
+        </div>
     </div>
 </body>
 </html>
